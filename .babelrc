@@ -1,16 +1,23 @@
 {
   "presets": [
-    ["env", {
-      "useBuiltIns": "usage",
-      "modules": false
-    }]
+    [
+      "env",
+      {
+        "useBuiltIns": "usage",
+        "modules": false
+      }
+    ]
   ],
   "plugins": [
     "external-helpers"
   ],
   "env": {
     "test": {
-      "presets": [["env"]]
+      "presets": [
+        [
+          "env"
+        ]
+      ]
     }
   }
 }

@@ -1,5 +1,9 @@
-import {error} from './util'
+import {error, warn} from './util'
 
-export default function throwIf(condition: boolean, assertion: string) {
+export const throwIf = (condition: boolean, assertion: string) => {
     if (condition) error(assertion)
+}
+
+export const warnIf= (condition: boolean, assertion: string) => {
+    if (condition) warn(assertion)
 }
