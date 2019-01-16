@@ -8,14 +8,12 @@ import {warnIf} from "./loggers/throwIf"
 function isCrushed() {
 }
 
-warnIf(
-    process.env.NODE_ENV !== 'production' &&
-    typeof isCrushed.name === 'string' &&
-    isCrushed.name !== 'isCrushed',
-    'You are currently using minified code outside of NODE_ENV === \'production\'. ' +
-    'This means that you are running a slower development build of Slim. '
-)
+// warnIf(
+//     process.env.NODE_ENV !== 'production' &&
+//     typeof isCrushed.name === 'string' &&
+//     isCrushed.name !== 'isCrushed',
+//     'You are currently using minified code outside of NODE_ENV === \'production\'. ' +
+//     'This means that you are running a slower development build of Slim. '
+// )
 
-export {
-    createStore
-}
+window.createStore = createStore
