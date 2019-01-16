@@ -1,1 +1,1 @@
-# Slimly
+# Slim

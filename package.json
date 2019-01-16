@@ -1,5 +1,5 @@
 {
-  "name": "slimly",
+  "name": "slim",
   "version": "1.0.0",
   "description": "state manager with proxy",
   "main": "index.js",
@@ -22,14 +22,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/victor0210/slimly.git"
+    "url": "git+https://github.com/victor0210/slim.git"
   },
   "author": "victor",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/victor0210/slimly/issues"
+    "url": "https://github.com/victor0210/slim/issues"
   },
-  "homepage": "https://github.com/victor0210/slimly#readme",
+  "homepage": "https://github.com/victor0210/slim#readme",
   "devDependencies": {
     "@types/jest": "^23.1.4",
     "babel-core": "^6.26.3",

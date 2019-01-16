@@ -16,7 +16,7 @@ const createStore = (reducer, state) => {
         throwIf(
             !isPlainString(action),
             `Actions must be plain string. ` +
-            `Use custom middlewares for all actions.`
+            `Use custom middleware for all actions.`
         )
 
         throwIf(
