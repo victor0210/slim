@@ -26,6 +26,7 @@ const store = createStore({}, {
 })
 
 const setErrorMsg = 'You may not be able to assign values ​​directly to state. Please return a new state for reducing or edit with draft in reducer.'
+const craeteErrorMsg = 'type of state expect to [Object] but got [number]'
 
 const state = store.getState()
 
@@ -34,6 +35,13 @@ const handleThrow = (assertion, fn) => {
         expect(fn).toThrowError(setErrorMsg)
     });
 }
+
+it(`parameters with store creating should be a plainObject`, () => {
+    const validateFn = () => {
+        createStore(1, 1)
+    }
+    expect(validateFn).toThrowError(craeteErrorMsg)
+});
 
 handleThrow('num should be readonly', () => {state.num = 1})
 handleThrow('str should be readonly', () => {state.str = 1})
