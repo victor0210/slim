@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>counter</title>
+    <script src="../../../dist/bundle.js"></script>
+    <style>
+        div {
+            width: 100px;
+            height: 50px;
+            text-align: center;
+            box-sizing: border-box;
+            display: inline-block;
+            line-height: 48px;
+            user-select: none;
+        }
+
+        .btn {
+            border: 1px solid #000;
+            border-radius: 5px;
+            font-size: 20px;
+            font-weight: bolder;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #f0f0f0;
+        }
+
+        .btn:active {
+            background: #e0e0e0;
+        }
+
+        #count {
+            font-size: 25px;
+        }
+    </style>
+</head>
+<body>
+<div class="btn" onclick="decrement()">-</div>
+<div id="count">0</div>
+<div class="btn" onclick="increment()">+</div>
+</body>
+<script>
+    // state is single object
+    const state = {
+        count: 0
+    }
+
+    // reducers is event proxy
+    const reducers = {
+        decrement: state => {
+            // computed new state
+            let count = state.count - 1
+
+            // reduce new state
+            return {
+                ...state,
+                count
+            }
+        },
+        increment: state => {
+            return {
+                ...state,
+                count: state.count + 1
+            }
+        }
+    }
+
+    const store = createStore(reducers, state)
+</script>
+<script>
+    function decrement() {
+        store.dispatch('decrement')
+        renderCount(store.getState().count)
+    }
+
+    function increment() {
+        store.dispatch('increment')
+        renderCount(store.getState().count)
+    }
+
+    const countEl = document.getElementById('count')
+
+    function renderCount(count) {
+        countEl.textContent = count
+    }
+</script>
+</html>

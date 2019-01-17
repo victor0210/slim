@@ -1,0 +1,23 @@
+{
+  "presets": [
+    [
+      "env",
+      {
+        "useBuiltIns": "usage",
+        "modules": false
+      }
+    ]
+  ],
+  "plugins": [
+    "transform-object-rest-spread"
+  ],
+  "env": {
+    "test": {
+      "presets": [
+        [
+          "env"
+        ]
+      ]
+    }
+  }
+}
