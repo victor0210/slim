@@ -49,7 +49,7 @@
 
     // reducers is event proxy
     const reducers = {
-        'decrement': state => {
+        decrement: state => {
             // computed new state
             let count = state.count - 1
 
@@ -59,7 +59,7 @@
                 count
             }
         },
-        'increment': state => {
+        increment: state => {
             return {
                 ...state,
                 count: state.count + 1

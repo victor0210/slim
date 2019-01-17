@@ -1,36 +1,28 @@
 import Vue from 'vue'
 import slim from 'vslim'
 
-Vue.use(slim)
+Vue.use(slim);
 
 let state = {
     count: 0,
-    arr: [1, 2, 3],
+    arr: [],
     obj: {
-        k1: 'k1',
-        k2: 'k2'
+        obj: {
+            obj: 0
+        }
     }
-}
+};
 
 let store = slim.createStore({
-    increment: (state) => {
-        return {
-            ...state,
-            count: state.count + 1
-        }
+    increment: (draft) => {
+        draft.count++;
     },
-    decrement: (state) => {
+    decrement: (draft) => {
         return {
-            ...state,
-            count: state.count - 1
-        }
-    },
-    addToArr: (state, num) => {
-        return {
-            ...state,
-            arr: [...state.arr, num]
+            ...draft,
+            count: draft.count - 1
         }
     }
-}, state)
+}, state);
 
 export default store

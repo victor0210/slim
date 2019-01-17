@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <div class="btn" @click="store.dispatch('decrement')">-</div>
-        <div id="count">Clicked: {{ store.state.count }} times, count is {{ evenOrOdd }}.</div>
+        <div id="count">Clicked: <span class="tag">{{ store.state.count }}</span> times, count is <span class="tag">{{ evenOrOdd }}</span>.</div>
         <div class="btn" @click="store.dispatch('increment')">+</div>
     </div>
 </template>
@@ -11,6 +11,13 @@
         computed: {
             evenOrOdd() {
                 return this.store.state.count % 2 === 0 ? 'Odd' : 'Even'
+            }
+        },
+        watch: {
+            'store.state.count': {
+                handler(val) {
+                    console.log('new count: ' + val)
+                }
             }
         }
     }
@@ -42,12 +49,24 @@
     }
 
     #count {
-        box-sizing: border-box;
         display: inline-block;
+        padding: 0 10px;
+        border-radius: 5px;
+        box-sizing: border-box;
         width: 60%;
         float: left;
         font-size: 25px;
         line-height: 50px;
         text-align: center;
+    }
+
+    .tag {
+        width: 100px;
+        display: inline-block;
+        line-height: 50px;
+        padding: 0 10px;
+        border-radius: 5px;
+        background-color: #3c3c3c;
+        color: #fff;
     }
 </style>

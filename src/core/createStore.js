@@ -10,6 +10,7 @@ const createStore = (reducer, state) => {
     let currentReducer = passReducer(reducer)
     let middlewares = []
     let callbacks = []
+    let updateQueue = []
     let isDispatching = null
 
     const dispatch = (action, ...args) => {
@@ -26,25 +27,27 @@ const createStore = (reducer, state) => {
 
         try {
             isDispatching = action
+            updateQueue = []
+
+            let draft = cloneObj(currentState)
 
             warnIf(
                 !reducer[action],
                 `You may not has not registered [${action}] in store`
             )
 
-            walkMiddleware(middlewares, currentState, ...args)
+            walkMiddleware(middlewares, draft, ...args)
 
             if (currentReducer[action]) {
-                let newState = currentReducer[action](currentState, ...args)
+                let newState = currentReducer[action](draft, ...args)
 
-                throwIf(
+                warnIf(
                     newState === undefined,
-                    `You might not return an new state. ` +
-                    `We will not replace state with undefined. ` +
-                    `Please return an empty object such as {} instead.`
+                    `It is recommended to return a new state to replace the old state, ` +
+                    `which is more conducive to our observation of state changes in complex situations.`
                 )
 
-                currentState = observeObject(newState)
+                currentState = observeObject(newState || draft)
             }
 
             walkMiddleware(callbacks, currentState, ...args)
@@ -162,7 +165,13 @@ const createStore = (reducer, state) => {
 
 const observeObject = (object) => {
     const createProxy = (prefix, object) => {
-        const arrayProxyHandler = {
+        let objectProxyHandler = {
+            set: () => {
+                throw new Error(
+                    `You may not be able to assign values ​​directly to state. ` +
+                    `Please return a new state for reducing or edit with draft in reducer.`
+                )
+            },
             get: (target, property) => {
                 const value = target[property];
 
@@ -173,34 +182,18 @@ const observeObject = (object) => {
                 } else {
                     return value
                 }
-            },
+            }
+        }
+
+        let arrayProxyHandler = {
+            ...objectProxyHandler,
             set: (target, property) => {
                 if (property === '__proto__') return true
 
                 throw new Error(
                     `You may not be able to assign values ​​directly to state. ` +
-                    `Please return a new state for reducing.`
+                    `Please return a new state for reducing or edit with draft in reducer.`
                 )
-            }
-        }
-
-        const objectProxyHandler = {
-            set: () => {
-                throw new Error(
-                    `You may not be able to assign values ​​directly to state. ` +
-                    `Please return a new state for reducing.`
-                )
-            },
-            get: (target, property) => {
-                const value = target[property];
-
-                if (isPlainObject(value)) {
-                    return createProxy(prefix + property + '.', value)
-                } else if (Array.isArray(value)) {
-                    return new Proxy(value, arrayProxyHandler);
-                } else {
-                    return value
-                }
             }
         }
 
@@ -229,6 +222,10 @@ const walkMiddleware = (middlewares, currentState, ...args) => {
     middlewares.forEach(m => {
         m(currentState, ...args)
     })
+}
+
+const cloneObj = (source) => {
+    return JSON.parse(JSON.stringify(source));
 }
 
 export default createStore
