@@ -16,51 +16,7 @@ const obj = {
     arrStrInObj: ['str1InObj', 'str2InObj', 'str3InObj']
 }
 
-const reducers = {
-    // num
-    changeNumDirectly: (draft, num) => {
-        draft.num = num
-    },
-    changeNumReducer: (draft, num) => {
-        return {
-            ...draft,
-            num
-        }
-    },
-
-    // str
-    changeStrDirectly: (draft, str) => {
-        draft.str = str
-    },
-    changeStrReducer: (draft, str) => {
-        return {
-            ...draft,
-            str
-        }
-    },
-
-    // obj
-    changeObjDirectly: (draft, v) => {
-        draft.obj.num = v
-    },
-    changeObjReducer: (draft, v) => {
-        return {
-            ...draft,
-            obj: {
-                ...draft.obj,
-                num: v
-            }
-        }
-    },
-
-    // arr
-    changeArrDirectly: (draft, v) => {
-        draft.arrNum[0] = v
-    },
-    changeArrPro: (draft, v) => {
-        draft.arrNum.push(v)
-    },
-}
+const reducers = {}
 
 const state = {
     num: 1,
@@ -73,74 +29,149 @@ const state = {
 
 const store = createStore(reducers, state)
 
-// ------------------------   Num   ---------------------------
-// TODO: test warn
-it(`change num directly is allow, result should be 2`, () => {
-    const s = store.getState()
-    store.dispatch('changeNumDirectly', 2)
-
-    expect(store.getState().num).toBe(2)
-    expect(store.getState()).toEqual({...s, num: 2})
+const changeNumDirectlyOff = store.subscribe('changeNumDirectly', (draft, num) => {
+    draft.num = num
 })
 
-it(`change num with reducer is allow, result should be 3`, () => {
-    const s = store.getState()
-    store.dispatch('changeNumReducer', 3)
-
-    expect(store.getState().num).toBe(3)
-    expect(store.getState()).toEqual({...s, num: 3})
+const changeNumReducerOff = store.subscribe('changeNumReducer', (draft, num) => {
+    return {
+        ...draft,
+        num
+    }
 })
 
-// ------------------------   Str   ---------------------------
-// TODO: test warn
-it(`change str directly is allow, result should be str2`, () => {
-    const s = store.getState()
-    store.dispatch('changeStrDirectly', 'str2')
-
-    expect(store.getState().str).toBe('str2')
-    expect(store.getState()).toEqual({...s, str: 'str2'})
+const changeStrDirectlyOff = store.subscribe('changeStrDirectly', (draft, str) => {
+    draft.str = str
 })
 
-it(`change str reducer is allow, result should be str3`, () => {
-    const s = store.getState()
-    store.dispatch('changeStrReducer', 'str3')
-
-    expect(store.getState().str).toBe('str3')
-    expect(store.getState()).toEqual({...s, str: 'str3'})
+const changeStrReducerOff = store.subscribe('changeStrReducer', (draft, str) => {
+    return {
+        ...draft,
+        str
+    }
 })
 
-// ------------------------   Obj   ---------------------------
-// TODO: test warn
-it(`change prop of obj directly is allow, result should be 22`, () => {
-    const s = store.getState()
-    store.dispatch('changeObjDirectly', 22)
-
-    expect(store.getState().obj.num).toBe(22)
-    expect(store.getState()).toEqual({...s, obj: {...obj, num: 22}})
+const changeObjDirectlyOff = store.subscribe('changeObjDirectly', (draft, v) => {
+    draft.obj.num = v
 })
 
-it(`change prop of obj with reducer is allow, result should be 22`, () => {
-    const s = store.getState()
-    store.dispatch('changeObjReducer', 23)
-
-    expect(store.getState().obj.num).toBe(23)
-    expect(store.getState()).toEqual({...s, obj: {...obj, num: 23}})
+const changeObjReducerOff = store.subscribe('changeObjReducer', (draft, v) => {
+    return {
+        ...draft,
+        obj: {
+            ...draft.obj,
+            num: v
+        }
+    }
 })
 
-// ------------------------   Arr   ---------------------------
-// TODO: test warn
-it(`change prop of arr with single variable by index is allow, result should be 22`, () => {
-    const s = store.getState()
-    store.dispatch('changeArrDirectly', 1)
-
-    expect(store.getState().arrNum[0]).toBe(1)
-    expect(store.getState()).toEqual({...s, arrNum: [1, 12, 13]})
+const changeArrDirectlyOff = store.subscribe('changeArrDirectly', (draft, v) => {
+    draft.arrNum[0] = v
 })
 
-it(`change prop of arr with single variable method of prototype is allow, result should be 22`, () => {
-    const s = store.getState()
-    store.dispatch('changeArrPro', 14)
-
-    expect(store.getState().arrNum[3]).toBe(14)
-    expect(store.getState()).toEqual({...s, arrNum: [1, 12, 13, 14]})
+const changeArrProOff = store.subscribe('changeArrPro', (draft, v) => {
+    draft.arrNum.push(v)
 })
+
+const unSubscribeAll = () => {
+    changeNumDirectlyOff()
+
+    changeNumReducerOff()
+
+    changeStrDirectlyOff()
+
+    changeStrReducerOff()
+
+    changeObjDirectlyOff()
+
+    changeObjReducerOff()
+
+    changeArrDirectlyOff()
+
+    changeArrProOff()
+}
+const runTest = (withEvent) => {
+    // ------------------------   Num   ---------------------------
+    // TODO: test warn
+    it(`change num directly is allow, result should be 2`, () => {
+        const s = store.getState()
+        const result = withEvent ? 2 : 1
+        store.dispatch('changeNumDirectly', result)
+
+        expect(store.getState().num).toBe(result)
+        expect(store.getState()).toEqual({...s, num: result})
+    })
+
+    it(`change num with reducer is allow, result should be 3`, () => {
+        const s = store.getState()
+        const result = withEvent ? 3 : 1
+        store.dispatch('changeNumReducer', result)
+
+        expect(store.getState().num).toBe(result)
+        expect(store.getState()).toEqual({...s, num: result})
+    })
+
+    // ------------------------   Str   ---------------------------
+    // TODO: test warn
+    it(`change str directly is allow, result should be str2`, () => {
+        const s = store.getState()
+        const result = withEvent ? 'str2' : 'str'
+        store.dispatch('changeStrDirectly', result)
+
+        expect(store.getState().str).toBe(result)
+        expect(store.getState()).toEqual({...s, str: result})
+    })
+
+    it(`change str reducer is allow, result should be str3`, () => {
+        const s = store.getState()
+        const result = withEvent ? 'str3' : 'str'
+        store.dispatch('changeStrReducer', result)
+
+        expect(store.getState().str).toBe(result)
+        expect(store.getState()).toEqual({...s, str: result})
+    })
+
+    // ------------------------   Obj   ---------------------------
+    // TODO: test warn
+    it(`change prop of obj directly is allow, result should be 22`, () => {
+        const s = store.getState()
+        const result = withEvent ? 22 : 2
+        store.dispatch('changeObjDirectly', result)
+
+        expect(store.getState().obj.num).toBe(result)
+        expect(store.getState()).toEqual({...s, obj: {...obj, num: result}})
+    })
+
+    it(`change prop of obj with reducer is allow, result should be 22`, () => {
+        const s = store.getState()
+        const result = withEvent ? 23 : 2
+        store.dispatch('changeObjReducer', result)
+
+        expect(store.getState().obj.num).toBe(result)
+        expect(store.getState()).toEqual({...s, obj: {...obj, num: result}})
+    })
+
+    // ------------------------   Arr   ---------------------------
+    // TODO: test warn
+    it(`change prop of arr with single variable by index is allow, result should be 22`, () => {
+        const s = store.getState()
+        const result = withEvent ? 1 : 11
+        store.dispatch('changeArrDirectly', result)
+
+        expect(store.getState().arrNum[0]).toBe(result)
+        expect(store.getState()).toEqual({...s, arrNum: [result, 12, 13]})
+    })
+
+    it(`change prop of arr with single variable method of prototype is allow, result should be 22`, () => {
+        const s = store.getState()
+        const result = withEvent ? 14 : undefined
+        store.dispatch('changeArrPro', result)
+
+        expect(store.getState().arrNum[3]).toBe(result)
+        expect(store.getState()).toEqual({...s, arrNum: result ? [1, 12, 13, 14] : [11, 12, 13]})
+    })
+}
+
+runTest()
+unSubscribeAll()
+runTest()
