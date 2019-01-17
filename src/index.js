@@ -15,5 +15,8 @@ function isCrushed() {
 //     'You are currently using minified code outside of NODE_ENV === \'production\'. ' +
 //     'This means that you are running a slower development build of Slim. '
 // )
-
 window.createStore = createStore
+
+export {
+    createStore
+}

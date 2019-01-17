@@ -1,5 +1,4 @@
 import {isPlainObject, isPlainString} from "../loggers/type";
-import Mutation from "./Mutation";
 import {throwIf, warnIf} from "../loggers/throwIf";
 
 const createStore = (reducer, state) => {
@@ -10,6 +9,7 @@ const createStore = (reducer, state) => {
     let currentState = observeObject(state)
     let currentReducer = passReducer(reducer)
     let middlewares = []
+    let callbacks = []
     let isDispatching = null
 
     const dispatch = (action, ...args) => {
@@ -46,6 +46,8 @@ const createStore = (reducer, state) => {
 
                 currentState = observeObject(newState)
             }
+
+            walkMiddleware(callbacks, currentState, ...args)
         } finally {
             isDispatching = null
         }
@@ -107,7 +109,7 @@ const createStore = (reducer, state) => {
 
     const applyMiddleware = (m) => {
         throwIf(
-            typeof listener !== 'function',
+            typeof m !== 'function',
             `Expected the listener to be a function.`
         )
 
@@ -127,37 +129,82 @@ const createStore = (reducer, state) => {
         return removeMiddleware
     }
 
+    const applyCallback = (c) => {
+        throwIf(
+            typeof c !== 'function',
+            `Expected the listener to be a function.`
+        )
+
+        throwIf(
+            isDispatching,
+            'You may not call removeMiddleware() while the reducer is executing. ' +
+            'The reducer has already received the state as an argument. ' +
+            'Pass it down from the top reducer instead of reading it from the store.'
+        )
+
+        callbacks.push(c)
+
+        const removeCallback = () => {
+            callbacks.splice(callbacks.indexOf(c), 1)
+        }
+
+        return removeCallback
+    }
+
     return {
         dispatch,
         subscribe,
         applyMiddleware,
+        applyCallback,
         getState
     }
 }
 
 const observeObject = (object) => {
     const createProxy = (prefix, object) => {
-        return new Proxy(object, {
-            set: (target, property, value) => {
-                if (value instanceof Mutation) {
-                    target[property] = value.reduce()
-                } else {
-                    throw new Error(
-                        `You may not be able to assign values ​​directly to state. ` +
-                        `Please return a new state for reducing.`
-                    )
-                }
+        const arrayProxyHandler = {
+            get: (target, property) => {
+                const value = target[property];
 
-                return true
+                if (isPlainObject(value)) {
+                    return createProxy(prefix + property + '.', value)
+                } else if (Array.isArray(value)) {
+                    return new Proxy(value, arrayProxyHandler);
+                } else {
+                    return value
+                }
+            },
+            set: (target, property) => {
+                if (property === '__proto__') return true
+
+                throw new Error(
+                    `You may not be able to assign values ​​directly to state. ` +
+                    `Please return a new state for reducing.`
+                )
+            }
+        }
+
+        const objectProxyHandler = {
+            set: () => {
+                throw new Error(
+                    `You may not be able to assign values ​​directly to state. ` +
+                    `Please return a new state for reducing.`
+                )
             },
             get: (target, property) => {
                 const value = target[property];
 
-                return isPlainObject(value)
-                    ? createProxy(prefix + property + '.', value)
-                    : value
+                if (isPlainObject(value)) {
+                    return createProxy(prefix + property + '.', value)
+                } else if (Array.isArray(value)) {
+                    return new Proxy(value, arrayProxyHandler);
+                } else {
+                    return value
+                }
             }
-        });
+        }
+
+        return new Proxy(object, objectProxyHandler);
     }
 
     return createProxy('', object);

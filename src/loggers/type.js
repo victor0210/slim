@@ -1,4 +1,4 @@
-export const isPlainObject = (obj: any) => {
+export const isPlainObject = (obj) => {
     if (typeof obj !== 'object' || obj === null) return false
 
     let proto = obj
@@ -9,6 +9,6 @@ export const isPlainObject = (obj: any) => {
     return Object.getPrototypeOf(obj) === proto
 }
 
-export const isPlainString = (obj: any) => {
+export const isPlainString = (obj) => {
     return typeof obj === 'string'
 }
