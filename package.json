@@ -12,8 +12,7 @@
     "transform": {
       "\\.(ts|tsx)$": "<rootDir>/node_modules/ts-jest/preprocessor.js",
       "^.+\\.js?$": "babel-jest"
-    },
-    "testRegex": "/test/.*-test\\.ts$"
+    }
   },
   "scripts": {
     "dev": "rollup -c ./build/dev.js -w",

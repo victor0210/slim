@@ -30,11 +30,8 @@ const todoReducers = {
     }
 }
 
-const filterReducers = {}
-
 const reducers = {
-    ...todoReducers,
-    ...filterReducers
+    ...todoReducers
 }
 
 export default reducers
