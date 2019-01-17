@@ -17,7 +17,7 @@
   "scripts": {
     "dev": "rollup -c ./build/dev.js -w",
     "build": "rollup -c ./build/prod.js",
-    "eg:vue": "node ./example/server.js",
+    "demo": "node ./example/server.js",
     "test": "jest --notify --coverage"
   },
   "repository": {
