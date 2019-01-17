@@ -15,7 +15,7 @@ export default {
                 }
             })
         } else {
-            // override init and inject vuex init procedure
+            // override init and inject vslim init procedure
             // for 1.x backwards compatibility.
             const _init = Vue.prototype._init
             Vue.prototype._init = function (options = {}) {
@@ -25,10 +25,6 @@ export default {
                 _init.call(this, options)
             }
         }
-
-        /**
-         * Vuex init hook, injected into each instances init hooks list.
-         */
 
         function slimInit() {
             const options = this.$options

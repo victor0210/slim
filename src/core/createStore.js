@@ -10,10 +10,11 @@ const createStore = (reducer, state) => {
     let currentReducer = passReducer(reducer)
     let middlewares = []
     let callbacks = []
-    let updateQueue = []
     let isDispatching = null
 
     const dispatch = (action, ...args) => {
+        let argsCopy = cloneObj(args)
+
         throwIf(
             !isPlainString(action),
             `Actions must be plain string. ` +
@@ -27,7 +28,6 @@ const createStore = (reducer, state) => {
 
         try {
             isDispatching = action
-            updateQueue = []
 
             let draft = cloneObj(currentState)
 
@@ -36,10 +36,10 @@ const createStore = (reducer, state) => {
                 `You may not has not registered [${action}] in store`
             )
 
-            walkMiddleware(middlewares, draft, ...args)
+            walkMiddleware(middlewares, draft, ...argsCopy)
 
             if (currentReducer[action]) {
-                let newState = currentReducer[action](draft, ...args)
+                let newState = currentReducer[action](draft, ...argsCopy)
 
                 warnIf(
                     newState === undefined,
@@ -50,7 +50,7 @@ const createStore = (reducer, state) => {
                 currentState = observeObject(newState || draft)
             }
 
-            walkMiddleware(callbacks, currentState, ...args)
+            walkMiddleware(callbacks, draft, ...argsCopy)
         } finally {
             isDispatching = null
         }
