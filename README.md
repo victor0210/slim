@@ -18,7 +18,9 @@ Slim is a Centralized State Manager with ES6 Proxy, which is **state-non-editabl
 * Draft
 
 ### Reducer
-Reducer is state controller look like a simple event proxy. You can register reducer esay with **ACTION\_TYPE** : **REDUCER\_FUNCTION**.
+Reducer is state controller look like a simple event proxy. You can register reducer esay with
+
+**ACTION\_TYPE** : **REDUCER\_FUNCTION**.
 
 ```
 const reducers = {
