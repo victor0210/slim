@@ -1,12 +1,20 @@
 import {isPlainObject, isPlainString} from "../loggers/type";
 import {throwIf, warnIf} from "../loggers/throwIf";
 
-const createStore = (reducer, state) => {
+const isProd = process.env.NODE_ENV === 'production'
+
+/**
+ * @param reducer
+ * @param state
+ * @param mode                  { 'strict' | 'standard' | 'loose' }
+ * @param ignoreDefaultConfig
+ * */
+const createStore = (reducer, state, mode = 'strict', ignoreDefaultConfig = false) => {
     if (!isPlainObject(state)) {
         throw new TypeError(`type of state expect to [Object] but got [${typeof state}]`)
     }
 
-    let currentState = observeObject(state)
+    let currentState = observeObject(state, mode, ignoreDefaultConfig)
     let currentReducer = passReducer(reducer)
     let middlewares = []
     let callbacks = []
@@ -47,7 +55,7 @@ const createStore = (reducer, state) => {
                     `which is more conducive to our observation of state changes in complex situations.`
                 )
 
-                currentState = observeObject(newState || draft)
+                currentState = observeObject(newState || draft, mode, ignoreDefaultConfig)
             }
 
             walkMiddleware(callbacks, draft, ...argsCopy)
@@ -163,7 +171,9 @@ const createStore = (reducer, state) => {
     }
 }
 
-const observeObject = (object) => {
+const observeObject = (object, mode, ignoreDefaultConfig) => {
+    if ((isProd && !ignoreDefaultConfig) || mode === 'loose') return object
+
     const createProxy = (prefix, object) => {
         let objectProxyHandler = {
             set: () => {
@@ -200,7 +210,40 @@ const observeObject = (object) => {
         return new Proxy(object, objectProxyHandler);
     }
 
-    return createProxy('', object);
+    const createObserve = (obj) => {
+        for (let key in obj) {
+            let val = obj[key]
+
+            if (isPlainObject(val)) createObserve(val)
+
+            Object.defineProperty(obj, key, {
+                set: () => {
+                    throw new Error(
+                        `You may not be able to assign values ​​directly to state. ` +
+                        `Please return a new state for reducing or edit with draft in reducer.`
+                    )
+                },
+                get: () => {
+                    return val
+                }
+            })
+        }
+
+        return obj
+    }
+
+    // Proxy not support IE
+    // Object.defineProperty not supported below IE9
+    // Bundle would all support because there are no strict for production
+    // Ignoring config of production with the forth param of method "createStore"
+    if (isProd && !ignoreDefaultConfig) return object
+
+    switch (mode) {
+        case 'strict':
+            return createProxy('', object)
+        case 'standard':
+            return createObserve(object)
+    }
 }
 
 const passReducer = (reducer) => {
