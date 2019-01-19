@@ -67,7 +67,10 @@
         }
     }
 
-    const store = createStore(reducers, state)
+    const store = createStore({
+      reducers,
+      state
+    })
 </script>
 <script>
     function decrement() {

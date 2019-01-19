@@ -138,6 +138,7 @@ const createStore = (conf) => {
             'Pass it down from the top reducer instead of reading it from the store.'
         )
 
+        if (!plugins) plugins = []
         plugins.push(p)
     }
 
