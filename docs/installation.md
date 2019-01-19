@@ -26,7 +26,10 @@ yarn add slim
 import {createStore} from 'slim'
 const state = {...}
 const reducers = {...}
-const store = createStore(reducers, state)
+const store = createStore({
+    reducers,
+    state
+})
 ```
 
 ## 构建源代码

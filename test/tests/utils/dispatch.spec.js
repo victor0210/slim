@@ -32,33 +32,33 @@ const store = createStore({
     state
 })
 
-const changeNumDirectlyOff = store.subscribe('changeNumDirectly', (draft, num) => {
+store.subscribe('changeNumDirectly', (draft, num) => {
     draft.num = num
 })
 
-const changeNumReducerOff = store.subscribe('changeNumReducer', (draft, num) => {
+store.subscribe('changeNumReducer', (draft, num) => {
     return {
         ...draft,
         num
     }
 })
 
-const changeStrDirectlyOff = store.subscribe('changeStrDirectly', (draft, str) => {
+store.subscribe('changeStrDirectly', (draft, str) => {
     draft.str = str
 })
 
-const changeStrReducerOff = store.subscribe('changeStrReducer', (draft, str) => {
+store.subscribe('changeStrReducer', (draft, str) => {
     return {
         ...draft,
         str
     }
 })
 
-const changeObjDirectlyOff = store.subscribe('changeObjDirectly', (draft, v) => {
+store.subscribe('changeObjDirectly', (draft, v) => {
     draft.obj.num = v
 })
 
-const changeObjReducerOff = store.subscribe('changeObjReducer', (draft, v) => {
+store.subscribe('changeObjReducer', (draft, v) => {
     return {
         ...draft,
         obj: {
@@ -68,13 +68,22 @@ const changeObjReducerOff = store.subscribe('changeObjReducer', (draft, v) => {
     }
 })
 
-const changeArrDirectlyOff = store.subscribe('changeArrDirectly', (draft, v) => {
+store.subscribe('changeArrDirectly', (draft, v) => {
     draft.arrNum[0] = v
 })
 
-const changeArrProOff = store.subscribe('changeArrPro', (draft, v) => {
+store.subscribe('changeArrPro', (draft, v) => {
     draft.arrNum.push(v)
 })
+
+const changeNumDirectlyOff = () => {store.unsubscribe('changeNumDirectly')}
+const changeNumReducerOff = () => {store.unsubscribe('changeNumReducer')}
+const changeStrDirectlyOff = () => {store.unsubscribe('changeStrDirectly')}
+const changeStrReducerOff = () => {store.unsubscribe('changeStrReducer')}
+const changeObjDirectlyOff = () => {store.unsubscribe('changeObjDirectly')}
+const changeObjReducerOff = () => {store.unsubscribe('changeObjReducer')}
+const changeArrDirectlyOff = () => {store.unsubscribe('changeArrDirectly')}
+const changeArrProOff = () => {store.unsubscribe('changeArrPro')}
 
 // ------------------------   Num   ---------------------------
 // TODO: test warn

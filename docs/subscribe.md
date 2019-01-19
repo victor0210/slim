@@ -21,8 +21,9 @@ const counters = {
 }
 
 const store = createStore({
-    ...counters
-}, slim)
+    reducers: counters,
+    state
+})
 
 store.dispatch('decrement') // nothing action
 

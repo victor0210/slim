@@ -4,7 +4,7 @@ heroImage: /logo.png
 heroText: Slim
 tagline: 基于Proxy的状态管理框架.
 actionText: 快速上手 →
-actionLink: /guide/
+actionLink: /intro
 features:
 - title: 状态只读
   details: 状态只能在Reducer里面被修改，省去了状态变化不可控的烦恼。
@@ -39,7 +39,10 @@ const reducers = {
 }
 
 // create store
-const store = createStore(reducers, state)
+const store = createStore({
+    reducers,
+    state
+})
 
 // emit increment reducer
 store.dispatch('increment')

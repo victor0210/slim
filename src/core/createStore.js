@@ -76,10 +76,10 @@ const createStore = (conf) => {
         return action
     }
 
-    const subscribe = (action, listener) => {
+    const subscribe = (action, reducer) => {
         throwIf(
-            typeof listener !== 'function',
-            `Expected the listener to be a function.`
+            typeof reducer !== 'function',
+            `Expected the reducer to be a function.`
         )
 
         throwIf(
@@ -95,27 +95,24 @@ const createStore = (conf) => {
             `It allows only the new one will be retained when you repeat the subscription.`
         )
 
-        currentReducer[action] = listener
-
-        const unsubscribe = () => {
-            throwIf(
-                isDispatching === action,
-                `You may not unsubscribe from a store listener while the reducer is executing. `
-            )
-
-            const hasAction = currentReducer.hasOwnProperty(action)
-
-            warnIf(
-                !hasAction,
-                `Action [${action}] not exist.`
-            )
-
-            if (hasAction) delete currentReducer[action]
-        }
-
-        return unsubscribe
+        currentReducer[action] = reducer
     }
 
+    const unsubscribe = (action) => {
+        throwIf(
+          isDispatching === action,
+          `You may not unsubscribe from a store reducer while the reducer is executing. `
+        )
+
+        const hasAction = currentReducer.hasOwnProperty(action)
+
+        warnIf(
+          !hasAction,
+          `Action [${action}] not exist in reducers.`
+        )
+
+        if (hasAction) delete currentReducer[action]
+    }
 
     const getState = () => {
         throwIf(
@@ -145,6 +142,7 @@ const createStore = (conf) => {
     return {
         dispatch,
         subscribe,
+        unsubscribe,
         getState,
         applyPlugin
     }
