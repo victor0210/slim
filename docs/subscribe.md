@@ -1,7 +1,7 @@
 # Subscribe/UnSubscribe
 
 ## 简介
-subscribe是在store的非创建阶段注册reducer的方法，对应unSubscribe方法取消订阅
+**subscribe**是在**Store**的非创建阶段注册**Reducer**的方法，对应**unsubscribe**方法取消订阅
 
 ## 使用subscribe/unSubscribe
 
