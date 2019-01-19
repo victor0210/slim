@@ -28,7 +28,7 @@ const reducers = {
 }
 ```
 
-you should and you must update state inside it. Update directly or return a new State are both allowed and the choice is yours. 
+you should and you must update state inside it. Update directly or return a new State are both allowed and the choice is yours.
 
 ### State
 State is a Single Source Reponsitory for all state in Frontend, Backend, Local and so on, which allows all kinds of data what you wanna to control. update state only allowed by **Reducer**
@@ -62,7 +62,7 @@ Slim is very elastic, it given three modes to control way of updating state in r
 ```
 (draft) => {
 	...
-	
+
 	return {
 		...draft,
 		name: 'new name'
@@ -75,7 +75,7 @@ Slim is very elastic, it given three modes to control way of updating state in r
 ```
 (draft) => {
 	draft.name = "new name"
-	
+
 	// return value would be no effect
 }
 ```
@@ -97,7 +97,7 @@ here is other state managers integrated by Slim:
 
 ## Deficiencies
 
-Can't find index of object/array in array. 
+Can't find index of object/array in array with using "strict" mode.
 
 ```
 const state = {
