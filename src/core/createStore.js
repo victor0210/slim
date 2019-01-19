@@ -4,20 +4,30 @@ import {throwIf, warnIf} from "../loggers/throwIf";
 const isProd = process.env.NODE_ENV === 'production'
 
 /**
- * @param reducer
- * @param state
- * @param mode                  { 'strict' | 'standard' | 'loose' }
- * @param ignoreDefaultConfig
+ * @param conf: {
+ *   reducers,
+ *   state,
+ *   mode,
+ *   plugin,
+ *   ignoreDefaultConfig
+ * }
  * */
-const createStore = (reducer, state, mode = 'strict', ignoreDefaultConfig = false) => {
+const createStore = (conf) => {
+    let {
+        reducers,
+        state,
+        plugin,
+        ignoreDefaultConfig,
+        mode = 'strict'
+    } = conf
+
     if (!isPlainObject(state)) {
         throw new TypeError(`type of state expect to [Object] but got [${typeof state}]`)
     }
 
     let currentState = observeObject(state, mode, ignoreDefaultConfig)
-    let currentReducer = passReducer(reducer)
-    let middlewares = []
-    let callbacks = []
+    let currentReducer = passReducer(reducers)
+    let plugins = passPlugin(plugin)
     let isDispatching = null
 
     const dispatch = (action, ...args) => {
@@ -40,11 +50,11 @@ const createStore = (reducer, state, mode = 'strict', ignoreDefaultConfig = fals
             let draft = cloneObj(currentState)
 
             warnIf(
-                !reducer[action],
+                !reducers[action],
                 `You may not has not registered [${action}] in store`
             )
 
-            walkMiddleware(middlewares, draft, ...argsCopy)
+            walkPlugins('before', plugins, currentState, draft, action)
 
             if (currentReducer[action]) {
                 let newState = currentReducer[action](draft, ...argsCopy)
@@ -58,7 +68,7 @@ const createStore = (reducer, state, mode = 'strict', ignoreDefaultConfig = fals
                 currentState = observeObject(newState || draft, mode, ignoreDefaultConfig)
             }
 
-            walkMiddleware(callbacks, draft, ...argsCopy)
+            walkPlugins('after', plugins, currentState, draft, action)
         } finally {
             isDispatching = null
         }
@@ -118,11 +128,8 @@ const createStore = (reducer, state, mode = 'strict', ignoreDefaultConfig = fals
         return currentState
     }
 
-    const applyMiddleware = (m) => {
-        throwIf(
-            typeof m !== 'function',
-            `Expected the listener to be a function.`
-        )
+    const applyPlugin = (p) => {
+        validatePlugin(p)
 
         throwIf(
             isDispatching,
@@ -131,43 +138,14 @@ const createStore = (reducer, state, mode = 'strict', ignoreDefaultConfig = fals
             'Pass it down from the top reducer instead of reading it from the store.'
         )
 
-        middlewares.push(m)
-
-        const removeMiddleware = () => {
-            middlewares.splice(middlewares.indexOf(m), 1)
-        }
-
-        return removeMiddleware
-    }
-
-    const applyCallback = (c) => {
-        throwIf(
-            typeof c !== 'function',
-            `Expected the listener to be a function.`
-        )
-
-        throwIf(
-            isDispatching,
-            'You may not call removeMiddleware() while the reducer is executing. ' +
-            'The reducer has already received the state as an argument. ' +
-            'Pass it down from the top reducer instead of reading it from the store.'
-        )
-
-        callbacks.push(c)
-
-        const removeCallback = () => {
-            callbacks.splice(callbacks.indexOf(c), 1)
-        }
-
-        return removeCallback
+        plugins.push(p)
     }
 
     return {
         dispatch,
         subscribe,
-        applyMiddleware,
-        applyCallback,
-        getState
+        getState,
+        applyPlugin
     }
 }
 
@@ -246,24 +224,49 @@ const observeObject = (object, mode, ignoreDefaultConfig) => {
     }
 }
 
-const passReducer = (reducer) => {
-    const keys = Object.keys(reducer)
+const passReducer = (reducers) => {
+    const keys = Object.keys(reducers)
 
     keys.forEach(key => {
-        let listener = reducer[key]
+        let reducer = reducers[key]
 
         throwIf(
-            typeof listener !== 'function',
-            `Reducer for key [${key}] must be type of [Function] but got [${typeof listener}]`
+            typeof reducer !== 'function',
+            `Reducer for key [${key}] must be type of [Function] but got [${typeof reducer}]`
         )
     })
 
-    return reducer
+    return reducers
 }
 
-const walkMiddleware = (middlewares, currentState, ...args) => {
-    middlewares.forEach(m => {
-        m(currentState, ...args)
+const passPlugin = (plugins) => {
+    if (!plugins) return
+
+    let ps = Array.isArray(plugins) ? plugins : [plugins]
+
+    ps.forEach(p => {
+        validatePlugin(p)
+    })
+
+    return ps
+}
+
+const validatePlugin = (p) => {
+    const {before, after} = p
+    before && throwIf(
+      typeof before !== 'function',
+      `Hook [before] of Plugin must be type of [Function] but got [${typeof before}]`
+    )
+
+    after && throwIf(
+      typeof after !== 'function',
+      `Hook [before] of Plugin must be type of [Function] but got [${typeof after}]`
+    )
+}
+
+const walkPlugins = (hook, plugins, currentState, draft, action) => {
+    plugins && plugins.forEach(p => {
+        p[hook] && p[hook](currentState, draft, action)
     })
 }
 
