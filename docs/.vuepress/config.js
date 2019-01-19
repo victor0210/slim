@@ -33,7 +33,8 @@ module.exports = {
                     ['/subscribe', 'Subscribe'],
                     ['/plugin', 'Plugin']
                 ]
-            }
+            },
+            ['/slimApi', 'API']
         ]
     }
 }

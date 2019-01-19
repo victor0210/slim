@@ -7,6 +7,7 @@ import {throwIf, warnIf} from "../loggers/throwIf";
  *   state,
  *   mode,
  *   plugin,
+ *   getters,
  *   ignoreDefaultConfig
  * }
  * */
