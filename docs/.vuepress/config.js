@@ -15,9 +15,25 @@ module.exports = {
             {text: 'github', link: 'https://github.com/victor0210/slim'}
         ],
         sidebar: [
-            ['/installation.html', '安装'],
-            ['/intro.html', '介绍'],
-            ['/guide/', '快速开始']
+            {
+                title: '快速开始',
+                collapsable: false,
+                children: [
+                    ['/intro', '介绍'],
+                    ['/installation', '安装']
+                ]
+            },
+            {
+                title: '核心模块',
+                collapsable: false,
+                children: [
+                    ['/state', 'State'],
+                    ['/draft', 'Draft'],
+                    ['/reducer', 'Reducer'],
+                    ['/subscribe', 'Subscribe'],
+                    ['/plugin', 'Plugin']
+                ]
+            }
         ]
     }
 }
