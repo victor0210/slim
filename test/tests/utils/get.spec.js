@@ -30,7 +30,10 @@ const stateBase = {
 }
 
 describe('mode strict should all visitable', () => {
-    const store = createStore({}, stateBase)
+    const store = createStore({
+        reducers: {},
+        state: stateBase
+    })
 
     const state = store.getState()
 
@@ -54,7 +57,11 @@ describe('mode strict should all visitable', () => {
 })
 
 describe('mode strict should all visitable', () => {
-    const store = createStore({}, stateBase, "standard")
+    const store = createStore({
+        reducers: {},
+        state: stateBase,
+        mode: "standard"
+    })
 
     const state = store.getState()
 
@@ -78,7 +85,11 @@ describe('mode strict should all visitable', () => {
 })
 
 describe('mode strict should all visitable', () => {
-    const store = createStore({}, stateBase, "loose")
+    const store = createStore({
+        reducers: {},
+        state: stateBase,
+        mode: "loose"
+    })
 
     const state = store.getState()
 

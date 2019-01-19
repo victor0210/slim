@@ -27,7 +27,10 @@ const state = {
     arrObj: arrObj
 }
 
-const store = createStore(reducers, state)
+const store = createStore({
+    reducers,
+    state
+})
 
 const changeNumDirectlyOff = store.subscribe('changeNumDirectly', (draft, num) => {
     draft.num = num

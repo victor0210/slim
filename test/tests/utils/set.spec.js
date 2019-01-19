@@ -46,13 +46,20 @@ const handleThrowNone = (assertion, fn) => {
 
 it(`parameters with store creating should be a plainObject`, () => {
     const validateFn = () => {
-        createStore(1, 1)
+        createStore({
+            reducers: 1,
+            state: 1
+        })
     }
     expect(validateFn).toThrowError(createErrorMsg)
 });
 
 describe('change state in array with some ways is allow', () => {
-    const store = createStore({}, getDefaultState(), "standard")
+    const store = createStore({
+        reducers: {},
+        state: getDefaultState(),
+        mode: "standard"
+    })
 
     const state = store.getState()
 
@@ -70,7 +77,10 @@ describe('change state in array with some ways is allow', () => {
 })
 
 describe('change state is not allow with strict', () => {
-    const store = createStore({}, getDefaultState())
+    const store = createStore({
+        reducers: {},
+        state: getDefaultState()
+    })
 
     const state = store.getState()
 
@@ -87,7 +97,11 @@ describe('change state is not allow with strict', () => {
 })
 
 describe('change state is all allow in mode loose', () => {
-    const store = createStore({}, getDefaultState(), "loose")
+    const store = createStore({
+        reducers: {},
+        state: getDefaultState(),
+        mode: "loose"
+    })
 
     const state = store.getState()
 

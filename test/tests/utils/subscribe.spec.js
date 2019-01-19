@@ -71,7 +71,10 @@ const state = {
     arrObj: arrObj
 }
 
-const store = createStore(reducers, state)
+const store = createStore({
+    reducers,
+    state
+})
 
 // ------------------------   Num   ---------------------------
 // TODO: test warn
