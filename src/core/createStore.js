@@ -1,8 +1,6 @@
 import {isPlainObject, isPlainString} from "../loggers/type";
 import {throwIf, warnIf} from "../loggers/throwIf";
 
-const isProd = process.env.NODE_ENV === 'production'
-
 /**
  * @param conf: {
  *   reducers,
@@ -14,9 +12,10 @@ const isProd = process.env.NODE_ENV === 'production'
  * */
 const createStore = (conf) => {
     let {
-        reducers,
-        state,
+        reducers = {},
+        state = {},
         plugin,
+        getters = {},
         ignoreDefaultConfig,
         mode = 'strict'
     } = conf
@@ -29,6 +28,8 @@ const createStore = (conf) => {
     let currentReducer = passReducer(reducers)
     let plugins = passPlugin(plugin)
     let isDispatching = null
+
+    getters = passGetter(getters)
 
     const dispatch = (action, ...args) => {
         let argsCopy = cloneObj(args)
@@ -114,7 +115,7 @@ const createStore = (conf) => {
         if (hasAction) delete currentReducer[action]
     }
 
-    const getState = () => {
+    const getState = (getterKey) => {
         throwIf(
             isDispatching,
             'You may not call store.getState() while the reducer is executing. ' +
@@ -122,7 +123,15 @@ const createStore = (conf) => {
             'Pass it down from the top reducer instead of reading it from the store.'
         )
 
-        return currentState
+        warnIf(
+          getterKey && !getters.hasOwnProperty(getterKey),
+          `Getter of key [${getterKey}] is not exist. ` +
+          `Please register it with when createStore.`
+        )
+
+        return getterKey
+          ? getterKey[getterKey](currentState)
+          : currentState
     }
 
     const applyPlugin = (p) => {
@@ -135,8 +144,7 @@ const createStore = (conf) => {
             'Pass it down from the top reducer instead of reading it from the store.'
         )
 
-        if (!plugins) plugins = []
-        plugins.push(p)
+        !plugins ? plugins = [p] : plugins.push(p)
     }
 
     return {
@@ -149,8 +157,6 @@ const createStore = (conf) => {
 }
 
 const observeObject = (object, mode, ignoreDefaultConfig) => {
-    if ((isProd && !ignoreDefaultConfig) || mode === 'loose') return object
-
     const createProxy = (prefix, object) => {
         let objectProxyHandler = {
             set: () => {
@@ -209,17 +215,13 @@ const observeObject = (object, mode, ignoreDefaultConfig) => {
         return obj
     }
 
-    // Proxy not support IE
-    // Object.defineProperty not supported below IE9
-    // Bundle would all support because there are no strict for production
-    // Ignoring config of production with the forth param of method "createStore"
-    if (isProd && !ignoreDefaultConfig) return object
-
     switch (mode) {
         case 'strict':
             return createProxy('', object)
         case 'standard':
             return createObserve(object)
+        case 'loose':
+            return object
     }
 }
 
@@ -236,6 +238,21 @@ const passReducer = (reducers) => {
     })
 
     return reducers
+}
+
+const passGetter = (getters) => {
+    const keys = Object.keys(getters)
+
+    keys.forEach(key => {
+        let getter = getters[key]
+
+        throwIf(
+          typeof getter !== 'function',
+          `Getter for key [${key}] must be type of [Function] but got [${typeof getter}]`
+        )
+    })
+
+    return getters
 }
 
 const passPlugin = (plugins) => {

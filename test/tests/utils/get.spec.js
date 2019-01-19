@@ -32,7 +32,10 @@ const stateBase = {
 describe('mode strict should all visitable', () => {
     const store = createStore({
         reducers: {},
-        state: stateBase
+        state: stateBase,
+        getters: {
+            objNum: state => state.obj.objInObj.num
+        }
     })
 
     const state = store.getState()
@@ -48,6 +51,8 @@ describe('mode strict should all visitable', () => {
         });
     }
 
+    toBe('num should be 3', store.getState('objNum'), 3)
+    toBe('undefined of getter without key', store.getState('nokey'), undefined)
     toBe('num should be 1', state.num, 1)
     toBe('str should be \"str in obj\"', state.str, str)
     toEqual('obj should be \"obj\"', state.obj, obj)
