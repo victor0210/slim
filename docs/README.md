@@ -19,6 +19,13 @@ footer: MIT Licensed | Copyright © 2018-present Victor
 
 ### Installation
 
+#### Cdn
+```html
+<script src="https://unpkg.com/slim-store@1.0.0/slim.min.js"></script>
+```
+
+#### Npm
+
 ```bash
 npm install slim-store
 ```
@@ -52,3 +59,7 @@ store.dispatch('increment')
 console.log(store.getState().count)
 // output: 1
 ```
+
+## Extensions
+
+* [VSlim](/vslim.html): Slim-based state management framework in Vue.

@@ -49,7 +49,8 @@ module.exports = {
                         ]
                     },
                     ['/slimApi', 'API'],
-                    ['/controlLevel', 'Mode']
+                    ['/controlLevel', 'Mode'],
+                    ['/vslim', 'VSlim']
                 ]
             },
             '/zh/': {
@@ -84,7 +85,8 @@ module.exports = {
                         ]
                     },
                     ['/zh/slimApi.html', 'API'],
-                    ['/zh/controlLevel.html', '限制级别']
+                    ['/zh/controlLevel.html', '限制级别'],
+                    ['/zh/vslim', 'VSlim']
                 ]
             }
         }
