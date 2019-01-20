@@ -1,10 +1,9 @@
 # Slim
 
 [![npm version](https://img.shields.io/npm/v/slim-store.svg)](https://www.npmjs.org/package/slim-store)
-[![Github file size](https://img.shields.io/github/size/victor2010/slim/dist/release/slim.min.js.svg)](https://github.com/victor2010/slim/blob/master/dist/release/slim/slim.min.js)
+[![Github file size](https://github.com/victor0210/slim/blob/master/dist/release/slim/slim.min.js.svg)](https://github.com/victor0210/slim/blob/master/dist/release/slim/slim.min.js)
 [![install size](https://packagephobia.now.sh/badge?p=slim-store)](https://packagephobia.now.sh/result?p=slim-store)
 [![build status](https://travis-ci.org/victor2010/slim.svg?branch=master)](https://travis-ci.org/victor2010/slim)
-[![Open Source Helpers](https://www.codetriage.com/vicotr2010/slim/badges/users.svg)](https://www.codetriage.com/victor2010/slim)
 
 Centralized State Management With Proxy, State-Non-Editable.
 
