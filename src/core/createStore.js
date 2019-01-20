@@ -1,14 +1,15 @@
 import {isPlainObject, isPlainString} from "../loggers/type";
 import {throwIf, warnIf} from "../loggers/throwIf";
 
+let isDispatching = null
+
 /**
  * @param conf: {
  *   reducers,
  *   state,
  *   mode,
  *   plugin,
- *   getters,
- *   ignoreDefaultConfig
+ *   getters
  * }
  * */
 const createStore = (conf) => {
@@ -17,7 +18,6 @@ const createStore = (conf) => {
         state = {},
         plugin,
         getters = {},
-        ignoreDefaultConfig,
         mode = 'strict'
     } = conf
 
@@ -25,16 +25,13 @@ const createStore = (conf) => {
         throw new TypeError(`type of state expect to [Object] but got [${typeof state}]`)
     }
 
-    let currentState = observeObject(state, mode, ignoreDefaultConfig)
+    let currentState = observeObject(state, mode)
     let currentReducer = passReducer(reducers)
     let plugins = passPlugin(plugin)
-    let isDispatching = null
 
     getters = passGetter(getters)
 
     const dispatch = (action, ...args) => {
-        let argsCopy = cloneObj(args)
-
         throwIf(
             !isPlainString(action),
             `Actions must be plain string. ` +
@@ -49,17 +46,15 @@ const createStore = (conf) => {
         try {
             isDispatching = action
 
-            let draft = cloneObj(currentState)
-
             warnIf(
                 !reducers[action],
                 `You may not has not registered [${action}] in store`
             )
 
-            walkPlugins('before', plugins, currentState, draft, action)
+            walkPlugins('before', plugins, currentState, action)
 
             if (currentReducer[action]) {
-                let newState = currentReducer[action](draft, ...argsCopy)
+                let newState = currentReducer[action](currentState, ...args)
 
                 warnIf(
                     newState === undefined,
@@ -67,10 +62,10 @@ const createStore = (conf) => {
                     `which is more conducive to our observation of state changes in complex situations.`
                 )
 
-                currentState = observeObject(newState || draft, mode, ignoreDefaultConfig)
+                currentState = observeObject(newState || currentState, mode)
             }
 
-            walkPlugins('after', plugins, currentState, draft, action)
+            walkPlugins('after', plugins, currentState, action)
         } finally {
             isDispatching = null
         }
@@ -131,7 +126,9 @@ const createStore = (conf) => {
         )
 
         return getterKey
-          ? getterKey[getterKey](currentState)
+          ? getters[getterKey]
+            ? getters[getterKey](currentState)
+            : undefined
           : currentState
     }
 
@@ -157,41 +154,50 @@ const createStore = (conf) => {
     }
 }
 
-const observeObject = (object, mode, ignoreDefaultConfig) => {
-    const createProxy = (prefix, object) => {
+const observeObject = (object, mode) => {
+    const createProxy = (object, observeArray) => {
         let objectProxyHandler = {
-            set: () => {
-                throw new Error(
+            set: (target, property, value) => {
+                throwIf(
+                    !isDispatching,
                     `You may not be able to assign values ​​directly to state. ` +
-                    `Please return a new state for reducing or edit with draft in reducer.`
+                    `Please return a new state for reducing or edit with state in reducer.`
                 )
+
+                return Reflect.set(target, property, value)
             },
             get: (target, property) => {
-                const value = target[property];
-
-                if (isPlainObject(value)) {
-                    return createProxy(prefix + property + '.', value)
-                } else if (Array.isArray(value)) {
-                    return new Proxy(value, arrayProxyHandler);
-                } else {
-                    return value
-                }
+                return Reflect.get(target, property)
             }
         }
 
         let arrayProxyHandler = {
             ...objectProxyHandler,
-            set: (target, property) => {
-                if (property === '__proto__') return true
+            set: (target, property, value) => {
+                if (!isDispatching) {
+                    if (property === '__proto__')  return Reflect.set(target, property, value)
 
-                throw new Error(
-                    `You may not be able to assign values ​​directly to state. ` +
-                    `Please return a new state for reducing or edit with draft in reducer.`
-                )
+                    throw new Error(
+                        `You may not be able to assign values ​​directly to state. ` +
+                        `Please return a new state for reducing or edit with state in reducer.`
+                    )
+                } else {
+                    return Reflect.set(target, property, value)
+                }
             }
         }
 
-        return new Proxy(object, objectProxyHandler);
+        for (let key in object) {
+            let val = object[key]
+
+            if (isPlainObject(val)) {
+                object[key] = createProxy(val)
+            } else if (Array.isArray(val)) {
+                object[key] = createProxy(val, true)
+            }
+        }
+
+        return new Proxy(object, observeArray ? arrayProxyHandler : objectProxyHandler)
     }
 
     const createObserve = (obj) => {
@@ -201,11 +207,14 @@ const observeObject = (object, mode, ignoreDefaultConfig) => {
             if (isPlainObject(val)) createObserve(val)
 
             Object.defineProperty(obj, key, {
-                set: () => {
-                    throw new Error(
+                set: (val) => {
+                    throwIf(
+                        !isDispatching,
                         `You may not be able to assign values ​​directly to state. ` +
-                        `Please return a new state for reducing or edit with draft in reducer.`
+                        `Please return a new state for reducing or edit with state in reducer.`
                     )
+
+                    obj[key] = val
                 },
                 get: () => {
                     return val
@@ -218,7 +227,7 @@ const observeObject = (object, mode, ignoreDefaultConfig) => {
 
     switch (mode) {
         case 'strict':
-            return createProxy('', object)
+            return createProxy(object)
         case 'standard':
             return createObserve(object)
         case 'loose':
@@ -281,14 +290,10 @@ const validatePlugin = (p) => {
     )
 }
 
-const walkPlugins = (hook, plugins, currentState, draft, action) => {
+const walkPlugins = (hook, plugins, currentState, action) => {
     plugins && plugins.forEach(p => {
-        p[hook] && p[hook](currentState, draft, action)
+        p[hook] && p[hook](currentState, action)
     })
-}
-
-const cloneObj = (source) => {
-    return JSON.parse(JSON.stringify(source));
 }
 
 export default createStore

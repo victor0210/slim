@@ -32,48 +32,48 @@ const store = createStore({
     state
 })
 
-store.subscribe('changeNumDirectly', (draft, num) => {
-    draft.num = num
+store.subscribe('changeNumDirectly', (state, num) => {
+    state.num = num
 })
 
-store.subscribe('changeNumReducer', (draft, num) => {
+store.subscribe('changeNumReducer', (state, num) => {
     return {
-        ...draft,
+        ...state,
         num
     }
 })
 
-store.subscribe('changeStrDirectly', (draft, str) => {
-    draft.str = str
+store.subscribe('changeStrDirectly', (state, str) => {
+    state.str = str
 })
 
-store.subscribe('changeStrReducer', (draft, str) => {
+store.subscribe('changeStrReducer', (state, str) => {
     return {
-        ...draft,
+        ...state,
         str
     }
 })
 
-store.subscribe('changeObjDirectly', (draft, v) => {
-    draft.obj.num = v
+store.subscribe('changeObjDirectly', (state, v) => {
+    state.obj.num = v
 })
 
-store.subscribe('changeObjReducer', (draft, v) => {
+store.subscribe('changeObjReducer', (state, v) => {
     return {
-        ...draft,
+        ...state,
         obj: {
-            ...draft.obj,
+            ...state.obj,
             num: v
         }
     }
 })
 
-store.subscribe('changeArrDirectly', (draft, v) => {
-    draft.arrNum[0] = v
+store.subscribe('changeArrDirectly', (state, v) => {
+    state.arrNum[0] = v
 })
 
-store.subscribe('changeArrPro', (draft, v) => {
-    draft.arrNum.push(v)
+store.subscribe('changeArrPro', (state, v) => {
+    state.arrNum.push(v)
 })
 
 const changeNumDirectlyOff = () => {store.unsubscribe('changeNumDirectly')}

@@ -8,20 +8,20 @@ const state = {
 }
 
 const numPlugin = {
-    before (state, draft, action) {
-        if (action === 'incrementNum') draft.num += 1
+    before (state, action) {
+        if (action === 'incrementNum') state.num += 1
     },
-    after (state, draft, action) {
-        if (action === 'incrementNum') draft.num += 1
+    after (state, action) {
+        if (action === 'incrementNum') state.num += 1
     }
 }
 
 const countPlugin = {
-    before (state, draft, action) {
-        if (action === 'incrementCount') draft.count += 1
+    before (state, action) {
+        if (action === 'incrementCount') state.count += 1
     },
-    after (state, draft, action) {
-        if (action === 'incrementCount') draft.count += 1
+    after (state, action) {
+        if (action === 'incrementCount') state.count += 1
     }
 }
 
@@ -33,12 +33,12 @@ const store = createStore({
 
 store.applyPlugin(countPlugin)
 
-store.subscribe('incrementCount', (draft) => {
-    draft.count += 1
+store.subscribe('incrementCount', (state) => {
+    state.count += 1
 })
 
-store.subscribe('incrementNum', (draft) => {
-    draft.num += 1
+store.subscribe('incrementNum', (state) => {
+    state.num += 1
 })
 
 describe('run middleware', () => {

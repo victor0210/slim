@@ -29,7 +29,7 @@ const getDefaultState = () => {
     return JSON.parse(JSON.stringify(stateBase))
 }
 
-const setErrorMsg = 'You may not be able to assign values ​​directly to state. Please return a new state for reducing or edit with draft in reducer.'
+const setErrorMsg = 'You may not be able to assign values ​​directly to state. Please return a new state for reducing or edit with state in reducer.'
 const createErrorMsg = 'type of state expect to [Object] but got [number]'
 
 const handleThrow = (assertion, fn) => {

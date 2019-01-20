@@ -24,10 +24,10 @@ const store = createStore({
 
 ## 注册插件
 
-**Slim**中编写插件也是非常简单的，插件提供了两个api `before`和`after`，分别作用与reducer执行前后，接收三个参数`state`,`draft`和`action`，多个**Plugin**将按注册顺序执行
+**Slim**中编写插件也是非常简单的，插件提供了两个api `before`和`after`，分别作用与reducer执行前后，接收两个参数`state`和`action`，多个**Plugin**将按注册顺序执行
 
 :::warning 注意
-插件使用具有顺序性，并且结果相互影响，虽然插件中提供了draft，但是再确保draft操作无害之前请不要随意在**Plugin**中操作。总体来说，请在**Plugin**中读取state，将操作放到reducer中。
+插件使用具有顺序性，并且结果相互影响，但是再确保操作无害之前请不要随意在**Plugin**中操作**State**。总体来说，请在**Plugin**中读取**State**，将操作放到**Reducer**中。
 :::
 
 在**Store**创建时注册
@@ -39,19 +39,19 @@ const state = {
 }
 
 const counters = {
-    increment: (state, draft) => {
-        draft.count++
+    increment: (state) => {
+        state.count++
     }
 }
 
 const counterPlugin = {
-    before(state, draft, action) {
+    before(state, action) {
         if (action === 'increment') {
             console.log('before count change', state.count)
         }
     },
 
-    after(state, draft, action) {
+    after(state, action) {
         if (action === 'increment') {
             console.log('after count change', state.count)
         }

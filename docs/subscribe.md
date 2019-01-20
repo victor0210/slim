@@ -15,8 +15,8 @@ const state = {
 }
 
 const counters = {
-    increment: (state, draft) => {
-        draft.count++
+    increment: (state) => {
+        state.count++
     }
 }
 
@@ -27,13 +27,13 @@ const store = createStore({
 
 store.dispatch('decrement') // nothing action
 
-store.subscribe('decrement', (state, draft) => {
-    draft.count -= 1
+store.subscribe('decrement', (state) => {
+    state.count -= 1
 })
 
 store.dispatch('decrement') // emit decrement, count would be -1
 
-store.unSubscribe('decrement')  // remove "decrement" reducer
+store.unsubscribe('decrement')  // remove "decrement" reducer
 
 store.dispatch('decrement') // nothing action
 ```

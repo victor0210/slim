@@ -14,13 +14,13 @@ let state = {
 };
 
 const reducers = {
-    increment: (draft) => {
-        draft.count++;
+    increment: (state) => {
+        state.count++;
     },
-    decrement: (draft) => {
+    decrement: (state) => {
         return {
-            ...draft,
-            count: draft.count - 1
+            ...state,
+            count: state.count - 1
         }
     }
 }

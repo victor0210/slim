@@ -28,7 +28,6 @@ module.exports = {
                 collapsable: false,
                 children: [
                     ['/state', 'State'],
-                    ['/draft', 'Draft'],
                     ['/reducer', 'Reducer'],
                     ['/subscribe', 'Subscribe'],
                     ['/plugin', 'Plugin']

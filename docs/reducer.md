@@ -19,10 +19,10 @@ const state = {
 }
 
 const counters = {
-    increment: (state, draft) => {
+    increment: (state) => {
         // increment count
     },
-    decrement: (state, draft) => {
+    decrement: (state) => {
         // decrement count
     }
 }
@@ -39,39 +39,38 @@ store.dispatch('increment')
 
 ## 更新State
 
-那在**Reducer**中如何更新**State**？
-在这里我们需要先提前了解一下[State](/state.html)和[Draft](/draft.html)的基本概念
+那在**Reducer**中如何更新**State**？我们提供了两种可行的方式
 
 ### 返回一个全新的State对象
 
 这种方式更易于我们定位**State**的整体变化，也让整个**Reducer**变得可测试，但是在复杂的**State**结构下将会使整个方法变大，操作变得复杂。
 
 ```javascript
-increment: (state, draft) => {
+increment: (state) => {
     return {
-        ...draft,
-        count: draft.count + 1
+        ...state,
+        count: state.count + 1
     }
 }
 ```
 
-### 直接在Draft对象上更改
+### 直接在State对象上更改
 
 这种方法在大多数情况下会显得比较简洁和方便，只是对应的**Reducer**将不可测。
 
 ```javascript
-increment: (state, draft) => {
-    draft.count++
+increment: (state) => {
+    state.count++
 }
 ```
 
 当然，如果又想方便又希望方法可测，不妨试试下面的方法
 
 ```javascript
-increment: (state, draft) => {
-    draft.count++
+increment: (state) => {
+    state.count++
 
-    return draft
+    return state
 }
 ```
 
@@ -82,9 +81,9 @@ increment: (state, draft) => {
 在使用**Reducer**的时候，不免会有传入对应参数的需求，在**Slim**中参数传递也非常的方便
 
 ```javascript
-increment: (state, draft, count, times) => {
+increment: (state, count, times) => {
     return {
-        ...draft,
+        ...state,
         count: count * times   // 20
     }
 }

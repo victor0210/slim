@@ -4,9 +4,9 @@
       <input class="toggle"
         type="checkbox"
         :checked="todo.done"
-        @change="store.dispatch('toggleTodo', todo.id)">
+        @change="store.dispatch('toggleTodo', todo)">
       <label v-text="todo.text" @dblclick="editing = true"></label>
-      <button class="destroy" @click="store.dispatch('removeTodo', todo.id)"></button>
+      <button class="destroy" @click="store.dispatch('removeTodo', todo)"></button>
     </div>
     <input class="edit"
       v-show="editing"
@@ -41,9 +41,9 @@ export default {
       const value = e.target.value.trim()
       const { todo } = this
       if (!value) {
-        this.store.dispatch('removeTodo', todo.id)
+        this.store.dispatch('removeTodo', todo)
       } else if (this.editing) {
-        this.store.dispatch('editTodo', todo.id, value)
+        this.store.dispatch('editTodo', todo, value)
         this.editing = false
       }
     },

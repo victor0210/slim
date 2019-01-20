@@ -15,7 +15,6 @@ Slim is a Centralized State Manager with ES6 Proxy, which is **state-non-editabl
 
 * Reducer
 * State
-* Draft
 
 ### Reducer
 Reducer is state controller look like a simple event proxy. You can register reducer esay with
@@ -24,7 +23,7 @@ Reducer is state controller look like a simple event proxy. You can register red
 
 ```
 const reducers = {
-	actionNameForDispatch: (draft, ...args) => {}
+	actionNameForDispatch: (state, ...args) => {}
 }
 ```
 
@@ -32,9 +31,6 @@ you should and you must update state inside it. Update directly or return a new 
 
 ### State
 State is a Single Source Reponsitory for all state in Frontend, Backend, Local and so on, which allows all kinds of data what you wanna to control. update state only allowed by **Reducer**
-
-### Draft
-Draft is a copy of **State**, which is exsit during process **Dispatching**(middleware, reducer, callback), you should update state by operating with it instead of real state. By the way, you can't update the real state.
 
 ## Why Slim
 
@@ -60,11 +56,11 @@ Slim is very elastic, it given three modes to control way of updating state in r
 **reduce: just allow return a new state**
 
 ```
-(draft) => {
+(state) => {
 	...
 
 	return {
-		...draft,
+		...state,
 		name: 'new name'
 	}
 }
@@ -73,8 +69,8 @@ Slim is very elastic, it given three modes to control way of updating state in r
 **direct: just allow update directly**
 
 ```
-(draft) => {
-	draft.name = "new name"
+(state) => {
+	state.name = "new name"
 
 	// return value would be no effect
 }
@@ -109,8 +105,8 @@ const state = {
 }
 
 const reducers = {
-	findItem: (draft, item) => {
-		console.log(draft.indexOf(item))
+	findItem: (state, item) => {
+		console.log(state.indexOf(item))
 	}
 }
 
@@ -133,9 +129,9 @@ const state = {
 }
 
 const reducers = {
-	findItem: (draft, item) => {
+	findItem: (state, item) => {
 		console.log(
-			draft.filter(({id}) => {return item.id === id})[0]
+			state.filter(({id}) => {return item.id === id})[0]
 		)
 	}
 }

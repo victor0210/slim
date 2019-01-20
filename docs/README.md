@@ -33,8 +33,8 @@ const state = {
 
 // reducers is event proxy
 const reducers = {
-    increment: (state, draft) => {
-        draft.count += 1
+    increment: (state) => {
+        state.count += 1
     }
 }
 

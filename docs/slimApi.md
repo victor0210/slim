@@ -14,11 +14,11 @@ const store = createStore({
 ```
 
 ### reducers
-**reducers**就是一系列方法，接收两个及以上参数，**dispatch**时传入的参数将通过args接收，详情请查看[Reducer](/reducer.html)
+**reducers**就是一系列方法，会接收一个默认参数**state**和其余自定义参数，**dispatch**时传入的参数将通过args接收，详情请查看[Reducer](/reducer.html)
 
 ```javascript
 const reducers = {
-    reducerKeyForDispatch: callback(state, draft, ...args) 
+    reducerKeyForDispatch: callback(state, ...args) 
 }
 ```
 
@@ -41,12 +41,12 @@ const state = {
 ```
 
 ### plugin
-**plugin**就是一个简单的对象，提供了`before`和`after`执行周期hook来接入，接收三个参数`state`、`draft`和`action`，详情请查看[Plugin](/plugin.html)
+**plugin**就是一个简单的对象，提供了`before`和`after`执行周期hook来接入，接收两个参数`state`和`action`，详情请查看[Plugin](/plugin.html)
 
 ```javascript
 const slimPlugin = {
-    before(state, draft, action) {},
-    after(state, draft, action) {}
+    before(state, action) {},
+    after(state, action) {}
 }
 ```
 
@@ -90,7 +90,7 @@ const store = createStore(...)
 ```javascript
 // sayHello应该这样接收自定义参数
 const reducers = {
-    sayHello: (state, draft, name, age, location) {...}
+    sayHello: (state, name, age, location) {...}
 }
 
 store.dispatch('sayHello', name, age, location)
@@ -99,7 +99,7 @@ store.dispatch('sayHello', name, age, location)
 类似于订阅事件，需要传入一个reducerKey和一个回调函数，回调函数接收参数和reducer注册一样
 
 ```javascript
-store.subscribe('sayHello', (state, draft, name, age, location) => {...})
+store.subscribe('sayHello', (state, name, age, location) => {...})
 
 // 通用通过dispatch触发
 store.dispatch('sayHello', name, age, location)
