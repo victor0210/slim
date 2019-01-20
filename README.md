@@ -67,8 +67,9 @@ All right! Just kidding. Next!
 You can't edit state anywhere out of reducer in Slim, which will make you more reassured that no one will modify the state in the business logic where you may not know. Where state change => Focus on reducer.
 
 ### Elastic
-redux: update state by return a new state in reducer
-vue: update state in mutation
+
+* Redux: update state by return a new state in reducer
+* Vuex: update state in mutation
 
 Slim is very elastic, it given two modes to control way of updating state in reducer
 
