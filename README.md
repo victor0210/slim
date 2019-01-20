@@ -91,58 +91,6 @@ here is other state managers integrated by Slim:
 
 * [vslim: Vue State Management With Slim]()
 
-## Deficiencies
-
-Can't find index of object/array in array with using "strict" mode.
-
-```
-const state = {
-	arr: [
-		{ name: 1 },
-		{ name: 1 },
-		{ name: 1 }
-	]
-}
-
-const reducers = {
-	findItem: (state, item) => {
-		console.log(state.indexOf(item))
-	}
-}
-
-const store = createStore(reducers, state)
-
-store.dispatch('findItem', arr[0])
-
-// output: -1
-```
-
-It caused by Proxy and I don't have good idea to fix it. You can set an id for items like blow:
-
-```
-const state = {
-	arr: [
-		{ id: 1, name: 1 },
-		{ id: 2, name: 1 },
-		{ id: 3, name: 1 }
-	]
-}
-
-const reducers = {
-	findItem: (state, item) => {
-		console.log(
-			state.filter(({id}) => {return item.id === id})[0]
-		)
-	}
-}
-
-const store = createStore(reducers, state)
-
-store.dispatch('findItem', arr[1])
-
-// output: 1
-```
-
 ## Examples
 
 * [base counter]()
