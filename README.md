@@ -21,7 +21,7 @@ Centralized State Management With Proxy, State-Non-Editable.
 1.0.0 is package version, get the newest version with [https://unpkg.com/slim-store](https://unpkg.com/slim-store)
 
 ```html
-<script src="https://unpkg.com/slim-store@1.0.0/slim.min.js"></script>
+<script src="https://unpkg.com/slim-store@1.0.0/slim.min.js"></script> 
 ```
 
 ### with npm
