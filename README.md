@@ -2,7 +2,7 @@
 
 [![npm version](https://img.shields.io/npm/v/slim-store.svg)](https://www.npmjs.org/package/slim-store)
 [![install size](https://packagephobia.now.sh/badge?p=slim-store)](https://packagephobia.now.sh/result?p=slim-store)
-[![build status](https://travis-ci.org/victor2010/slim.svg?branch=master)](https://travis-ci.org/victor2010/slim)
+[![build status](https://travis-ci.org/victor0210/slim.svg?branch=master)](https://travis-ci.org/victor0210/slim)
 ![Licence](https://img.shields.io/github/license/victor0210/slim.svg)
 
 Centralized State Management With Proxy, State-Non-Editable.
