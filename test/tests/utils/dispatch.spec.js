@@ -229,7 +229,7 @@ describe('change arr directly', () => {
         store.dispatch('changeArrDirectly', result)
 
         expect(store.getState().arrNum[0]).toBe(result)
-        // expect(store.getState()).toEqual({...s, arrNum: [result, 12, 13]})
+        expect(JSON.stringify(store.getState())).toEqual(JSON.stringify({...s, arrNum: [result, 12, 13]}))
     })
 
     it(`change prop of arr with single variable by index is allow, result should be 22`, () => {
@@ -239,7 +239,7 @@ describe('change arr directly', () => {
         store.dispatch('changeArrDirectly', result)
 
         expect(store.getState().arrNum[0]).toBe(result)
-        // expect(store.getState()).toEqual({...s, arrNum: [result, 12, 13]})
+        expect(JSON.stringify(store.getState())).toEqual(JSON.stringify({...s, arrNum: [result, 12, 13]}))
     })
 })
 
@@ -251,7 +251,7 @@ describe('change arr reducer', () => {
         store.dispatch('changeArrPro', result)
 
         expect(store.getState().arrNum[3]).toBe(result)
-        // expect(store.getState()).toEqual({...s, arrNum: [1, 12, 13, 14]})
+        expect(JSON.stringify(store.getState())).toEqual(JSON.stringify({...s, arrNum: [1, 12, 13, 14]}))
     })
 
     it(`change prop of arr with single variable method of prototype is allow, result should be 22`, () => {
@@ -260,7 +260,7 @@ describe('change arr reducer', () => {
         store.dispatch('changeArrPro', result)
 
         expect(store.getState().arrNum[3]).toBe(result)
-        // expect(store.getState()).toEqual({...s, arrNum: [1, 12, 13, 14]})
+        expect(JSON.stringify(store.getState())).toEqual(JSON.stringify({...s, arrNum: [1, 12, 13, 14]}))
 
         // test unsubscribe multiple
         changeArrProOff()
