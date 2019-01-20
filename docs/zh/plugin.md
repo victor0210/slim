@@ -1,10 +1,10 @@
 # Plugin
 
-In order to integrate **Slim** into various popular frameworks, it is more conducive to the expansion of the program. **Slim** provides a plug-in mechanism.
+为了将**Slim**集成到各种时下流行的框架，更利于程序的拓展，**Slim**提供了插件机制
 
-## Usage
+## 使用插件
 
-The plugin is very simple to use, just add **Plugin** when registering.
+插件使用非常的简单，只需要在注册时添加**Plugin**即可
 
 ```javascript
 const store = createStore({
@@ -12,7 +12,7 @@ const store = createStore({
 })
 ```
 
-Multiple plugins use array wrappers.
+多个插件使用数组包裹
 
 ```javascript
 const store = createStore({
@@ -20,15 +20,15 @@ const store = createStore({
 })
 ```
 
-## Writing a plugin
+## 注册插件
 
-**Slim** is also very simple to write plugins. The plugin provides two api `before` and `after`, which are used before and after the reducer to receive two parameters `state` and `action`, multiple **Plugin** will be executed in the order of registration
+**Slim**中编写插件也是非常简单的，插件提供了两个api `before`和`after`，分别作用与reducer执行前后，接收两个参数`state`和`action`，多个**Plugin**将按注册顺序执行
 
-:::warning
-Plugin usage is sequential, and the results affect each other, but don't feel free to manipulate **State** in **Plugin** before ensuring that the operation is harmless. In general, please read **State** in **Plugin** and put the operation in **Reducer**.
+:::warning 注意
+插件使用具有顺序性，并且结果相互影响，但是再确保操作无害之前请不要随意在**Plugin**中操作**State**。总体来说，请在**Plugin**中读取**State**，将操作放到**Reducer**中。
 :::
 
-Register when create **Store**
+在**Store**创建时注册
 ```javascript
 import { createStore } from 'slim'
 
@@ -67,7 +67,7 @@ store.dispatch('increment')
 // output: before count change 0
 // output: after count change 1
 ```
-Register after **Store** is created
+在**Store**创建以后注册
 ```javascript
 const store = createStore({
     reducers: counters,
@@ -77,5 +77,5 @@ const store = createStore({
 store.applyPlugin(slimPlugin)
 ```
 
-## Plugins integrated with Slim 
-* [vslim (Slim-based state management framework in Vue)]()
+## 集成Slim的插件
+* [vslim (在Vue中基于Slim的状态管理框架)]()

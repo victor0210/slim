@@ -1,8 +1,8 @@
-# 安装
+# Installation
 
-## 标签引入
+## Scripts
 [https://unpkg.com/slim](https://unpkg.com/slim)
-Unpkg.com 提供了基于 NPM 的 CDN 链接。以上的链接会一直指向 NPM 上发布的最新版本。您也可以通过 https://unpkg.com/slim@1.0.0 这样的方式指定特定的版本。
+Unpkg.com provides NPM-based CDN links. The above link will always point to the latest version published on NPM. You can also specify a specific version in the same way as https://unpkg.com/slim@1.0.0.
 
 ```html
 <script src="/path/to/slim.js"></script>
@@ -20,7 +20,7 @@ npm install slim
 yarn add slim
 ```
 
-## 代码中引入
+## Use in application
 
 ```javascript
 import {createStore} from 'slim'
@@ -32,8 +32,8 @@ const store = createStore({
 })
 ```
 
-## 构建源代码
-如果需要构建使用用自己特定情况的代码，可以将仓库克隆下来自己构建，构建生成的目标代码将会存放在 `/dist` 目录下
+## Build with source
+If you need to build code that uses your own specific situation, you can clone the repository and build it yourself. The generated target code will be stored in the `/dist` directory.
 
 ```bash
 git clone https://github.com/victor0210/slim.git

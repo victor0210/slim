@@ -1,26 +1,27 @@
-# 介绍
+# Introduction
 
 ## What is Slim
-Slim 是一个前端用于集中式简单状态管理框架
+Slim is a State-Non-Editable and centralized state management with Proxy.
 
-### 什么是状态管理
-相信状态管理大家都已经不陌生了，不过在这里也再简单说一下：不管是框架开发（Vue，React）下的应用，还是无框架开发，在工程体量到达一定程度的时候，都需要将我们各种状态更好的管理以便于后续的应用不变的那么难以维护，这个时候管理状态变得异常的重要。
+### What is State Management
+I believe that state management is no stranger to everyone, but here is a brief explanation: whether it is the application under the framework development (Vue, React), or the development without framework, when the engineering volume reaches a certain level, it needs to be Our various states are better managed so that subsequent applications are not as difficult to maintain as they are, and management status becomes extremely important at this time.
 
-为什么？如果不对状态进行有效的管理，状态在什么时候，由于什么原因，如何变化将不可预测，调试将变得非常困难了。不过对于状态管理的好处并不是所有人都有深刻的体会。举个简单的例子：如果在一个没有状态管理的应用中，有人在某些地方做了某些修改，致使数据流变得混乱，影响了程序最终输出，但是你并不能很快知道究竟在哪里做了修改。
+why? If the state is not effectively managed, when and for what reason, how the change will be unpredictable, debugging will become very difficult. But the benefits of state management are not everyone's deep experience. To give a simple example: If in an application without state management, someone makes some modifications in some places, the data flow becomes confusing and affects the final output of the program, but you can't quickly know where it is. Made a modification.
 
-所以状态管理的注意思路就是：把组件之间需要共享的状态抽取出来，遵循特定的约定，统一来管理，让状态的变化可以预测。根据这个思路，产生了很多的模式和库：Flux，Redux，Vuex 等
+Therefore, the attention of state management is to extract the state that needs to be shared between components, follow a specific convention, and manage it uniformly so that the state changes can be predicted. According to this idea, a lot of patterns and libraries have been generated: Flux, Redux, Vuex, etc.
 
 ## Why Slim
-为什么有了这么多的状态管理工具以后还会有slim，下面将介绍一下slim的一些特点。
+Why are there so many state management tools that will have slim later? Here are some of the features of slim.
 
-### 强限制
-在slim中如果开启strict模式以后，状态修改限制将变得异常的严格，任何在reducer（slim中状态变化的管理区域）以外的状态修改都将不被允许，不过与此同时也伴随了一个[问题]()的产生。
+### Strong restriction
 
-### 轻量级
-和名字一样，slim是一个简单状态管理工具，对于大型应用来说已经有了非常成熟的状态管理架构，slim主要还是为了快速简便地为应用提供状态管理，为开发者提供简便的操作方式，为状态管理增加限制，将变化控制在更集中的地方。
+If strict mode is enabled in slim, the state modification limit will become abnormally strict. Any state modification outside the reducer (the management area of ​​the state change in slim) will not be allowed.
 
-### 更灵活
-slim提供了三种约束模式，`strict`，`standard`，`loose`，可以根据不同的需求进行切换。
+### Lightweight
+Like the name, slim is a simple state management tool. For large applications, there is already a very mature state management architecture. Slim mainly provides state management for applications quickly and easily, providing developers with easy operation modes. State management adds limits to keep changes in a more concentrated place.
 
-### 易于集成
-slim提供了两个状态变化过程的注入接口，`applyMiddleware`, `applyCallback`, 这将大大减小讲slim集成到现有流行框架的难度。
+### More flexible
+Slim provides three constraint modes, `strict`, `standard`, `loose`, which can be switched according to different needs.
+
+### Easy to integrate
+Slim provides the [Plugin](/plugin.html) mechanism, which provides a very convenient operation for slim integration into existing popular frameworks.

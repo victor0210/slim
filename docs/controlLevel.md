@@ -1,8 +1,8 @@
-# 限制级别
-限制级别主要是控制**State**可变区域，限制越强对应**State**的修改范围越集中，修改方式越少，通过[mode](/slimApi.html#mode)参数控制
+# Mode
+The mode is mainly to control the **State** variable area. The stronger the restriction, the more concentrated the modification scope of the **State**, the less the modification method is, and the control is controlled by the [mode](/slimApi.html#mode) parameter.
 
-:::tip 提示
-请不要在生产环境使用 "strict" ，因为他对IE不支持，并且需要转换数据形态，而Slim希望做的事情是帮助大家在开发环境更好的构建状态管理，并不是限制整个应用程序的运行，请在打包的时候注意`mode`的配置，可以参考如下配置
+:::tip
+Please don't use "strict" in production environment, because he doesn't support IE and needs to convert data form. What Slim wants to do is to help you better manage state management in the development environment, not to limit the running of the entire application. Please pay attention to the configuration of `mode` when packing, you can refer to the following configuration
 :::
 
 ```javascript
@@ -12,11 +12,7 @@ const store = createStore({
 ```
 
 ## Strict
-**strict**是控制级别中最高的等级，通过`Proxy`来监听状态变化，不关事对象还是数组，只要在**Reducer**意外的地方对其进行了修改，程序都将会报错。
-
-:::warning 注意
-目前在这种模式下会产生一个问题，就是在proxy以后的数组内不能通过indexOf查到到引用元素，就像下面一样，作者正在努力寻找最好的解决方案。
-:::
+**strict** is the highest level in the control level. It listens for state changes through `Proxy`. It doesn't matter whether it is an object or an array. As long as it is modified in the unexpected place of **Reducer**, the program will report an error.
 
 ```javascript
 const state = {
@@ -32,7 +28,7 @@ console.log(_state.arr.indexOf(_state.arr[1]))    // output: -1
 ```
 
 ## Standard
-**standard**控制相对strict会送一些，通过`Object.defineProperty`来对状态进行监听，但是监听不到某些特定情况下的数据变化。
+**standard** control will send some relative to the strict, through the `Object.defineProperty` to listen to the state, but can not monitor the data changes under certain circumstances.
 
 ```javascript
 const state = {
@@ -42,12 +38,12 @@ const state = {
     }
 }
 
-// case 1: 通过下表新增数组元素
+// case 1: Add array elements through the table below
 state.arr[4] = 10
 
-// case 2: 直接赋值增加对象key
+// case 2: Direct assignment increases the object key
 obj.age = 10
 ```
 
 ## Loose
-**loose**是限制级别中最低的一个，对状态没有监听，没有限制，也就省去了数据监听带来的性能开销。
+**loose** is the lowest of the limit levels. There is no limit to the state, no restrictions, which saves the performance overhead of data snooping.

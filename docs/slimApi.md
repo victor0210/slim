@@ -1,7 +1,7 @@
 # API
 
 ## createStore
-**Slim**目前只对外暴露了一个接口：`createStore`，传入一个参数`conf`对象
+**Slim** currently exposes only one interface: `createStore`, passing in a parameter `conf` object
 
 ```javascript
 const store = createStore({
@@ -14,7 +14,7 @@ const store = createStore({
 ```
 
 ### reducers
-**reducers**就是一系列方法，会接收一个默认参数**state**和其余自定义参数，**dispatch**时传入的参数将通过args接收，详情请查看[Reducer](/reducer.html)
+**reducers** is a series of methods that will receive a default parameter **state** and the rest of the custom parameters. The parameters passed in **dispatch** will be received via args. See [Reducer](/reducer for details) .html)
 
 ```javascript
 const reducers = {
@@ -23,7 +23,7 @@ const reducers = {
 ```
 
 ### state
-**state**就是一个状态集中存放的单一对象，详情请查看[State](/state.html)
+**state** is a single object stored in one state. See [State](/state.html) for details.
 
 ```javascript
 const state = {
@@ -41,7 +41,7 @@ const state = {
 ```
 
 ### plugin
-**plugin**就是一个简单的对象，提供了`before`和`after`执行周期hook来接入，接收两个参数`state`和`action`，详情请查看[Plugin](/plugin.html)
+**plugin** is a simple object that provides `before` and `after` execution cycle hooks to access two parameters `state` and `action`. See [Plugin] for details (/plugin.html )
 
 ```javascript
 const slimPlugin = {
@@ -51,8 +51,8 @@ const slimPlugin = {
 ```
 
 ### getters
-**getters**是**Slim**提供的一种更便捷构造state特定数据获取的方式，配合`store.getState('getterKey')`使用，每一个getter必须是一个函数，接收唯一参数`state`，
-详情请查看[Getters](/state.html#getters)
+**getters** is a more convenient way to construct state-specific data fetches provided by **Slim**. Used with `store.getState('getterKey')`, each getter must be a function that accepts unique parameters. State`,
+See [Getters](/state.html#getters) for details.
 
 ```javascript
 const getters = {
@@ -61,14 +61,14 @@ const getters = {
 ```
 
 ### mode
-**mode**决定了**Slim**的限制级别，可选三个值 `strict`、`standard`和`loose`，默认：`strict`，三个值分别有什么区别
+**mode** determines the limit level of **Slim**, optional three values ​​`strict`, `standard` and `loose`, default: `strict`, what is the difference between the three values?
 
-* **strict**：使用Proxy对数据进行监听，限制极强，不允许在reducer意外的任何地方修改任何数据
-* **standard**：使用Object.defineProperty对数据进行简体，限制较强，不能限制在reducer以外以某些特定的方式修改数组或对象
-* **loose**：无限制，建议在生产环境使用
+* **strict**: Use Proxy to listen to the data, the limit is very strong, and it is not allowed to modify any data anywhere the reducer accidentally
+* **standard**: Simplify the data with Object.defineProperty, the restriction is strong, can not limit the modification of the array or object in some specific way outside the reducer
+* **loose**: Unlimited, it is recommended to use in production environment
 
 ## Store
-**store**是通过**createStore**创建并返回的一个整体控制实例
+**store** is an overall control instance created and returned by **createStore**
 
 ```javascript
 import {createStore} from 'slim'
@@ -76,19 +76,19 @@ import {createStore} from 'slim'
 const store = createStore(...)
 
 // store: {
-//     dispatch,                    触发reducer
-//     subscribe,                   在注册之后新增reducer
-//     unsubscribe,                 注销reducer
-//     getState,                    获取最新state
-//     applyPlugin                  在注册之后新增插件
+//     dispatch,                    emit reducer
+//     subscribe,                   register reducer after store is created
+//     unsubscribe,                 register reducer
+//     getState,                    get the newest state
+//     applyPlugin                  add plugin after store is created
 // }
 ```
 
 ### dispatch
-**dispatch**触发reducer执行，第一个参数为reducer对应的key，后续可以加入多个自定义的参数
+**dispatch** triggers the reducer to execute. The first parameter is the key corresponding to the reducer. You can add multiple custom parameters later.
 
 ```javascript
-// sayHello应该这样接收自定义参数
+// 'sayHello' should receive custom parameters like this
 const reducers = {
     sayHello: (state, name, age, location) {...}
 }
@@ -96,35 +96,35 @@ const reducers = {
 store.dispatch('sayHello', name, age, location)
 ```
 ### subscribe
-类似于订阅事件，需要传入一个reducerKey和一个回调函数，回调函数接收参数和reducer注册一样
+Similar to the subscription event, you need to pass in a reducerKey and a callback function. The callback function receives the same parameters as the reducer registration.
 
 ```javascript
 store.subscribe('sayHello', (state, name, age, location) => {...})
 
-// 通用通过dispatch触发
+// General trigger by dispatch
 store.dispatch('sayHello', name, age, location)
 ```
 
 ### unsubscribe
-对应**subscribe**，**unsubscribe**将会取消reducer订阅，传入对应的reducerKey即可
+Corresponding to **subscribe**, **unsubscribe** will cancel the reducer subscription and pass in the corresponding reducerKey.
 
 ```javascript
 store.unsubscribe('sayHello')
 ```
 
 ### getState
-获取最新的state，可填参数`getterKey`
+Get the latest state, fill in the parameter `getterKey`
 
 ```javascript
-// 获取整个state
+// get all state
 const state = store.getState()                  
 
-// 获取getter对应的state值，需要提前注册getter，如果getter不存在则返回undefined
+// To get the state value corresponding to the getter, you need to register the getter in advance, and return undefined if the getter does not exist.
 const username = store.getState('username')     
 ```
 
 ### applyPlugin
-接入插件，接收一个plugin对象，每次只能添加一个plugin
+Apply plugin, receive a plugin object, only add one plugin at a time
 
 ```javascript
 store.applyPlugin(slimPlugin)

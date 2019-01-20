@@ -1,15 +1,13 @@
 # Reducer
+**Reducers** specifies how **Store** receives the new **State**, which not only explains the corresponding type of operation, but also how the **State** changes.
 
-## 简介
-**Reducers**规范了**Store**如何接收全新**State**，它不仅阐述了对应的操作类型，也说明了**State**是如何发生的变化。
+## Design reducer
+In **Slim**, a **Reducer** exists as a key-value pair, and we want to use a shorter code to fully explain what we need to do, for example: **[ACTION_TYPE : REDUCER_FUNCTION]**.
 
-## 设计reducer
-在**Slim**中，一个**Reducer**以一个键值对的方式存在，我们希望使用更简短的代码完整说明我们需要做的事情例如：**[ACTION_TYPE : REDUCER_FUNCTION]**
+Let's see how to implement a **Reducer**. In our simple counter application, we want to have two things:
 
-接下来让我们看看如何实现一个**Reducer**。在我们一个简单的计数器应用中，我们希望有两种操作：
-
-* 增加计数：increment
-* 减少计数：decrement
+* increment the count：increment
+* decrement the counet：decrement
 
 ```javascript
 import { createStore } from 'slim'
@@ -35,15 +33,15 @@ const store = createStore({
 store.dispatch('increment')
 ```
 
-在**Reducers**中，**ACTION_TYPE**的定义非常简便，不需要额外的操作，我们通过键名来表明操作类型，并在**dispatch**中直接出发对应的操作即可。
+In **Reducers**, the definition of **ACTION_TYPE** is very simple, no need for extra operations, we use the key name to indicate the type of operation, and directly start the corresponding operation in **dispatch**.
 
-## 更新State
+## Update state
 
-那在**Reducer**中如何更新**State**？我们提供了两种可行的方式
+How to update **State** in **Reducer**? We offer two possible ways.
 
-### 返回一个全新的State对象
+### Return a new state object
 
-这种方式更易于我们定位**State**的整体变化，也让整个**Reducer**变得可测试，但是在复杂的**State**结构下将会使整个方法变大，操作变得复杂。
+This approach makes it easier for us to locate the overall change of **State**, and also makes the entire **Reducer** testable, but under the complex **State** structure will make the whole method bigger, the operation becomes It’s complicated.
 
 ```javascript
 increment: (state) => {
@@ -54,9 +52,9 @@ increment: (state) => {
 }
 ```
 
-### 直接在State对象上更改
+### Change directly on the state object
 
-这种方法在大多数情况下会显得比较简洁和方便，只是对应的**Reducer**将不可测。
+This method will be simple and convenient in most cases, but the corresponding **Reducer** will be untestable.
 
 ```javascript
 increment: (state) => {
@@ -64,7 +62,7 @@ increment: (state) => {
 }
 ```
 
-当然，如果又想方便又希望方法可测，不妨试试下面的方法
+Of course, if you want to be convenient and want the method to be measurable, try the following method.
 
 ```javascript
 increment: (state) => {
@@ -74,11 +72,11 @@ increment: (state) => {
 }
 ```
 
-以上方法各有自己的优势和劣势，您可以根据应用中的具体情况选择不同的处理方式。
+Each of the above methods has its own advantages and disadvantages. You can choose different treatment methods according to the specific conditions in the application.
 
-## 传入参数
+## Pass arguments
 
-在使用**Reducer**的时候，不免会有传入对应参数的需求，在**Slim**中参数传递也非常的方便
+When using **Reducer**, there will be a need to pass the corresponding parameters, and the parameter transfer is very convenient in **Slim**
 
 ```javascript
 increment: (state, count, times) => {
@@ -90,4 +88,5 @@ increment: (state, count, times) => {
 
 store.dispatch('increment', 10, 2)
 ```
-将需要的参数在**Reducer**函数入参中直接注册，在**dispatch**中直接使用逗号分隔传入即可
+
+The required parameters are registered directly in the **Reducer** function, and can be directly separated by commas in **dispatch**.

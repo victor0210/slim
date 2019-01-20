@@ -1,17 +1,15 @@
 # State
+**State** uses a single object to store the state tree—yes, with an object containing all the application-level state. A single data source is more convenient for us to take snapshots of each phase of the state, and it can be more easily injected into homogeneous applications.
 
-## 简介
-**State**使用单一对象存储状态树——是的，用一个对象就包含了全部的应用层级状态。单一数据源更利于我们处理状态的每个阶段的快照，而且可以使其更方便地在同构应用中注入。
-
-## 获取状态
-获取状态只能通过以下方式，为什么是通过方法而不是直接访问属性？因为需要保证应用在访问**State**的时候**State**并没有处于被操作中，也是保证获取到的**State**一定是最新的
+## Get state
+The state of getting can only be obtained in the following way. Why is it through methods instead of directly accessing properties? Because the application needs to ensure that the **State** is not being operated when accessing the **State**, it is also guaranteed that the **State** obtained must be up to date.
 
 ```
 store.getState()
 ```
 
 ## Getters
-为了方便应用程序中更好的进行**State**的模块划分，使用**Getter**是一个不错的选择，可以想象一下当**State**层级很深的时候，获取**State**会是一件多么绝望的事情，在这个时候你或许需要在程序中定义一系列的getter方法来获取特定的**State**。不用担心，在这里**Slim**已经帮你做好了，你可以通过以下方式快速使用**Getter**
+In order to facilitate the better **State** module partitioning in the application, using **Getter** is a good choice. Imagine getting **State* when the **State** level is deep. * What a desperate thing to do, at this point you may need to define a set of getter methods in the program to get a specific **State**. Don't worry, here **Slim** has done it for you, you can quickly use **Getter**
 
 ```javascript
 const state = {

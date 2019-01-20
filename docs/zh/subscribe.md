@@ -1,8 +1,8 @@
 # Subscribe/UnSubscribe
 
-**subscribe** is a method of registering **Reducer** in the non-creation phase of **Store**, unsubscribing corresponding to **unsubscribe** method
+**subscribe**是在**Store**的非创建阶段注册**Reducer**的方法，对应**unsubscribe**方法取消订阅
 
-## Usage
+## 使用subscribe/unSubscribe
 
 ```javascript
 import { createStore } from 'slim'
