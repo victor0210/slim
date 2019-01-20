@@ -78,4 +78,4 @@ store.applyPlugin(slimPlugin)
 ```
 
 ## Plugins integrated with Slim 
-* [vslim (Slim-based state management framework in Vue)]()
+* [vslim (Slim-based state management framework in Vue)](/vslim.html)

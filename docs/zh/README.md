@@ -2,7 +2,7 @@
 home: true
 heroImage: /logo.png
 heroText: Slim
-tagline: 基于Proxy的状态管理框架.
+tagline: 基于Proxy的状态管理框架
 actionText: 快速上手 →
 actionLink: /zh/intro.html
 features:
@@ -19,8 +19,14 @@ footer: MIT Licensed | Copyright © 2018-present Victor
 
 ### 安装
 
+#### Cdn
+```html
+<script src="https://unpkg.com/slim-store@1.0.0/slim.min.js"></script>
+```
+
+#### Npm
 ```bash
-npm install slim
+npm install slim-store
 ```
 
 ### 代码引入
@@ -52,3 +58,7 @@ store.dispatch('increment')
 console.log(store.getState().count)
 // output: 1
 ```
+
+## 拓展设施
+
+* [VSlim](/zh/vslim.html): 在Vue中基于Slim的状态管理框架

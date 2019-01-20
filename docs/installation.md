@@ -1,11 +1,11 @@
 # Installation
 
 ## Scripts
-[https://unpkg.com/slim](https://unpkg.com/slim)
-Unpkg.com provides NPM-based CDN links. The above link will always point to the latest version published on NPM. You can also specify a specific version in the same way as https://unpkg.com/slim@1.0.0.
+[https://unpkg.com/slim-store](https://unpkg.com/slim-store)
+Unpkg.com provides NPM-based CDN links. The above link will always point to the latest version published on NPM. You can also specify a specific version in the same way as https://unpkg.com/slim-store@1.0.0.
 
 ```html
-<script src="/path/to/slim.js"></script>
+<script src="https://unpkg.com/slim-store@1.0.0/slim.min.js"></script>
 ```
 
 ## NPM

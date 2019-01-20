@@ -1,17 +1,31 @@
 # Slim
 
-[![npm version](https://img.shields.io/npm/v/hajax.svg)](https://www.npmjs.org/package/slim)
-[![Github file size](https://img.shields.io/github/size/Bennnis/HAjax/release/dist/xxx.js.svg)](https://github.com/Bennnis/HAjax/blob/master/release/dist/hx.min.js)
-[![install size](https://packagephobia.now.sh/badge?p=hajax)](https://packagephobia.now.sh/result?p=slim)
-[![build status](https://travis-ci.org/Bennnis/HAjax.svg?branch=master)](https://travis-ci.org/bennnis/slim)
-[![Open Source Helpers](https://www.codetriage.com/bennnis/hajax/badges/users.svg)](https://www.codetriage.com/bennnis/slim)
+[![npm version](https://img.shields.io/npm/v/slim-store.svg)](https://www.npmjs.org/package/slim-store)
+[![Github file size](https://img.shields.io/github/size/victor2010/slim/dist/release/slim.min.js.svg)](https://github.com/victor2010/slim/blob/master/dist/release/slim/slim.min.js)
+[![install size](https://packagephobia.now.sh/badge?p=slim-store)](https://packagephobia.now.sh/result?p=slim-store)
+[![build status](https://travis-ci.org/victor2010/slim.svg?branch=master)](https://travis-ci.org/victor2010/slim)
+[![Open Source Helpers](https://www.codetriage.com/vicotr2010/slim/badges/users.svg)](https://www.codetriage.com/victor2010/slim)
 
 Centralized State Management With Proxy, State-Non-Editable.
 
 <img src="./starter/flow.png">
 
+## Installation
+
+### with script tag
+1.0.0 is package version, get the newest version with [https://unpkg.com/slim-store](https://unpkg.com/slim-store)
+
+```html
+<script src="https://unpkg.com/slim-store@1.0.0/slim.min.js"></script>
+```
+
+### with npm
+```bash
+npm install slim-store
+```
+
 ## What is Slim
-Slim is a Centralized State Manager with ES6 Proxy, which is **state-non-editable** and simple to use. There are only three module you need to know.
+Slim is a Centralized State Manager with ES6 Proxy, which is **state-non-editable** and simple to use. There are only two modules you need to know.
 
 * Reducer
 * State
@@ -51,7 +65,7 @@ You can't edit state anywhere out of reducer in Slim, which will make you more r
 redux: update state by return a new state in reducer
 vue: update state in mutation
 
-Slim is very elastic, it given three modes to control way of updating state in reducer
+Slim is very elastic, it given two modes to control way of updating state in reducer
 
 **reduce: just allow return a new state**
 
@@ -91,63 +105,11 @@ here is other state managers integrated by Slim:
 
 * [vslim: Vue State Management With Slim]()
 
-## Deficiencies
-
-Can't find index of object/array in array with using "strict" mode.
-
-```
-const state = {
-	arr: [
-		{ name: 1 },
-		{ name: 1 },
-		{ name: 1 }
-	]
-}
-
-const reducers = {
-	findItem: (state, item) => {
-		console.log(state.indexOf(item))
-	}
-}
-
-const store = createStore(reducers, state)
-
-store.dispatch('findItem', arr[0])
-
-// output: -1
-```
-
-It caused by Proxy and I don't have good idea to fix it. You can set an id for items like blow:
-
-```
-const state = {
-	arr: [
-		{ id: 1, name: 1 },
-		{ id: 2, name: 1 },
-		{ id: 3, name: 1 }
-	]
-}
-
-const reducers = {
-	findItem: (state, item) => {
-		console.log(
-			state.filter(({id}) => {return item.id === id})[0]
-		)
-	}
-}
-
-const store = createStore(reducers, state)
-
-store.dispatch('findItem', arr[1])
-
-// output: 1
-```
-
 ## Examples
 
-* [base counter]()
-* [vue counter]()
-* [vue todomvc]()
+* [base counter](./tree/master/example/base)
+* [vue counter](./tree/master/example/counter)
+* [vue todomvc](./tree/master/example/todomvc)
 
 running demo by blow scripts
 

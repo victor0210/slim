@@ -78,4 +78,4 @@ store.applyPlugin(slimPlugin)
 ```
 
 ## 集成Slim的插件
-* [vslim (在Vue中基于Slim的状态管理框架)]()
+* [vslim (在Vue中基于Slim的状态管理框架)](/zh/vslim.html)

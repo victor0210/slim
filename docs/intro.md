@@ -21,7 +21,7 @@ If strict mode is enabled in slim, the state modification limit will become abno
 Like the name, slim is a simple state management tool. For large applications, there is already a very mature state management architecture. Slim mainly provides state management for applications quickly and easily, providing developers with easy operation modes. State management adds limits to keep changes in a more concentrated place.
 
 ### More flexible
-Slim provides three constraint modes, `strict`, `standard`, `loose`, which can be switched according to different needs.
+Slim provides two constraint modes, `strict`, `loose`, which can be switched according to different needs.
 
 ### Easy to integrate
 Slim provides the [Plugin](/plugin.html) mechanism, which provides a very convenient operation for slim integration into existing popular frameworks.

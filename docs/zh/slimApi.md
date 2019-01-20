@@ -61,10 +61,9 @@ const getters = {
 ```
 
 ### mode
-**mode**决定了**Slim**的限制级别，可选三个值 `strict`、`standard`和`loose`，默认：`strict`，三个值分别有什么区别
+**mode**决定了**Slim**的限制级别，可选两个值 `strict`和`loose`，默认：`strict`，两个值分别有什么区别
 
 * **strict**：使用Proxy对数据进行监听，限制极强，不允许在reducer意外的任何地方修改任何数据
-* **standard**：使用Object.defineProperty对数据进行简体，限制较强，不能限制在reducer以外以某些特定的方式修改数组或对象
 * **loose**：无限制，建议在生产环境使用
 
 ## Store
