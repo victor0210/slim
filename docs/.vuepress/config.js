@@ -34,7 +34,8 @@ module.exports = {
                     ['/plugin', 'Plugin']
                 ]
             },
-            ['/slimApi', 'API']
+            ['/slimApi', 'API'],
+            ['/controlLevel', '限制级别']
         ]
     }
 }
