@@ -54,28 +54,6 @@ it(`parameters with store creating should be a plainObject`, () => {
     expect(validateFn).toThrowError(createErrorMsg)
 });
 
-describe('change state in array with some ways is allow', () => {
-    const store = createStore({
-        reducers: {},
-        state: getDefaultState(),
-        mode: "standard"
-    })
-
-    const state = store.getState()
-
-    handleThrow('num should be readonly', () => {state.num = 1})
-    handleThrow('str should be readonly', () => {state.str = 1})
-    handleThrow('obj should be readonly', () => {state.obj = 1})
-    handleThrow('obj str should be readonly', () => {state.obj.str = 1})
-    handleThrow('arrNum should be readonly', () => {state.arrNum = 1})
-    handleThrow('arrStr should be readonly', () => {state.arrStr = 1})
-    handleThrow('arrObj should be readonly', () => {state.arrObj = 1})
-
-    handleThrowNone('arrObj should be readonly', () => {state.arrObj[0].name = 1})
-    handleThrowNone('arr push not allow', () => {state.arrNum.push(1)})
-    handleThrowNone('obj not allow to add new key', () => {state.obj.newkey = 1})
-})
-
 describe('change state is not allow with strict', () => {
     const store = createStore({
         reducers: {},

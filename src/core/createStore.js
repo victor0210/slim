@@ -198,14 +198,12 @@ const observeObject = (object, mode) => {
                 if (val.$$isSlimProxy) {
                     createProxy(val)
                 } else {
-                    val.$$isSlimProxy = true
                     object[key] = createProxy(val)
                 }
             } else if (Array.isArray(val)) {
                 if (val.$$isSlimProxy) {
                     createProxy(val)
                 } else {
-                    val.$$isSlimProxy = true
                     object[key] = createProxy(val, true)
                 }
             }
