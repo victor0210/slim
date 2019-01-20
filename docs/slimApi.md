@@ -61,10 +61,9 @@ const getters = {
 ```
 
 ### mode
-**mode** determines the limit level of **Slim**, optional three values ​​`strict`, `standard` and `loose`, default: `strict`, what is the difference between the three values?
+**mode** determines the limit level of **Slim**, optional two values ​​`strict` and `loose`, default: `strict`, what is the difference between the two values?
 
 * **strict**: Use Proxy to listen to the data, the limit is very strong, and it is not allowed to modify any data anywhere the reducer accidentally
-* **standard**: Simplify the data with Object.defineProperty, the restriction is strong, can not limit the modification of the array or object in some specific way outside the reducer
 * **loose**: Unlimited, it is recommended to use in production environment
 
 ## Store

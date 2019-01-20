@@ -14,36 +14,5 @@ const store = createStore({
 ## Strict
 **strict** is the highest level in the control level. It listens for state changes through `Proxy`. It doesn't matter whether it is an object or an array. As long as it is modified in the unexpected place of **Reducer**, the program will report an error.
 
-```javascript
-const state = {
-    arr: [{}, []]
-}
-
-const store = createStore({reducers, state})
-
-const _state = store.getState()
-
-console.log(_state.arr.indexOf(_state.arr[0]))    // output: -1
-console.log(_state.arr.indexOf(_state.arr[1]))    // output: -1
-```
-
-## Standard
-**standard** control will send some relative to the strict, through the `Object.defineProperty` to listen to the state, but can not monitor the data changes under certain circumstances.
-
-```javascript
-const state = {
-    arr: [1, 2, 3],
-    obj: {
-        name: 'victor'
-    }
-}
-
-// case 1: Add array elements through the table below
-state.arr[4] = 10
-
-// case 2: Direct assignment increases the object key
-obj.age = 10
-```
-
 ## Loose
 **loose** is the lowest of the limit levels. There is no limit to the state, no restrictions, which saves the performance overhead of data snooping.

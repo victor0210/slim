@@ -1,4 +1,8 @@
 module.exports = {
+    base: '/slimdocs/',
+    head: [
+        ['link', { rel: 'slim icon', type: "image/x-icon", href: `/favicon.ico` }]
+    ],
     locales: {
         '/': {
             lang: 'en-US',

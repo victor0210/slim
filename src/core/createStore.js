@@ -62,7 +62,11 @@ const createStore = (conf) => {
                     `which is more conducive to our observation of state changes in complex situations.`
                 )
 
-                currentState = observeObject(newState || currentState, mode)
+                if (newState) {
+                    currentState = observeObject(newState, mode)
+                } else {
+                    observeObject(currentState, mode)
+                }
             }
 
             walkPlugins('after', plugins, currentState, action)
@@ -191,45 +195,33 @@ const observeObject = (object, mode) => {
             let val = object[key]
 
             if (isPlainObject(val)) {
-                object[key] = createProxy(val)
+                if (val.$$isSlimProxy) {
+                    createProxy(val)
+                } else {
+                    val.$$isSlimProxy = true
+                    object[key] = createProxy(val)
+                }
             } else if (Array.isArray(val)) {
-                object[key] = createProxy(val, true)
+                if (val.$$isSlimProxy) {
+                    createProxy(val)
+                } else {
+                    val.$$isSlimProxy = true
+                    object[key] = createProxy(val, true)
+                }
             }
         }
 
-        return new Proxy(object, observeArray ? arrayProxyHandler : objectProxyHandler)
-    }
-
-    const createObserve = (obj) => {
-        for (let key in obj) {
-            let val = obj[key]
-
-            if (isPlainObject(val)) createObserve(val)
-
-            Object.defineProperty(obj, key, {
-                set: (val) => {
-                    throwIf(
-                        !isDispatching,
-                        `You may not be able to assign values ​​directly to state. ` +
-                        `Please return a new state for reducing or edit with state in reducer.`
-                    )
-
-                    obj[key] = val
-                },
-                get: () => {
-                    return val
-                }
-            })
+        if (object.$$isSlimProxy) {
+            return object
+        } else {
+            object.$$isSlimProxy = true
+            return new Proxy(object, observeArray ? arrayProxyHandler : objectProxyHandler)
         }
-
-        return obj
     }
 
     switch (mode) {
         case 'strict':
             return createProxy(object)
-        case 'standard':
-            return createObserve(object)
         case 'loose':
             return object
     }

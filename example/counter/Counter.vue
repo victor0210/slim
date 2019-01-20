@@ -18,6 +18,16 @@
                 handler(val) {
                     console.log('new count: ' + val)
                 }
+            },
+            'store.state.arr': {
+                handler(val) {
+                    console.log('new arr: ' + val)      // would not be triggered
+                }
+            },
+            'store.state.obj': {
+                handler(val) {
+                    console.log('new obj: ' + val)      // would not be triggered
+                }
             }
         }
     }

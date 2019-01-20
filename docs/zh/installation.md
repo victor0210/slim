@@ -1,11 +1,11 @@
 # 安装
 
 ## 标签引入
-[https://unpkg.com/slim](https://unpkg.com/slim)
-Unpkg.com 提供了基于 NPM 的 CDN 链接。以上的链接会一直指向 NPM 上发布的最新版本。您也可以通过 https://unpkg.com/slim@1.0.0 这样的方式指定特定的版本。
+[https://unpkg.com/slim-store](https://unpkg.com/slim-store)
+Unpkg.com 提供了基于 NPM 的 CDN 链接。以上的链接会一直指向 NPM 上发布的最新版本。您也可以通过 https://unpkg.com/slim-store@1.0.0 这样的方式指定特定的版本。
 
 ```html
-<script src="/path/to/slim.js"></script>
+<script src="https://unpkg.com/slim-store@1.0.0/slim.min.js"></script>
 ```
 
 ## NPM

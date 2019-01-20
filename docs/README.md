@@ -20,7 +20,7 @@ footer: MIT Licensed | Copyright © 2018-present Victor
 ### Installation
 
 ```bash
-npm install slim
+npm install slim-store
 ```
 
 ### Use in code

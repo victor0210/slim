@@ -18,10 +18,7 @@ const reducers = {
         state.count++;
     },
     decrement: (state) => {
-        return {
-            ...state,
-            count: state.count - 1
-        }
+        state.count--
     }
 }
 
