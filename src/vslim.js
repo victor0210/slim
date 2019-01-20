@@ -40,8 +40,10 @@ export default {
                         state: options.store.getState()
                     }
 
-                this.store.applyCallback((state) => {
-                    this.$set(this.store, 'state', state)
+                this.store.applyPlugin({
+                    after: (state) => {
+                        this.$set(this.store, 'state', state)
+                    }
                 })
             } else if (options.parent && options.parent.store) {
                 this.store = options.parent.store

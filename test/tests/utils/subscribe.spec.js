@@ -18,47 +18,47 @@ const obj = {
 
 const reducers = {
     // num
-    changeNumDirectly: (draft, num) => {
-        draft.num = num
+    changeNumDirectly: (state, num) => {
+        state.num = num
     },
-    changeNumReducer: (draft, num) => {
+    changeNumReducer: (state, num) => {
         return {
-            ...draft,
+            ...state,
             num
         }
     },
 
     // str
-    changeStrDirectly: (draft, str) => {
-        draft.str = str
+    changeStrDirectly: (state, str) => {
+        state.str = str
     },
-    changeStrReducer: (draft, str) => {
+    changeStrReducer: (state, str) => {
         return {
-            ...draft,
+            ...state,
             str
         }
     },
 
     // obj
-    changeObjDirectly: (draft, v) => {
-        draft.obj.num = v
+    changeObjDirectly: (state, v) => {
+        state.obj.num = v
     },
-    changeObjReducer: (draft, v) => {
+    changeObjReducer: (state, v) => {
         return {
-            ...draft,
+            ...state,
             obj: {
-                ...draft.obj,
+                ...state.obj,
                 num: v
             }
         }
     },
 
     // arr
-    changeArrDirectly: (draft, v) => {
-        draft.arrNum[0] = v
+    changeArrDirectly: (state, v) => {
+        state.arrNum[0] = v
     },
-    changeArrPro: (draft, v) => {
-        draft.arrNum.push(v)
+    changeArrPro: (state, v) => {
+        state.arrNum.push(v)
     },
 }
 
@@ -71,7 +71,10 @@ const state = {
     arrObj: arrObj
 }
 
-const store = createStore(reducers, state)
+const store = createStore({
+    reducers,
+    state
+})
 
 // ------------------------   Num   ---------------------------
 // TODO: test warn

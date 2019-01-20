@@ -2,31 +2,19 @@ const todoReducers = {
     addTodo: ({todos}, todo) => {
         todos.push(todo)
     },
-    clearTodo: (draft) => {
-        draft.todos = draft.todos.filter(todo => {
+    clearTodo: (state) => {
+        state.todos = state.todos.filter(todo => {
             return !todo.done
         })
     },
-    removeTodo: (draft, id) => {
-        draft.todos = draft.todos.filter(todo => {
-            return todo.id !== id
-        })
+    removeTodo: ({todos}, todo) => {
+        todos.splice(todos.indexOf(todo), 1)
     },
-    toggleTodo: ({todos}, id) => {
-        todos.some(todo => {
-            if (todo.id === id) {
-                todo.done = !todo.done
-                return true
-            }
-        })
+    toggleTodo: ({todos}, todo) => {
+        todos[todos.indexOf(todo)].done = !todo.done
     },
-    editTodo: ({todos}, id, text) => {
-        todos.some(todo => {
-            if (todo.id === id) {
-                todo.text = text
-                return true
-            }
-        })
+    editTodo: ({todos}, todo, text) => {
+        todos[todos.indexOf(todo)].text = text
     }
 }
 

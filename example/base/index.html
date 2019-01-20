@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>slim counter example</title>
+    <link rel="stylesheet" href="/global.css">
+    <style>
+      div {
+        width: 100px;
+        height: 50px;
+        text-align: center;
+        box-sizing: border-box;
+        display: inline-block;
+        line-height: 48px;
+        user-select: none;
+      }
+
+      .btn {
+        border: 1px solid #000;
+        border-radius: 5px;
+        font-size: 20px;
+        font-weight: bolder;
+        cursor: pointer;
+      }
+
+      .btn:hover {
+        background: #f0f0f0;
+      }
+
+      .btn:active {
+        background: #e0e0e0;
+      }
+
+      #count {
+        font-size: 25px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="btn" onclick="decrement()">-</div>
+    <div id="count">0</div>
+    <div class="btn" onclick="increment()">+</div>
+
+    <script src="/__build__/shared.js"></script>
+    <script src="/__build__/base.js"></script>
+
+    <script>
+      function decrement() {
+        store.dispatch('decrement')
+        renderCount(store.getState().count)
+      }
+
+      function increment() {
+        store.dispatch('increment')
+        renderCount(store.getState().count)
+      }
+
+      const countEl = document.getElementById('count')
+
+      function renderCount(count) {
+        countEl.textContent = count
+      }
+    </script>
+  </body>
+</html>

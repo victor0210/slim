@@ -1,20 +1,37 @@
 import {isPlainObject, isPlainString} from "../loggers/type";
 import {throwIf, warnIf} from "../loggers/throwIf";
 
-const createStore = (reducer, state) => {
+let isDispatching = null
+
+/**
+ * @param conf: {
+ *   reducers,
+ *   state,
+ *   mode,
+ *   plugin,
+ *   getters
+ * }
+ * */
+const createStore = (conf) => {
+    let {
+        reducers = {},
+        state = {},
+        plugin,
+        getters = {},
+        mode = 'strict'
+    } = conf
+
     if (!isPlainObject(state)) {
         throw new TypeError(`type of state expect to [Object] but got [${typeof state}]`)
     }
 
-    let currentState = observeObject(state)
-    let currentReducer = passReducer(reducer)
-    let middlewares = []
-    let callbacks = []
-    let isDispatching = null
+    let currentState = observeObject(state, mode)
+    let currentReducer = passReducer(reducers)
+    let plugins = passPlugin(plugin)
+
+    getters = passGetter(getters)
 
     const dispatch = (action, ...args) => {
-        let argsCopy = cloneObj(args)
-
         throwIf(
             !isPlainString(action),
             `Actions must be plain string. ` +
@@ -29,17 +46,15 @@ const createStore = (reducer, state) => {
         try {
             isDispatching = action
 
-            let draft = cloneObj(currentState)
-
             warnIf(
-                !reducer[action],
+                !reducers[action],
                 `You may not has not registered [${action}] in store`
             )
 
-            walkMiddleware(middlewares, draft, ...argsCopy)
+            walkPlugins('before', plugins, currentState, action)
 
             if (currentReducer[action]) {
-                let newState = currentReducer[action](draft, ...argsCopy)
+                let newState = currentReducer[action](currentState, ...args)
 
                 warnIf(
                     newState === undefined,
@@ -47,10 +62,10 @@ const createStore = (reducer, state) => {
                     `which is more conducive to our observation of state changes in complex situations.`
                 )
 
-                currentState = observeObject(newState || draft)
+                currentState = observeObject(newState || currentState, mode)
             }
 
-            walkMiddleware(callbacks, draft, ...argsCopy)
+            walkPlugins('after', plugins, currentState, action)
         } finally {
             isDispatching = null
         }
@@ -58,10 +73,10 @@ const createStore = (reducer, state) => {
         return action
     }
 
-    const subscribe = (action, listener) => {
+    const subscribe = (action, reducer) => {
         throwIf(
-            typeof listener !== 'function',
-            `Expected the listener to be a function.`
+            typeof reducer !== 'function',
+            `Expected the reducer to be a function.`
         )
 
         throwIf(
@@ -77,29 +92,26 @@ const createStore = (reducer, state) => {
             `It allows only the new one will be retained when you repeat the subscription.`
         )
 
-        currentReducer[action] = listener
-
-        const unsubscribe = () => {
-            throwIf(
-                isDispatching === action,
-                `You may not unsubscribe from a store listener while the reducer is executing. `
-            )
-
-            const hasAction = currentReducer.hasOwnProperty(action)
-
-            warnIf(
-                !hasAction,
-                `Action [${action}] not exist.`
-            )
-
-            if (hasAction) delete currentReducer[action]
-        }
-
-        return unsubscribe
+        currentReducer[action] = reducer
     }
 
+    const unsubscribe = (action) => {
+        throwIf(
+          isDispatching === action,
+          `You may not unsubscribe from a store reducer while the reducer is executing. `
+        )
 
-    const getState = () => {
+        const hasAction = currentReducer.hasOwnProperty(action)
+
+        warnIf(
+          !hasAction,
+          `Action [${action}] not exist in reducers.`
+        )
+
+        if (hasAction) delete currentReducer[action]
+    }
+
+    const getState = (getterKey) => {
         throwIf(
             isDispatching,
             'You may not call store.getState() while the reducer is executing. ' +
@@ -107,14 +119,21 @@ const createStore = (reducer, state) => {
             'Pass it down from the top reducer instead of reading it from the store.'
         )
 
-        return currentState
+        warnIf(
+          getterKey && !getters.hasOwnProperty(getterKey),
+          `Getter of key [${getterKey}] is not exist. ` +
+          `Please register it with when createStore.`
+        )
+
+        return getterKey
+          ? getters[getterKey]
+            ? getters[getterKey](currentState)
+            : undefined
+          : currentState
     }
 
-    const applyMiddleware = (m) => {
-        throwIf(
-            typeof m !== 'function',
-            `Expected the listener to be a function.`
-        )
+    const applyPlugin = (p) => {
+        validatePlugin(p)
 
         throwIf(
             isDispatching,
@@ -123,109 +142,158 @@ const createStore = (reducer, state) => {
             'Pass it down from the top reducer instead of reading it from the store.'
         )
 
-        middlewares.push(m)
-
-        const removeMiddleware = () => {
-            middlewares.splice(middlewares.indexOf(m), 1)
-        }
-
-        return removeMiddleware
-    }
-
-    const applyCallback = (c) => {
-        throwIf(
-            typeof c !== 'function',
-            `Expected the listener to be a function.`
-        )
-
-        throwIf(
-            isDispatching,
-            'You may not call removeMiddleware() while the reducer is executing. ' +
-            'The reducer has already received the state as an argument. ' +
-            'Pass it down from the top reducer instead of reading it from the store.'
-        )
-
-        callbacks.push(c)
-
-        const removeCallback = () => {
-            callbacks.splice(callbacks.indexOf(c), 1)
-        }
-
-        return removeCallback
+        !plugins ? plugins = [p] : plugins.push(p)
     }
 
     return {
         dispatch,
         subscribe,
-        applyMiddleware,
-        applyCallback,
-        getState
+        unsubscribe,
+        getState,
+        applyPlugin
     }
 }
 
-const observeObject = (object) => {
-    const createProxy = (prefix, object) => {
+const observeObject = (object, mode) => {
+    const createProxy = (object, observeArray) => {
         let objectProxyHandler = {
-            set: () => {
-                throw new Error(
+            set: (target, property, value) => {
+                throwIf(
+                    !isDispatching,
                     `You may not be able to assign values ​​directly to state. ` +
-                    `Please return a new state for reducing or edit with draft in reducer.`
+                    `Please return a new state for reducing or edit with state in reducer.`
                 )
+
+                return Reflect.set(target, property, value)
             },
             get: (target, property) => {
-                const value = target[property];
-
-                if (isPlainObject(value)) {
-                    return createProxy(prefix + property + '.', value)
-                } else if (Array.isArray(value)) {
-                    return new Proxy(value, arrayProxyHandler);
-                } else {
-                    return value
-                }
+                return Reflect.get(target, property)
             }
         }
 
         let arrayProxyHandler = {
             ...objectProxyHandler,
-            set: (target, property) => {
-                if (property === '__proto__') return true
+            set: (target, property, value) => {
+                if (!isDispatching) {
+                    if (property === '__proto__')  return Reflect.set(target, property, value)
 
-                throw new Error(
-                    `You may not be able to assign values ​​directly to state. ` +
-                    `Please return a new state for reducing or edit with draft in reducer.`
-                )
+                    throw new Error(
+                        `You may not be able to assign values ​​directly to state. ` +
+                        `Please return a new state for reducing or edit with state in reducer.`
+                    )
+                } else {
+                    return Reflect.set(target, property, value)
+                }
             }
         }
 
-        return new Proxy(object, objectProxyHandler);
+        for (let key in object) {
+            let val = object[key]
+
+            if (isPlainObject(val)) {
+                object[key] = createProxy(val)
+            } else if (Array.isArray(val)) {
+                object[key] = createProxy(val, true)
+            }
+        }
+
+        return new Proxy(object, observeArray ? arrayProxyHandler : objectProxyHandler)
     }
 
-    return createProxy('', object);
+    const createObserve = (obj) => {
+        for (let key in obj) {
+            let val = obj[key]
+
+            if (isPlainObject(val)) createObserve(val)
+
+            Object.defineProperty(obj, key, {
+                set: (val) => {
+                    throwIf(
+                        !isDispatching,
+                        `You may not be able to assign values ​​directly to state. ` +
+                        `Please return a new state for reducing or edit with state in reducer.`
+                    )
+
+                    obj[key] = val
+                },
+                get: () => {
+                    return val
+                }
+            })
+        }
+
+        return obj
+    }
+
+    switch (mode) {
+        case 'strict':
+            return createProxy(object)
+        case 'standard':
+            return createObserve(object)
+        case 'loose':
+            return object
+    }
 }
 
-const passReducer = (reducer) => {
-    const keys = Object.keys(reducer)
+const passReducer = (reducers) => {
+    const keys = Object.keys(reducers)
 
     keys.forEach(key => {
-        let listener = reducer[key]
+        let reducer = reducers[key]
 
         throwIf(
-            typeof listener !== 'function',
-            `Reducer for key [${key}] must be type of [Function] but got [${typeof listener}]`
+            typeof reducer !== 'function',
+            `Reducer for key [${key}] must be type of [Function] but got [${typeof reducer}]`
         )
     })
 
-    return reducer
+    return reducers
 }
 
-const walkMiddleware = (middlewares, currentState, ...args) => {
-    middlewares.forEach(m => {
-        m(currentState, ...args)
+const passGetter = (getters) => {
+    const keys = Object.keys(getters)
+
+    keys.forEach(key => {
+        let getter = getters[key]
+
+        throwIf(
+          typeof getter !== 'function',
+          `Getter for key [${key}] must be type of [Function] but got [${typeof getter}]`
+        )
     })
+
+    return getters
 }
 
-const cloneObj = (source) => {
-    return JSON.parse(JSON.stringify(source));
+const passPlugin = (plugins) => {
+    if (!plugins) return
+
+    let ps = Array.isArray(plugins) ? plugins : [plugins]
+
+    ps.forEach(p => {
+        validatePlugin(p)
+    })
+
+    return ps
+}
+
+const validatePlugin = (p) => {
+    const {before, after} = p
+    before && throwIf(
+      typeof before !== 'function',
+      `Hook [before] of Plugin must be type of [Function] but got [${typeof before}]`
+    )
+
+    after && throwIf(
+      typeof after !== 'function',
+      `Hook [before] of Plugin must be type of [Function] but got [${typeof after}]`
+    )
+}
+
+const walkPlugins = (hook, plugins, currentState, action) => {
+    plugins && plugins.forEach(p => {
+        p[hook] && p[hook](currentState, action)
+    })
 }
 
 export default createStore

@@ -5,6 +5,6 @@ import reducers from './reducers'
 
 Vue.use(VSlim);
 
-let store = VSlim.createStore(reducers, state);
+let store = VSlim.createStore({reducers, state});
 
 export default store

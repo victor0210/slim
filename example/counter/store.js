@@ -13,16 +13,20 @@ let state = {
     }
 };
 
-let store = slim.createStore({
-    increment: (draft) => {
-        draft.count++;
+const reducers = {
+    increment: (state) => {
+        state.count++;
     },
-    decrement: (draft) => {
+    decrement: (state) => {
         return {
-            ...draft,
-            count: draft.count - 1
+            ...state,
+            count: state.count - 1
         }
     }
-}, state);
+}
+
+let store = slim.createStore({
+  reducers, state
+});
 
 export default store

@@ -1,0 +1,131 @@
+# API
+
+## createStore
+**Slim** currently exposes only one interface: `createStore`, passing in a parameter `conf` object
+
+```javascript
+const store = createStore({
+    reducers,                   // default {}
+    state,                      // default {}
+    plugin,
+    getters,                    // default {}
+    mode                        // default 'strict'
+})
+```
+
+### reducers
+**reducers** is a series of methods that will receive a default parameter **state** and the rest of the custom parameters. The parameters passed in **dispatch** will be received via args. See [Reducer](/reducer for details) .html)
+
+```javascript
+const reducers = {
+    reducerKeyForDispatch: callback(state, ...args) 
+}
+```
+
+### state
+**state** is a single object stored in one state. See [State](/state.html) for details.
+
+```javascript
+const state = {
+    user: {
+        name: 'victor',
+        age: 18
+    },
+    todos: [
+        {
+            content: 'one',
+            status: 'done'
+        }
+    ]
+}
+```
+
+### plugin
+**plugin** is a simple object that provides `before` and `after` execution cycle hooks to access two parameters `state` and `action`. See [Plugin] for details (/plugin.html )
+
+```javascript
+const slimPlugin = {
+    before(state, action) {},
+    after(state, action) {}
+}
+```
+
+### getters
+**getters** is a more convenient way to construct state-specific data fetches provided by **Slim**. Used with `store.getState('getterKey')`, each getter must be a function that accepts unique parameters. State`,
+See [Getters](/state.html#getters) for details.
+
+```javascript
+const getters = {
+    username: ({user}) => user.name 
+}
+```
+
+### mode
+**mode** determines the limit level of **Slim**, optional three values ​​`strict`, `standard` and `loose`, default: `strict`, what is the difference between the three values?
+
+* **strict**: Use Proxy to listen to the data, the limit is very strong, and it is not allowed to modify any data anywhere the reducer accidentally
+* **standard**: Simplify the data with Object.defineProperty, the restriction is strong, can not limit the modification of the array or object in some specific way outside the reducer
+* **loose**: Unlimited, it is recommended to use in production environment
+
+## Store
+**store** is an overall control instance created and returned by **createStore**
+
+```javascript
+import {createStore} from 'slim'
+
+const store = createStore(...)
+
+// store: {
+//     dispatch,                    emit reducer
+//     subscribe,                   register reducer after store is created
+//     unsubscribe,                 register reducer
+//     getState,                    get the newest state
+//     applyPlugin                  add plugin after store is created
+// }
+```
+
+### dispatch
+**dispatch** triggers the reducer to execute. The first parameter is the key corresponding to the reducer. You can add multiple custom parameters later.
+
+```javascript
+// 'sayHello' should receive custom parameters like this
+const reducers = {
+    sayHello: (state, name, age, location) {...}
+}
+
+store.dispatch('sayHello', name, age, location)
+```
+### subscribe
+Similar to the subscription event, you need to pass in a reducerKey and a callback function. The callback function receives the same parameters as the reducer registration.
+
+```javascript
+store.subscribe('sayHello', (state, name, age, location) => {...})
+
+// General trigger by dispatch
+store.dispatch('sayHello', name, age, location)
+```
+
+### unsubscribe
+Corresponding to **subscribe**, **unsubscribe** will cancel the reducer subscription and pass in the corresponding reducerKey.
+
+```javascript
+store.unsubscribe('sayHello')
+```
+
+### getState
+Get the latest state, fill in the parameter `getterKey`
+
+```javascript
+// get all state
+const state = store.getState()                  
+
+// To get the state value corresponding to the getter, you need to register the getter in advance, and return undefined if the getter does not exist.
+const username = store.getState('username')     
+```
+
+### applyPlugin
+Apply plugin, receive a plugin object, only add one plugin at a time
+
+```javascript
+store.applyPlugin(slimPlugin)
+```
