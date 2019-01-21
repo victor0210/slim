@@ -1,16 +1,15 @@
 language: node_js
 
 node_js:
-  - "8.9.0"
+  - 8.9.0
 
 cache:
   directories:
-    - "node_modules"
+    - node_modules
 
 install:
-  - "npm install && npm install -g codecov"
+  - npm install -g codecov
 
 script:
-  - "istanbul cover ./node_modules/mocha/bin/_mocha --reporter lcovonly -- -R spec"
-  - "npm run test"
-  - "codecov"
+  - istanbul cover ./node_modules/mocha/bin/_mocha --reporter lcovonly -- -R spec
+  - jest && codecov
