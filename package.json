@@ -22,7 +22,8 @@
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
     "demo": "node ./example/server.js",
-    "test": "jest --notify --coverage"
+    "test": "jest --notify --coverage",
+    "cover": "codecov"
   },
   "repository": {
     "type": "git",
