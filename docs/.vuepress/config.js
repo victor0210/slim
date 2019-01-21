@@ -5,12 +5,10 @@ module.exports = {
     ],
     locales: {
         '/': {
-            lang: 'en-US',
             title: 'Slim',
             description: 'Slim: Centralized State Management With Proxy, State-Non-Editable.'
         },
         '/zh/': {
-            lang: 'zh-CN',
             title: 'Slim',
             description: 'Slim: Centralized State Management With Proxy, State-Non-Editable.'
         }
@@ -18,16 +16,12 @@ module.exports = {
     themeConfig: {
         locales: {
             '/': {
+                selectText: 'Languages',
+                label: 'English',
                 nav: [
                     {text: 'Guide', link: '/intro'},
                     {text: 'API', link: '/slimApi'},
-                    {
-                        text: 'Language', items: [
-                            {text: 'English', link: '/'},
-                            {text: '简体中文', link: '/zh/'}
-                        ]
-                    },
-                    {text: 'github', link: 'https://github.com/victor0210/slim'}
+                    {text: 'Github', link: 'https://github.com/victor0210/slim'}
                 ],
                 sidebar: [
                     {
@@ -54,16 +48,12 @@ module.exports = {
                 ]
             },
             '/zh/': {
+                selectText: '选择语言',
+                label: '简体中文',
                 nav: [
                     {text: '指南', link: '/zh/intro.html'},
-                    {text: 'API', link: '/zh/slimApi.html'},
-                    {
-                        text: '语言', items: [
-                            {text: 'English', link: '/'},
-                            {text: '简体中文', link: '/zh/'}
-                        ]
-                    },
-                    {text: 'github', link: 'https://github.com/victor0210/slim'}
+                    {text: '接口文档', link: '/zh/slimApi.html'},
+                    {text: '代码仓库', link: 'https://github.com/victor0210/slim'}
                 ],
                 sidebar: [
                     {
