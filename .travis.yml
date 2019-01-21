@@ -6,3 +6,12 @@ node_js:
 cache:
   directories:
     - "node_modules"
+
+install:
+  - npm install
+  - npm install -g codecov
+
+script:
+  - istanbul cover ./node_modules/mocha/bin/_mocha --reporter lcovonly -- -R spec
+  - codecov
+  - npm run test && codecov
