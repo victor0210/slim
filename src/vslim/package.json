@@ -1,6 +1,6 @@
 {
   "name": "vslim",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "update package structure",
   "main": "index.js",
   "scripts": {
@@ -26,6 +26,6 @@
   },
   "homepage": "https://github.com/victor0210/slim#readme",
   "dependencies": {
-    "slim-store": "^1.0.0"
+    "slim-store": "^1.0.1"
   }
 }

@@ -11,7 +11,7 @@ const merge = (base) => {
 
     return [
         Object.assign(base, {
-            input: 'src/index.js',
+            input: 'src/slim/index.js',
             output: [{
                 file: `dist/release/slim/slim-cjs.js`,
                 format: 'cjs'

@@ -1,4 +1,4 @@
-import {createStore} from '../slim'
+import {createStore} from 'slim-store'
 
 export default {
     createStore: createStore,
