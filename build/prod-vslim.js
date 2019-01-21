@@ -11,7 +11,7 @@ const merge = (base) => {
 
     return [
         Object.assign(base, {
-            input: 'src/index.js',
+            input: 'src/vslim/index.js',
             output: [{
                 file: 'dist/release/vslim/vslim-cjs.js',
                 format: 'cjs'
