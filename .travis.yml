@@ -9,7 +9,7 @@ cache:
 
 install:
   - npm install -g codecov
-  - npm install -g istanbul
+  - npm install istanbul
 
 script:
   - istanbul cover ./node_modules/mocha/bin/_mocha --reporter lcovonly -- -R spec
