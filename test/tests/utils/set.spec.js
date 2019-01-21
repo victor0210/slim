@@ -1,4 +1,4 @@
-import {createStore} from '../../../src/index'
+import {createStore} from '../../../src/slim'
 
 const getDefaultState = () => {
     const str = 'str'
