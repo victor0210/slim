@@ -3,6 +3,7 @@
 [![npm version](https://img.shields.io/npm/v/slim-store.svg)](https://www.npmjs.org/package/slim-store)
 [![Github file size](https://img.shields.io/github/size/victor0210/slim/dist/release/slim/slim.min.js.svg)](https://github.com/victor0210/slim/blob/master/dist/release/slim/slim.min.js)
 [![install size](https://packagephobia.now.sh/badge?p=slim-store)](https://packagephobia.now.sh/result?p=slim-store)
+[![codecov](https://codecov.io/gh/victor0210/slim/branch/master/graph/badge.svg)](https://codecov.io/gh/victor0210/slim)
 [![build status](https://travis-ci.org/victor0210/slim.svg?branch=master)](https://travis-ci.org/victor0210/slim)
 ![Licence](https://img.shields.io/github/license/victor0210/slim.svg)
 
