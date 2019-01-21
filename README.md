@@ -74,39 +74,11 @@ You can't edit state anywhere out of reducer in Slim, which will make you more r
 
 Slim is very elastic, it given two modes to control way of updating state in reducer
 
-**reduce: just allow return a new state**
-
-```
-(state) => {
-	...
-
-	return {
-		...state,
-		name: 'new name'
-	}
-}
-```
-
-**direct: just allow update directly**
-
-```
-(state) => {
-	state.name = "new name"
-
-	// return value would be no effect
-}
-```
-
-**default: two ways both**
-
 ### Single Source
-Slim provide a single-source state for the store, which only need paramter with a single-object. It's also can be registered in server side render
+Slim provide a single-source state for the store, which only need parameter with a single-object. It's also can be registered in server side render
 
 ### Easy to be Integrated
-There are two hooks in Slim, which make you can integrate easily.
-
-* applyMiddleware
-* applyCallback
+Slim has the Plugin mechanism, which make you can integrate easily.
 
 here is other state managers integrated by Slim:
 

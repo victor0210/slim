@@ -1,6 +1,10 @@
 .DS_Store
 node_modules/
 /dist/bundle.js
+/src/slim/dist
+/src/slim/README.md
+/src/vslim/README.md
+/src/vslim/dist
 /dist/vslim-bundle.js
 /docs/.vuepress/dist/
 npm-debug.log*

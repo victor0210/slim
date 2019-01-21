@@ -1,5 +1,5 @@
-import {createStore} from '../../../src/index'
-import {throwIf} from "../../../src/loggers/throwIf";
+import {createStore} from '../../../src/slim'
+import {throwIf} from "../../../src/slim/loggers/throwIf";
 
 const str = 'str'
 const strInObj = 'strinobj'

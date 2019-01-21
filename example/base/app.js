@@ -1,5 +1,5 @@
 // state is single object
-import createStore from '../../src/core/createStore'
+import createStore from '../../src/slim/core/createStore'
 
 const state = {
   count: 0
