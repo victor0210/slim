@@ -77,44 +77,6 @@ const createStore = (conf) => {
         return store
     }
 
-    // const subscribe = (action, reducer) => {
-    //     throwIf(
-    //         typeof reducer !== 'function',
-    //         `Expected the reducer to be a function.`
-    //     )
-    //
-    //     throwIf(
-    //         isDispatching,
-    //         `You may not call store.subscribe() while the reducer is executing. ` +
-    //         `If you would like to be notified after the store has been updated, subscribe from a ` +
-    //         `component and invoke store.getState() in the callback to access the latest state. `
-    //     )
-    //
-    //     warnIf(
-    //         currentReducer.hasOwnProperty(action),
-    //         `Action [${action}] has been registered. ` +
-    //         `It allows only the new one will be retained when you repeat the subscription.`
-    //     )
-    //
-    //     currentReducer[action] = reducer
-    // }
-
-    // const unsubscribe = (action) => {
-    //     throwIf(
-    //       isDispatching === action,
-    //       `You may not unsubscribe from a store reducer while the reducer is executing. `
-    //     )
-    //
-    //     const hasAction = currentReducer.hasOwnProperty(action)
-    //
-    //     warnIf(
-    //       !hasAction,
-    //       `Action [${action}] not exist in reducers.`
-    //     )
-    //
-    //     if (hasAction) delete currentReducer[action]
-    // }
-
     const getState = (aliasKey) => {
         throwIf(
             isDispatching,
@@ -149,12 +111,28 @@ const createStore = (conf) => {
         !plugins ? plugins = [p] : plugins.push(p)
     }
 
-    let store = {
+    let store = new Proxy({
         dispatch,
         getState,
         applyPlugin,
-        state: currentState
-    }
+        state: null
+    }, {
+        get (target, p, receiver) {
+            if (p === 'state') return currentState
+
+            return Reflect.get(target, p, receiver)
+        },
+
+        set (target, p, value) {
+            throwIf(
+              !isDispatching,
+              `You may not be able to assign values ​​directly to store. ` +
+              `Please return a new state for reducing or edit with state in reducer.`
+            )
+
+            return Reflect.set(target, p, value)
+        }
+    })
 
     return store
 }
