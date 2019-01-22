@@ -48,6 +48,6 @@ describe('run middleware', () => {
 
         expect(store.getState().num).toBe(result)
         expect(store.getState().count).toBe(result)
-        expect(store.getState()).toEqual({num: result, count: result, $$isSlimProxy: true})
+        expect(store.getState()).toEqual({num: result, count: result})
     })
 })

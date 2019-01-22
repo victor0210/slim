@@ -1,7 +1,10 @@
 import {isPlainObject, isPlainString} from "../loggers/type";
 import {throwIf, warnIf} from "../loggers/throwIf";
+import EventCenter from './eventCenter'
 
 let isDispatching = null
+
+const fnT = 'Function'
 
 /**
  * @param conf: {
@@ -12,6 +15,7 @@ let isDispatching = null
  *   aliases
  * }
  * */
+
 const createStore = (conf) => {
     let {
         reducers = {},
@@ -22,9 +26,10 @@ const createStore = (conf) => {
     } = conf
 
     if (!isPlainObject(state)) {
-        throw new TypeError(`type of state expect to [Object] but got [${typeof state}]`)
+        throw new TypeError(msgHelper.typeError(typeof state))
     }
 
+    let {on, off, emit} = new EventCenter()
     let currentState = observeObject(state, mode)
     let currentReducer = passReducer(reducers)
     let plugins = passPlugin(plugin)
@@ -34,8 +39,7 @@ const createStore = (conf) => {
     const dispatch = (action, ...args) => {
         throwIf(
             !isPlainString(action),
-            `Actions must be plain string. ` +
-            `Use custom middleware for all actions.`
+          msgHelper.shouldBe('Actions', 'string', typeof action)
         )
 
         throwIf(
@@ -56,16 +60,8 @@ const createStore = (conf) => {
             if (currentReducer[action]) {
                 let newState = currentReducer[action](currentState, ...args)
 
-                warnIf(
-                    newState === undefined,
-                    `It is recommended to return a new state to replace the old state, ` +
-                    `which is more conducive to our observation of state changes in complex situations.`
-                )
-
                 if (newState && newState !== currentState) {
                     currentState = observeObject(newState, mode)
-                } else {
-                    observeObject(currentState, mode)
                 }
             }
 
@@ -80,9 +76,7 @@ const createStore = (conf) => {
     const getState = (aliasKey) => {
         throwIf(
             isDispatching,
-            'You may not call store.getState() while the reducer is executing. ' +
-            'The reducer has already received the state as an argument. ' +
-            'Pass it down from the top reducer instead of reading it from the store.'
+            msgHelper.cantCall('store.getState()')
         )
 
         warnIf(
@@ -103,34 +97,32 @@ const createStore = (conf) => {
 
         throwIf(
             isDispatching,
-            'You may not call removeMiddleware() while the reducer is executing. ' +
-            'The reducer has already received the state as an argument. ' +
-            'Pass it down from the top reducer instead of reading it from the store.'
+          msgHelper.cantCall('removeMiddleware()')
         )
 
         !plugins ? plugins = [p] : plugins.push(p)
     }
 
     let store = new Proxy({
+        on,
+        off,
+        emit,
         dispatch,
         getState,
         applyPlugin,
-        state: null
+        state: currentState
     }, {
-        get (target, p, receiver) {
+        get (target, p) {
             if (p === 'state') return currentState
 
-            return Reflect.get(target, p, receiver)
+            return Reflect.get(target, p)
         },
 
-        set (target, p, value) {
+        set () {
             throwIf(
               !isDispatching,
-              `You may not be able to assign values ​​directly to store. ` +
-              `Please return a new state for reducing or edit with state in reducer.`
+                msgHelper.cantAssign()
             )
-
-            return Reflect.set(target, p, value)
         }
     })
 
@@ -138,16 +130,24 @@ const createStore = (conf) => {
 }
 
 const observeObject = (object, mode) => {
+    const _createProxy = (val) => {
+        if (isPlainObject(val)) {
+            return createProxy(val)
+        } else if (Array.isArray(val)) {
+            return createProxy(val, true)
+        }
+
+        return val
+    }
     const createProxy = (object, observeArray) => {
         let objectProxyHandler = {
             set: (target, property, value) => {
                 throwIf(
                     !isDispatching,
-                    `You may not be able to assign values ​​directly to state. ` +
-                    `Please return a new state for reducing or edit with state in reducer.`
+                  msgHelper.cantAssign()
                 )
 
-                return Reflect.set(target, property, value)
+                return Reflect.set(target, property, _createProxy(cloneObj(value)))
             },
             get: (target, property) => {
                 return Reflect.get(target, property)
@@ -157,43 +157,24 @@ const observeObject = (object, mode) => {
         let arrayProxyHandler = {
             ...objectProxyHandler,
             set: (target, property, value) => {
-                if (!isDispatching) {
-                    if (property === '__proto__')  return Reflect.set(target, property, value)
+                if (property === '__proto__')  return Reflect.set(target, property, value)
 
+                if (!isDispatching) {
                     throw new Error(
-                        `You may not be able to assign values ​​directly to state. ` +
-                        `Please return a new state for reducing or edit with state in reducer.`
+                      msgHelper.cantAssign()
                     )
                 } else {
-                    return Reflect.set(target, property, value)
+                    return Reflect.set(target, property, _createProxy(cloneObj(value)))
                 }
             }
         }
 
         for (let key in object) {
-            let val = object[key]
+            object[key] = _createProxy(object[key])
 
-            if (isPlainObject(val)) {
-                if (val.$$isSlimProxy) {
-                    createProxy(val)
-                } else {
-                    object[key] = createProxy(val)
-                }
-            } else if (Array.isArray(val)) {
-                if (val.$$isSlimProxy) {
-                    createProxy(val)
-                } else {
-                    object[key] = createProxy(val, true)
-                }
-            }
         }
 
-        if (object.$$isSlimProxy) {
-            return object
-        } else {
-            object.$$isSlimProxy = true
-            return new Proxy(object, observeArray ? arrayProxyHandler : objectProxyHandler)
-        }
+        return new Proxy(object, observeArray ? arrayProxyHandler : objectProxyHandler)
     }
 
     switch (mode) {
@@ -212,7 +193,7 @@ const passReducer = (reducers) => {
 
         throwIf(
             typeof reducer !== 'function',
-            `Reducer for key [${key}] must be type of [Function] but got [${typeof reducer}]`
+            `Reducer for key [${key}] must be type of [fnT] but got [${typeof reducer}]`
         )
     })
 
@@ -227,7 +208,7 @@ const passAlias = (aliases) => {
 
         throwIf(
           typeof alias !== 'function',
-          `Alias for key [${key}] must be type of [Function] but got [${typeof alias}]`
+          msgHelper.shouldBe(`Alias.${key}`, fnT, typeof alias)
         )
     })
 
@@ -250,12 +231,12 @@ const validatePlugin = (p) => {
     const {before, after} = p
     before && throwIf(
       typeof before !== 'function',
-      `Hook [before] of Plugin must be type of [Function] but got [${typeof before}]`
+      msgHelper.shouldBe('Plugin.after', fnT, typeof before)
     )
 
     after && throwIf(
       typeof after !== 'function',
-      `Hook [before] of Plugin must be type of [Function] but got [${typeof after}]`
+      msgHelper.shouldBe('Plugin.after', fnT, typeof after)
     )
 }
 
@@ -264,5 +245,17 @@ const walkPlugins = (hook, plugins, currentState, action) => {
         p[hook] && p[hook](currentState, action)
     })
 }
+
+const msgHelper = {
+    typeError: (type) => `type of state expect to [Object] but got [${type}]`,
+    shouldBe: (name, expect, got) => `${name} should be type of [${expect}] but got [${got}]`,
+    cantCall: (key) => `You may not call ${key} while the reducer is executing. ` +
+      'The reducer has already received the state as an argument. ' +
+      'Pass it down from the top reducer instead of reading it from the store.',
+    cantAssign: () => `You may not be able to assign values ​​directly to state. ` +
+      `Please return a new state for reducing or edit with state in reducer.`
+}
+
+const cloneObj = p => JSON.parse(JSON.stringify(p))
 
 export default createStore
