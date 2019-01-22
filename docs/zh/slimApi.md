@@ -76,10 +76,12 @@ const store = createStore(...)
 
 // store: {
 //     dispatch,                    触发reducer
-//     subscribe,                   在注册之后新增reducer
-//     unsubscribe,                 注销reducer
 //     getState,                    获取最新state
-//     applyPlugin                  在注册之后新增插件
+//     applyPlugin,                 在注册之后新增插件
+//     state                        state
+//     on                           EventCenter.on
+//     off                          EventCenter.off
+//     emit                         EventCenter.emit
 // }
 ```
 
@@ -93,22 +95,11 @@ const reducers = {
 }
 
 store.dispatch('sayHello', name, age, location)
-```
-### subscribe
-类似于订阅事件，需要传入一个reducerKey和一个回调函数，回调函数接收参数和reducer注册一样
 
-```javascript
-store.subscribe('sayHello', (state, name, age, location) => {...})
-
-// 通用通过dispatch触发
-store.dispatch('sayHello', name, age, location)
-```
-
-### unsubscribe
-对应**subscribe**，**unsubscribe**将会取消reducer订阅，传入对应的reducerKey即可
-
-```javascript
-store.unsubscribe('sayHello')
+// 链式调用
+store.dispatch('one')
+  .dispatch('two')
+  .dispatch('three')
 ```
 
 ### getState
@@ -118,7 +109,7 @@ store.unsubscribe('sayHello')
 // 获取整个state
 const state = store.getState()                  
 
-// 获取getter对应的state值，需要提前注册getter，如果getter不存在则返回undefined
+// 获取alias对应的state值，需要提前注册aliases，如果alias不存在则返回undefined
 const username = store.getState('username')     
 ```
 
@@ -128,3 +119,6 @@ const username = store.getState('username')
 ```javascript
 store.applyPlugin(slimPlugin)
 ```
+
+### on / off / emit
+[EventCenter](/zh/event.html)

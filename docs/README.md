@@ -6,31 +6,38 @@ tagline: Centralized State Management With Proxy, State-Non-Editable.
 actionText: QuickStart →
 actionLink: /intro
 features:
-- title: State-Readonly
-  details: Don't worry about the state's unpredictable mutation because the state can only be modified inside the reducer.
-- title: Single-Source
-  details: The state is centrally stored and is easy to initial in the isomorphic application.
-- title: Easy-Integrated
-  details: State hooks are easy to integrate quickly into mainstream frameworks such as Vue.
-footer: MIT Licensed | Copyright © 2018-present Victor
+- title: Exquisite
+  details: Simple API and tiny volume。
+- title: Strong-Restriction
+  details: State updates are completely limited to reducers, and centralized management of update operations makes state changes more predictable。
+- title: Independently
+  details: Running independently of any framework.
+footer: MIT Licensed | Copyright © 2019-present Victor
 ---
 
-## Usage
+:::tip
+Slim can be applied to any framework because it does not depend on any framework. Integration to frameworks will very easy by using [plug-in mechanism](/zh/plugin.html).
+:::
 
-### Installation
+## Installation
 
-#### Cdn
+### CDN
 ```html
 <script src="https://unpkg.com/slim-store@1.0.0/slim.min.js"></script>
 ```
 
-#### Npm
+### NPM
 
 ```bash
 npm install slim-store
 ```
 
-### Use in code
+### Yarn
+```bash
+yarn add slim
+```
+
+## Usage
 
 ```javascript
 // state is single object

@@ -1,4 +1,4 @@
-import {createStore} from 'slim-store'
+import {createStore} from '../slim/index'
 
 export default {
     createStore: createStore,
@@ -42,7 +42,7 @@ export default {
 
                 this.store.applyPlugin({
                     after: (state) => {
-                        this.$set(this.store, 'state', state)
+                        this.$children[0].$forceUpdate()
                     }
                 })
             } else if (options.parent && options.parent.store) {

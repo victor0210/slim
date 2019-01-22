@@ -76,10 +76,12 @@ const store = createStore(...)
 
 // store: {
 //     dispatch,                    emit reducer
-//     subscribe,                   register reducer after store is created
-//     unsubscribe,                 register reducer
-//     getState,                    get the newest state
-//     applyPlugin                  add plugin after store is created
+//     getState,                    get the newest state or alias
+//     applyPlugin,                 add plugin after store is created
+//     state,                       state
+//     on                           EventCenter.on
+//     off                          EventCenter.off
+//     emit                         EventCenter.emit
 // }
 ```
 
@@ -93,22 +95,11 @@ const reducers = {
 }
 
 store.dispatch('sayHello', name, age, location)
-```
-### subscribe
-Similar to the subscription event, you need to pass in a reducerKey and a callback function. The callback function receives the same parameters as the reducer registration.
 
-```javascript
-store.subscribe('sayHello', (state, name, age, location) => {...})
-
-// General trigger by dispatch
-store.dispatch('sayHello', name, age, location)
-```
-
-### unsubscribe
-Corresponding to **subscribe**, **unsubscribe** will cancel the reducer subscription and pass in the corresponding reducerKey.
-
-```javascript
-store.unsubscribe('sayHello')
+// with chain
+store.dispatch('one')
+  .dispatch('two')
+  .dispatch('three')
 ```
 
 ### getState
@@ -118,7 +109,7 @@ Get the latest state, fill in the parameter `getterKey`
 // get all state
 const state = store.getState()                  
 
-// To get the state value corresponding to the getter, you need to register the getter in advance, and return undefined if the getter does not exist.
+// To get the state value corresponding to the alias, you need to register the alias in advance, and return undefined if the alias does not exist.
 const username = store.getState('username')     
 ```
 
@@ -128,3 +119,6 @@ Apply plugin, receive a plugin object, only add one plugin at a time
 ```javascript
 store.applyPlugin(slimPlugin)
 ```
+
+### on / off / emit
+[EventCenter](/event.html)
