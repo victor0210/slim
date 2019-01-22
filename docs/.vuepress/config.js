@@ -38,7 +38,8 @@ module.exports = {
                         children: [
                             ['/state', 'State'],
                             ['/reducer', 'Reducer'],
-                            ['/plugin', 'Plugin']
+                            ['/plugin', 'Plugin'],
+                            ['/event', 'EventCenter']
                         ]
                     },
                     ['/slimApi', 'API'],
@@ -69,7 +70,8 @@ module.exports = {
                         children: [
                             ['/zh/state.html', 'State'],
                             ['/zh/reducer.html', 'Reducer'],
-                            ['/zh/plugin.html', 'Plugin']
+                            ['/zh/plugin.html', 'Plugin'],
+                            ['/zh/event', 'EventCenter']
                         ]
                     },
                     ['/zh/slimApi.html', 'API'],

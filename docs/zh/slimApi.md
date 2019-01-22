@@ -79,6 +79,9 @@ const store = createStore(...)
 //     getState,                    获取最新state
 //     applyPlugin,                 在注册之后新增插件
 //     state                        state
+//     on                           EventCenter.on
+//     off                          EventCenter.off
+//     emit                         EventCenter.emit
 // }
 ```
 
@@ -101,7 +104,7 @@ store.dispatch('sayHello', name, age, location)
 // 获取整个state
 const state = store.getState()                  
 
-// 获取getter对应的state值，需要提前注册getter，如果getter不存在则返回undefined
+// 获取alias对应的state值，需要提前注册aliases，如果alias不存在则返回undefined
 const username = store.getState('username')     
 ```
 
@@ -111,3 +114,6 @@ const username = store.getState('username')
 ```javascript
 store.applyPlugin(slimPlugin)
 ```
+
+### on / off / emit
+[EventCenter](/zh/event.html)

@@ -79,6 +79,9 @@ const store = createStore(...)
 //     getState,                    get the newest state or alias
 //     applyPlugin,                 add plugin after store is created
 //     state,                       state
+//     on                           EventCenter.on
+//     off                          EventCenter.off
+//     emit                         EventCenter.emit
 // }
 ```
 
@@ -101,7 +104,7 @@ Get the latest state, fill in the parameter `getterKey`
 // get all state
 const state = store.getState()                  
 
-// To get the state value corresponding to the getter, you need to register the getter in advance, and return undefined if the getter does not exist.
+// To get the state value corresponding to the alias, you need to register the alias in advance, and return undefined if the alias does not exist.
 const username = store.getState('username')     
 ```
 
@@ -111,3 +114,6 @@ Apply plugin, receive a plugin object, only add one plugin at a time
 ```javascript
 store.applyPlugin(slimPlugin)
 ```
+
+### on / off / emit
+[EventCenter](/event.html)
