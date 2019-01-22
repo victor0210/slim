@@ -17,6 +17,7 @@ Therefore, the attention of state management is to extract the state that needs 
 * **Simple operation**
 * **Smaller size**
 * **Easy to integrate into various business scenarios or frameworks**
+* **Built-in event center to exhaust global events**
 
 ### Simple To Use
 Just register `State` and `Reducer` as below to use. [More](/zh/reducer.html)
@@ -80,4 +81,4 @@ As long as you need state management, you can use Slim, Slim is a simple state m
 ## Extensions
 
 * [Use Slim with Vue](/zh/vslim.html)
-* [Use Slim with React]()
+* Use Slim with React（To be support）
