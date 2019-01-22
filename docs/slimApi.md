@@ -95,6 +95,11 @@ const reducers = {
 }
 
 store.dispatch('sayHello', name, age, location)
+
+// with chain
+store.dispatch('one')
+  .dispatch('two')
+  .dispatch('three')
 ```
 
 ### getState

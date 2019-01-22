@@ -95,6 +95,11 @@ const reducers = {
 }
 
 store.dispatch('sayHello', name, age, location)
+
+// 链式调用
+store.dispatch('one')
+  .dispatch('two')
+  .dispatch('three')
 ```
 
 ### getState
