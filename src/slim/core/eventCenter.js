@@ -1,18 +1,16 @@
 import {warnIf} from '../loggers/throwIf'
 
-class EventCenter {
-  constructor() {
-    this.eventMap = []
-  }
+let eventMap = {}
 
+const EventCenter = {
   on(eventName, handler) {
-    if (!this.eventMap[eventName]) this.eventMap[eventName] = []
+    if (!eventMap[eventName]) eventMap[eventName] = []
 
-    this.eventMap[eventName].push(handler)
-  }
+    eventMap[eventName].push(handler)
+  },
 
   off(eventName, handler) {
-    let events = this.eventMap[eventName]
+    let events = eventMap[eventName]
 
     // 事件集合不存在
     if (!Array.isArray(events)) return
@@ -24,17 +22,19 @@ class EventCenter {
 
     // 删除事件
     events.splice(idx, 1)
-  }
+  },
 
   emit(eventName, ...args) {
-    const handler = this.eventMap[eventName]
+    const handler = eventMap[eventName]
 
     warnIf(
       !handler,
       `there are no handler for event [${eventName}]`
     )
 
-    handler && handler(...args)
+    handler && handler.forEach(h => {
+      h(...args)
+    })
   }
 }
 

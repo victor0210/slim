@@ -29,7 +29,7 @@ const createStore = (conf) => {
         throw new TypeError(msgHelper.typeError(typeof state))
     }
 
-    let {on, off, emit} = new EventCenter()
+    let {on, off, emit} = EventCenter
     let currentState = observeObject(state, mode)
     let currentReducer = passReducer(reducers)
     let plugins = passPlugin(plugin)
