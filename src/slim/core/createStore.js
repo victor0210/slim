@@ -62,7 +62,7 @@ const createStore = (conf) => {
                     `which is more conducive to our observation of state changes in complex situations.`
                 )
 
-                if (newState) {
+                if (newState && newState !== currentState) {
                     currentState = observeObject(newState, mode)
                 } else {
                     observeObject(currentState, mode)
