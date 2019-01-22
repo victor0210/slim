@@ -1,6 +1,13 @@
 import {createStore} from '../../../src/slim'
 
-const reducers = {}
+const reducers = {
+    'incrementCount': (state) => {
+    state.count += 1
+},
+    'incrementNum': (state) => {
+    state.num += 1
+}
+}
 
 const state = {
     num: 1,
@@ -32,14 +39,6 @@ const store = createStore({
 })
 
 store.applyPlugin(countPlugin)
-
-store.subscribe('incrementCount', (state) => {
-    state.count += 1
-})
-
-store.subscribe('incrementNum', (state) => {
-    state.num += 1
-})
 
 describe('run middleware', () => {
     const result = 4

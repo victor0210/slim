@@ -9,7 +9,7 @@ let isDispatching = null
  *   state,
  *   mode,
  *   plugin,
- *   getters
+ *   aliases
  * }
  * */
 const createStore = (conf) => {
@@ -17,7 +17,7 @@ const createStore = (conf) => {
         reducers = {},
         state = {},
         plugin,
-        getters = {},
+        aliases = {},
         mode = 'strict'
     } = conf
 
@@ -29,7 +29,7 @@ const createStore = (conf) => {
     let currentReducer = passReducer(reducers)
     let plugins = passPlugin(plugin)
 
-    getters = passGetter(getters)
+    aliases = passAlias(aliases)
 
     const dispatch = (action, ...args) => {
         throwIf(
@@ -74,48 +74,48 @@ const createStore = (conf) => {
             isDispatching = null
         }
 
-        return action
+        return store
     }
 
-    const subscribe = (action, reducer) => {
-        throwIf(
-            typeof reducer !== 'function',
-            `Expected the reducer to be a function.`
-        )
+    // const subscribe = (action, reducer) => {
+    //     throwIf(
+    //         typeof reducer !== 'function',
+    //         `Expected the reducer to be a function.`
+    //     )
+    //
+    //     throwIf(
+    //         isDispatching,
+    //         `You may not call store.subscribe() while the reducer is executing. ` +
+    //         `If you would like to be notified after the store has been updated, subscribe from a ` +
+    //         `component and invoke store.getState() in the callback to access the latest state. `
+    //     )
+    //
+    //     warnIf(
+    //         currentReducer.hasOwnProperty(action),
+    //         `Action [${action}] has been registered. ` +
+    //         `It allows only the new one will be retained when you repeat the subscription.`
+    //     )
+    //
+    //     currentReducer[action] = reducer
+    // }
 
-        throwIf(
-            isDispatching,
-            `You may not call store.subscribe() while the reducer is executing. ` +
-            `If you would like to be notified after the store has been updated, subscribe from a ` +
-            `component and invoke store.getState() in the callback to access the latest state. `
-        )
+    // const unsubscribe = (action) => {
+    //     throwIf(
+    //       isDispatching === action,
+    //       `You may not unsubscribe from a store reducer while the reducer is executing. `
+    //     )
+    //
+    //     const hasAction = currentReducer.hasOwnProperty(action)
+    //
+    //     warnIf(
+    //       !hasAction,
+    //       `Action [${action}] not exist in reducers.`
+    //     )
+    //
+    //     if (hasAction) delete currentReducer[action]
+    // }
 
-        warnIf(
-            currentReducer.hasOwnProperty(action),
-            `Action [${action}] has been registered. ` +
-            `It allows only the new one will be retained when you repeat the subscription.`
-        )
-
-        currentReducer[action] = reducer
-    }
-
-    const unsubscribe = (action) => {
-        throwIf(
-          isDispatching === action,
-          `You may not unsubscribe from a store reducer while the reducer is executing. `
-        )
-
-        const hasAction = currentReducer.hasOwnProperty(action)
-
-        warnIf(
-          !hasAction,
-          `Action [${action}] not exist in reducers.`
-        )
-
-        if (hasAction) delete currentReducer[action]
-    }
-
-    const getState = (getterKey) => {
+    const getState = (aliasKey) => {
         throwIf(
             isDispatching,
             'You may not call store.getState() while the reducer is executing. ' +
@@ -124,14 +124,14 @@ const createStore = (conf) => {
         )
 
         warnIf(
-          getterKey && !getters.hasOwnProperty(getterKey),
-          `Getter of key [${getterKey}] is not exist. ` +
+          aliasKey && !aliases.hasOwnProperty(aliasKey),
+          `Alias of key [${aliasKey}] is not exist. ` +
           `Please register it with when createStore.`
         )
 
-        return getterKey
-          ? getters[getterKey]
-            ? getters[getterKey](currentState)
+        return aliasKey
+          ? aliases[aliasKey]
+            ? aliases[aliasKey](currentState)
             : undefined
           : currentState
     }
@@ -149,13 +149,14 @@ const createStore = (conf) => {
         !plugins ? plugins = [p] : plugins.push(p)
     }
 
-    return {
+    let store = {
         dispatch,
-        subscribe,
-        unsubscribe,
         getState,
-        applyPlugin
+        applyPlugin,
+        state: currentState
     }
+
+    return store
 }
 
 const observeObject = (object, mode) => {
@@ -240,19 +241,19 @@ const passReducer = (reducers) => {
     return reducers
 }
 
-const passGetter = (getters) => {
-    const keys = Object.keys(getters)
+const passAlias = (aliases) => {
+    const keys = Object.keys(aliases)
 
     keys.forEach(key => {
-        let getter = getters[key]
+        let alias = aliases[key]
 
         throwIf(
-          typeof getter !== 'function',
-          `Getter for key [${key}] must be type of [Function] but got [${typeof getter}]`
+          typeof alias !== 'function',
+          `Alias for key [${key}] must be type of [Function] but got [${typeof alias}]`
         )
     })
 
-    return getters
+    return aliases
 }
 
 const passPlugin = (plugins) => {

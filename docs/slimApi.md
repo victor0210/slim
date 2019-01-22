@@ -76,10 +76,9 @@ const store = createStore(...)
 
 // store: {
 //     dispatch,                    emit reducer
-//     subscribe,                   register reducer after store is created
-//     unsubscribe,                 register reducer
-//     getState,                    get the newest state
-//     applyPlugin                  add plugin after store is created
+//     getState,                    get the newest state or alias
+//     applyPlugin,                 add plugin after store is created
+//     state,                       state
 // }
 ```
 
@@ -93,22 +92,6 @@ const reducers = {
 }
 
 store.dispatch('sayHello', name, age, location)
-```
-### subscribe
-Similar to the subscription event, you need to pass in a reducerKey and a callback function. The callback function receives the same parameters as the reducer registration.
-
-```javascript
-store.subscribe('sayHello', (state, name, age, location) => {...})
-
-// General trigger by dispatch
-store.dispatch('sayHello', name, age, location)
-```
-
-### unsubscribe
-Corresponding to **subscribe**, **unsubscribe** will cancel the reducer subscription and pass in the corresponding reducerKey.
-
-```javascript
-store.unsubscribe('sayHello')
 ```
 
 ### getState

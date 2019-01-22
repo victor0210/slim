@@ -76,10 +76,9 @@ const store = createStore(...)
 
 // store: {
 //     dispatch,                    触发reducer
-//     subscribe,                   在注册之后新增reducer
-//     unsubscribe,                 注销reducer
 //     getState,                    获取最新state
-//     applyPlugin                  在注册之后新增插件
+//     applyPlugin,                 在注册之后新增插件
+//     state                        state
 // }
 ```
 
@@ -93,22 +92,6 @@ const reducers = {
 }
 
 store.dispatch('sayHello', name, age, location)
-```
-### subscribe
-类似于订阅事件，需要传入一个reducerKey和一个回调函数，回调函数接收参数和reducer注册一样
-
-```javascript
-store.subscribe('sayHello', (state, name, age, location) => {...})
-
-// 通用通过dispatch触发
-store.dispatch('sayHello', name, age, location)
-```
-
-### unsubscribe
-对应**subscribe**，**unsubscribe**将会取消reducer订阅，传入对应的reducerKey即可
-
-```javascript
-store.unsubscribe('sayHello')
 ```
 
 ### getState

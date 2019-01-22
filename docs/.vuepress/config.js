@@ -38,7 +38,6 @@ module.exports = {
                         children: [
                             ['/state', 'State'],
                             ['/reducer', 'Reducer'],
-                            ['/subscribe', 'Subscribe'],
                             ['/plugin', 'Plugin']
                         ]
                     },
@@ -70,7 +69,6 @@ module.exports = {
                         children: [
                             ['/zh/state.html', 'State'],
                             ['/zh/reducer.html', 'Reducer'],
-                            ['/zh/subscribe.html', 'Subscribe'],
                             ['/zh/plugin.html', 'Plugin']
                         ]
                     },
