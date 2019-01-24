@@ -1,4 +1,4 @@
-import {warnIf} from '../loggers/throwIf'
+import {warnIf} from '../helpers/throwIf'
 
 let eventMap = {}
 
