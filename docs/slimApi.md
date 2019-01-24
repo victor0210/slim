@@ -1,6 +1,13 @@
 # API
 
-## createStore
+### Slim.use
+Apply plugin, receive a plugin object, only add one plugin at a time
+
+```javascript
+Slim.use(slimPlugin)
+```
+
+## Slim.createStore
 **Slim** currently exposes only one interface: `createStore`, passing in a parameter `conf` object
 
 ```javascript
@@ -45,6 +52,7 @@ const state = {
 
 ```javascript
 const slimPlugin = {
+    before(store) {},
     before(state, action) {},
     after(state, action) {}
 }
@@ -110,13 +118,6 @@ const state = store.getState()
 
 // To get the state value corresponding to the alias, you need to register the alias in advance, and return undefined if the alias does not exist.
 const username = store.getState('username')     
-```
-
-### Slim.use
-Apply plugin, receive a plugin object, only add one plugin at a time
-
-```javascript
-Slim.use(slimPlugin)
 ```
 
 ### on / off / emit

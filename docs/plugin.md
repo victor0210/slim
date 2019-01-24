@@ -22,15 +22,16 @@ const store = Slim.createStore({
 
 ## Writing a plugin
 
-**Slim** is also very simple to write plugins. The plugin provides two api `before` and `after`, which are used before and after the reducer to receive two parameters `state` and `action`, multiple **Plugin** will be executed in the order of registration
+**Slim** is also very simple to write plugins. The plugin provides three api `init`、`before` and `after`, which are used before and after the reducer to receive two parameters `state` and `action`, multiple **Plugin** will be executed in the order of registration
 
 :::warning
-Plugin usage is sequential, and the results affect each other, but don't feel free to manipulate **State** in **Plugin** before ensuring that the operation is harmless. In general, please read **State** in **Plugin** and put the operation in **Reducer**.
+`init` running once with store creat. Plugin usage is sequential, and the results affect each other, but don't feel free to manipulate **State** in **Plugin** before ensuring that the operation is harmless. In general, please read **State** in **Plugin** and put the operation in **Reducer**.
 :::
 
-Register when create **Store**
+Injection with **Store** creating. 
+
 ```javascript
-import { createStore } from 'slim'
+import Slim from 'slim-store'
 
 const state = {
     count: 0
@@ -43,6 +44,9 @@ const counters = {
 }
 
 const counterPlugin = {
+	init(store) {
+ 	    // inject events
+	},
     before(state, action) {
         if (action === 'increment') {
             console.log('before count change', state.count)
@@ -67,15 +71,14 @@ store.dispatch('increment')
 // output: before count change 0
 // output: after count change 1
 ```
-Register after **Store** is created
-```javascript
-const store = Slim.createStore({
-    reducers: counters,
-    state: state
-})
 
-Slim.use(slimPlugin)
-```
+Injection before **Store** created.
+
+```javascript
+Slim.use(somePlugin)
+
+const store = Slim.createStore(...)
+``` 
 
 ## Plugins integrated with Slim 
 * [vslim (Slim-based state management framework in Vue)](/vslim.html)

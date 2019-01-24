@@ -1,6 +1,13 @@
 # API
 
-## createStore
+### Slim.use
+接入插件，接收一个plugin对象，每次只能添加一个plugin
+
+```javascript
+Slim.use(slimPlugin)
+```
+
+## Slim.createStore
 **Slim**目前只对外暴露了一个接口：`createStore`，传入一个参数`conf`对象
 
 ```javascript
@@ -45,6 +52,7 @@ const state = {
 
 ```javascript
 const slimPlugin = {
+    init(store) {},
     before(state, action) {},
     after(state, action) {}
 }
@@ -110,13 +118,6 @@ const state = store.getState()
 
 // 获取alias对应的state值，需要提前注册aliases，如果alias不存在则返回undefined
 const username = store.getState('username')     
-```
-
-### Slim.use
-接入插件，接收一个plugin对象，每次只能添加一个plugin
-
-```javascript
-Slim.use(slimPlugin)
 ```
 
 ### on / off / emit
