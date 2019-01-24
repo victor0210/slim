@@ -16,7 +16,7 @@
 
 ### on(eventName[, listener])
 ```javascript
-const store = createStore(...)
+const store = Slim.createStore(...)
 
 const listener = (name, age) => { 
   console.log(`hello ${name}, I'm ${age}-years-old.`) 

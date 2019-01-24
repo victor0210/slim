@@ -1,4 +1,4 @@
-import {createStore} from '../../../src/slim'
+import Slim from '../../../src/slim'
 
 const reducers = {
     'incrementCount': (state) => {
@@ -32,13 +32,13 @@ const countPlugin = {
     }
 }
 
-const store = createStore({
+Slim.use(countPlugin)
+
+const store = Slim.createStore({
     reducers,
     state,
     plugin: numPlugin
 })
-
-store.applyPlugin(countPlugin)
 
 describe('run middleware', () => {
     const result = 4

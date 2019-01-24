@@ -7,7 +7,7 @@ In order to integrate **Slim** into various popular frameworks, it is more condu
 The plugin is very simple to use, just add **Plugin** when registering.
 
 ```javascript
-const store = createStore({
+const store = Slim.createStore({
     plugin: loggerPlugin
 })
 ```
@@ -15,7 +15,7 @@ const store = createStore({
 Multiple plugins use array wrappers.
 
 ```javascript
-const store = createStore({
+const store = Slim.createStore({
     plugin: [loggerPlugin, capturePlugin]
 })
 ```
@@ -56,7 +56,7 @@ const counterPlugin = {
     }
 }
 
-const store = createStore({
+const store = Slim.createStore({
     reducers: counters,
     state: state,
     plugin: [counterPlugin]
@@ -69,12 +69,12 @@ store.dispatch('increment')
 ```
 Register after **Store** is created
 ```javascript
-const store = createStore({
+const store = Slim.createStore({
     reducers: counters,
     state: state
 })
 
-store.applyPlugin(slimPlugin)
+Slim.use(slimPlugin)
 ```
 
 ## Plugins integrated with Slim 

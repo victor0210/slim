@@ -3,7 +3,10 @@ import {isPlainObject, isPlainString} from '../helpers/type'
 import {cloneObj, msgHelper, passAlias, passPlugin, passReducer, validatePlugin, walkPlugins} from '../helpers/util'
 import {throwIf, warnIf} from '../helpers/throwIf'
 
+let injectPlugins = []
 let isDispatching = null
+let isStrict = false
+let store
 
 /**
  * @param conf: {
@@ -15,7 +18,7 @@ let isDispatching = null
  * }
  * */
 
-const createStore = (conf) => {
+export const createStore = (conf) => {
     let {
         reducers = {},
         state = {},
@@ -28,10 +31,17 @@ const createStore = (conf) => {
         throw new TypeError(msgHelper.typeError(typeof state))
     }
 
+    isStrict = mode === 'strict'
+
     let {on, off, emit} = EventCenter
-    let currentState = observeObject(state, mode)
-    let currentReducer = passReducer(reducers)
-    let plugins = passPlugin(plugin)
+    let currentState = observeObject(state)
+    let currentReducer = passReducer({
+        ...reducers,
+        '__SLIM_DEVTOOL_SET__': (state, stateFromDevTool) => stateFromDevTool
+    })
+
+
+    let plugins = [...injectPlugins, ...passPlugin(plugin)]
 
     aliases = passAlias(aliases)
 
@@ -50,7 +60,7 @@ const createStore = (conf) => {
             isDispatching = action
 
             warnIf(
-                !reducers[action],
+                !currentReducer[action],
                 `You may not has not registered [${action}] in store`
             )
 
@@ -58,9 +68,10 @@ const createStore = (conf) => {
 
             if (currentReducer[action]) {
                 let newState = currentReducer[action](currentState, ...args)
-
                 if (newState && newState !== currentState) {
-                    currentState = observeObject(newState, mode)
+                    currentState = observeObject(newState)
+
+                    store.state = currentState
                 }
             }
 
@@ -91,44 +102,21 @@ const createStore = (conf) => {
           : currentState
     }
 
-    const applyPlugin = (p) => {
-        validatePlugin(p)
-
-        throwIf(
-            isDispatching,
-          msgHelper.cantCall('removeMiddleware()')
-        )
-
-        !plugins ? plugins = [p] : plugins.push(p)
-    }
-
-    let store = new Proxy({
+    store = {
         on,
         off,
         emit,
         dispatch,
         getState,
-        applyPlugin,
         state: currentState
-    }, {
-        get (target, p) {
-            if (p === 'state') return currentState
+    }
 
-            return Reflect.get(target, p)
-        },
-
-        set () {
-            throwIf(
-              !isDispatching,
-                msgHelper.cantAssign()
-            )
-        }
-    })
+    walkPlugins('init', plugins, store)
 
     return store
 }
 
-const observeObject = (object, mode) => {
+const observeObject = (object) => {
     const _createProxy = (val) => {
         if (isPlainObject(val)) {
             return createProxy(val)
@@ -176,12 +164,12 @@ const observeObject = (object, mode) => {
         return new Proxy(object, observeArray ? arrayProxyHandler : objectProxyHandler)
     }
 
-    switch (mode) {
-        case 'strict':
-            return createProxy(object)
-        case 'loose':
-            return object
-    }
+    return isStrict ? createProxy(object) : object
 }
 
-export default createStore
+export const use = (p) => {
+    validatePlugin(p)
+
+    injectPlugins.push(p)
+}
+

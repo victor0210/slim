@@ -1,7 +1,7 @@
-import {createStore} from '../../../src/slim'
+import Slim from '../../../src/slim'
 
 describe('event center test', () => {
-    const store = createStore({
+    const store = Slim.createStore({
         reducers: {},
         state: {},
     })

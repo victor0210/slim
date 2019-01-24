@@ -41,7 +41,7 @@ yarn add slim
 
 ```javascript
 // state is single object
-import {createStore} from 'slim'
+import Slim from 'slim-store'
 
 const state = {
     count: 0
@@ -55,7 +55,7 @@ const reducers = {
 }
 
 // create store
-const store = createStore({
+const store = Slim.createStore({
     reducers,
     state
 })

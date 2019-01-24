@@ -25,7 +25,7 @@ const reducers = {
   }
 }
 
-window.store = createStore({
+window.store = Slim.createStore({
   reducers,
   state
 })

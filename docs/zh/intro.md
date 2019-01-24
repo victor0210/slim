@@ -30,7 +30,7 @@ const reducers = {
   changeName: state => { state.name = 'hello everyone!' }
 }
 
-const store = createStore({state, reducers})
+const store = Slim.createStore({state, reducers})
 
 store.dispatch('changeName') 
 ```

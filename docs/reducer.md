@@ -25,7 +25,7 @@ const counters = {
     }
 }
 
-const store = createStore({
+const store = Slim.createStore({
     reducers: counters,
     state
 })

@@ -39,7 +39,7 @@ yarn add slim
 ## 代码引入
 
 ```javascript
-import {createStore} from 'slim'
+import Slim from 'slim-store'
 
 // state is single object
 const state = {
@@ -54,7 +54,7 @@ const reducers = {
 }
 
 // create store
-const store = createStore({
+const store = Slim.createStore({
     reducers,
     state
 })

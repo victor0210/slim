@@ -1,7 +1,28 @@
-import {createStore} from '../slim/index'
+import Slim from '../slim/index'
 
-export default {
-    createStore: createStore,
+let _rootComponent
+let _statePrev
+
+let slimPlugin = {
+    after(state) {
+        if (state !== _statePrev) _statePrev = state
+
+        if (_rootComponent) {
+            _rootComponent.$set(_rootComponent.store, 'state', state)
+        }
+    }
+}
+
+let devPlugin = {
+    init(store) {
+        store.on('__SLIM_DEVTOOL_ANSWER__', (state) => {
+            store.dispatch('__SLIM_DEVTOOL_SET__', state)
+        })
+    }
+}
+
+const vuePlugin = {
+    createStore: Slim.createStore,
     install: function (Vue) {
         const version = Number(Vue.version.split('.')[0])
 
@@ -40,14 +61,16 @@ export default {
                         state: options.store.getState()
                     }
 
-                this.store.applyPlugin({
-                    after: (state) => {
-                        this.$children[0].$forceUpdate()
-                    }
-                })
+                    _rootComponent = this
+                setTimeout(this)
             } else if (options.parent && options.parent.store) {
                 this.store = options.parent.store
             }
         }
     }
 }
+
+Slim.use(devPlugin)
+Slim.use(slimPlugin)
+
+export default vuePlugin

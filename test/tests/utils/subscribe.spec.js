@@ -1,4 +1,4 @@
-import {createStore} from '../../../src/slim'
+import Slim from '../../../src/slim'
 
 const str = 'str'
 const strInObj = 'strinobj'
@@ -71,7 +71,7 @@ const state = {
     arrObj: arrObj
 }
 
-const store = createStore({
+const store = Slim.createStore({
     reducers,
     state
 })

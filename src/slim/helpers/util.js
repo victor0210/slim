@@ -1,6 +1,8 @@
 import {throwIf} from './throwIf'
+import {isPlainObject} from './type'
 
 const fnT = 'Function'
+const fnO = 'Object'
 
 export const passReducer = (reducers) => {
     const keys = Object.keys(reducers)
@@ -33,7 +35,7 @@ export const passAlias = (aliases) => {
 }
 
 export const passPlugin = (plugins) => {
-    if (!plugins) return
+    if (!plugins) return []
 
     let ps = Array.isArray(plugins) ? plugins : [plugins]
 
@@ -45,10 +47,16 @@ export const passPlugin = (plugins) => {
 }
 
 export const validatePlugin = (p) => {
+    throwIf(
+      !isPlainObject(p),
+      msgHelper.shouldBe('Plugin', fnO, typeof p)
+    )
+
     const {before, after} = p
+
     before && throwIf(
       typeof before !== 'function',
-      msgHelper.shouldBe('Plugin.after', fnT, typeof before)
+      msgHelper.shouldBe('Plugin.before', fnT, typeof before)
     )
 
     after && throwIf(
@@ -57,10 +65,14 @@ export const validatePlugin = (p) => {
     )
 }
 
-export const walkPlugins = (hook, plugins, currentState, action) => {
+export const walkPlugins = (hook, plugins, ...args) => {
     plugins && plugins.forEach(p => {
-        p[hook] && p[hook](currentState, action)
+        walkPlugin(hook, p, ...args)
     })
+}
+
+export const walkPlugin = (hook, plugin, ...args) => {
+    plugin[hook] && plugin[hook](...args)
 }
 
 export const msgHelper = {
@@ -74,3 +86,5 @@ export const msgHelper = {
 }
 
 export const cloneObj = p => JSON.parse(JSON.stringify(p))
+
+export const parse2Json = data => isPlainObject(data) ? data : JSON.parse(data)

@@ -7,7 +7,7 @@
 插件使用非常的简单，只需要在注册时添加**Plugin**即可
 
 ```javascript
-const store = createStore({
+const store = Slim.createStore({
     plugin: loggerPlugin
 })
 ```
@@ -15,7 +15,7 @@ const store = createStore({
 多个插件使用数组包裹
 
 ```javascript
-const store = createStore({
+const store = Slim.createStore({
     plugin: [loggerPlugin, capturePlugin]
 })
 ```
@@ -56,7 +56,7 @@ const counterPlugin = {
     }
 }
 
-const store = createStore({
+const store = Slim.createStore({
     reducers: counters,
     state: state,
     plugin: [counterPlugin]
@@ -69,12 +69,12 @@ store.dispatch('increment')
 ```
 在**Store**创建以后注册
 ```javascript
-const store = createStore({
+const store = Slim.createStore({
     reducers: counters,
     state: state
 })
 
-store.applyPlugin(slimPlugin)
+Slim.use(slimPlugin)
 ```
 
 ## 集成Slim的插件

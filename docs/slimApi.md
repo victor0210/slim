@@ -4,7 +4,7 @@
 **Slim** currently exposes only one interface: `createStore`, passing in a parameter `conf` object
 
 ```javascript
-const store = createStore({
+const store = Slim.createStore({
     reducers,                   // default {}
     state,                      // default {}
     plugin,
@@ -70,14 +70,13 @@ const getters = {
 **store** is an overall control instance created and returned by **createStore**
 
 ```javascript
-import {createStore} from 'slim'
+import Slim from 'slim-store'
 
-const store = createStore(...)
+const store = Slim.createStore(...)
 
 // store: {
 //     dispatch,                    emit reducer
 //     getState,                    get the newest state or alias
-//     applyPlugin,                 add plugin after store is created
 //     state,                       state
 //     on                           EventCenter.on
 //     off                          EventCenter.off
@@ -113,11 +112,11 @@ const state = store.getState()
 const username = store.getState('username')     
 ```
 
-### applyPlugin
+### Slim.use
 Apply plugin, receive a plugin object, only add one plugin at a time
 
 ```javascript
-store.applyPlugin(slimPlugin)
+Slim.use(slimPlugin)
 ```
 
 ### on / off / emit
