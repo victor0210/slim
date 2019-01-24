@@ -17,6 +17,9 @@ it(`parameters with store creating should be a plainObject`, () => {
   const w = new Promise(resolve => {
     setTimeout(() => {
       window.postMessage(JSON.stringify({
+        type: '__SLIM_DEVTOOL_INIT__',
+      }), '*')
+      window.postMessage(JSON.stringify({
         type: '__SLIM_DEVTOOL_ANSWER__',
         state: {
           emit: true

@@ -61,8 +61,7 @@ const vuePlugin = {
                         state: options.store.getState()
                     }
 
-                    _rootComponent = this
-                setTimeout(this)
+                _rootComponent = this
             } else if (options.parent && options.parent.store) {
                 this.store = options.parent.store
             }
