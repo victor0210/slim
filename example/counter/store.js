@@ -5,6 +5,7 @@ Vue.use(VSlim);
 
 let state = {
     count: 0,
+    str: "Hello Slim!",
     arr: [],
     obj: {
         obj: {
