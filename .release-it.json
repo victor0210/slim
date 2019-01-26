@@ -1,0 +1,24 @@
+{
+  "git": {
+    "tagName": "v${version}",
+    "requireUpstream": true
+  },
+  "github": {
+    "release": true,
+    "GITHUB_TOKEN": "b3eb164745bebb16d2e5079d46a04d8044a98bef"
+  },
+  "scripts": {
+    "changelog": "git log --pretty=format:\"* %s (%h)\" [REV_RANGE]"
+  },
+  "publishConfig": {
+    "publishPath": "./release"
+  },
+  "prompt": {
+    "commit": true,
+    "tag": true,
+    "push": true,
+    "ghRelease": true,
+    "glRelease": true,
+    "publish": true
+  }
+}
