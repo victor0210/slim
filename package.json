@@ -1,6 +1,6 @@
 {
   "name": "slim-store",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "state manager with proxy",
   "main": "index.js",
   "jest": {
