@@ -4,6 +4,9 @@
 package="slim"
 
 rm -rf ./release
-cp -R ./dist/release/$package ./release
+mkdir -p release/dist
+cp -R ./dist/release/$package/* ./release/dist
+cp -R src/slim/* ./release
 cp package.json README.md ./release
+
 release-it
