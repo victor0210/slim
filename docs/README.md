@@ -16,7 +16,7 @@ footer: MIT Licensed | Copyright © 2019-present Victor
 ---
 
 :::tip
-Slim can be applied to any framework because it does not depend on any framework. Integration to frameworks will very easy by using [plug-in mechanism](/zh/plugin.html).
+Slim can be applied to any framework because it does not depend on any framework. Integration to frameworks will very easy by using [Plugin](/plugin.html).
 :::
 
 ## Installation
@@ -63,7 +63,7 @@ const store = Slim.createStore({
 // emit increment reducer
 store.dispatch('increment')
 
-console.log(store.getState().count)
+console.log(store.state.count)
 // output: 1
 ```
 
