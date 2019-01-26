@@ -16,7 +16,7 @@ You can listen to add multiple event callbacks after an event name. When you rem
 
 ### on(eventName[, listener])
 ```javascript
-const store = createStore(...)
+const store = Slim.createStore(...)
 
 const listener = (name, age) => { 
   console.log(`hello ${name}, I'm ${age}-years-old.`) 

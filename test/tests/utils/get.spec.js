@@ -1,4 +1,4 @@
-import {createStore} from '../../../src/slim'
+import Slim from '../../../src/slim'
 
 const str = 'str'
 const strInObj = 'strinobj'
@@ -30,7 +30,7 @@ const stateBase = {
 }
 
 describe('mode strict should all visitable', () => {
-    const store = createStore({
+    const store = Slim.createStore({
         reducers: {},
         state: stateBase,
         aliases: {
@@ -69,7 +69,7 @@ describe('mode strict should all visitable', () => {
 })
 
 describe('mode strict should all visitable', () => {
-    const store = createStore({
+    const store = Slim.createStore({
         reducers: {},
         state: stateBase,
         mode: "loose"

@@ -1,6 +1,6 @@
 {
   "name": "slim",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "state manager with proxy",
   "main": "index.js",
   "jest": {
@@ -21,6 +21,7 @@
     "vslim:build": "rollup -c ./build/prod-vslim.js",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
+    "release": "npm run test && npm run build && ./build/release.sh",
     "demo": "node ./example/server.js",
     "test": "jest --notify --coverage",
     "cover": "codecov"

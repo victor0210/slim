@@ -10,7 +10,7 @@ Let's see how to implement a **Reducer**. In our simple counter application, we 
 * decrement the counet：decrement
 
 ```javascript
-import { createStore } from 'slim'
+import Slim from 'slim-store'
 
 const state = {
     count: 0
@@ -25,7 +25,7 @@ const counters = {
     }
 }
 
-const store = createStore({
+const store = Slim.createStore({
     reducers: counters,
     state
 })

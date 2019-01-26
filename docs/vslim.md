@@ -108,4 +108,4 @@ new Vue({
 * [TodoMVC](https://github.com/victor0210/slim/tree/master/example/todomvc)
 
 ## Plugin
-[Slim Plugin](/zh/plugin.html)
+[Slim Plugin](/plugin.html)

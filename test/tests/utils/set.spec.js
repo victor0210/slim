@@ -1,4 +1,4 @@
-import {createStore} from '../../../src/slim'
+import Slim from '../../../src/slim'
 
 const getDefaultState = () => {
     const str = 'str'
@@ -46,7 +46,7 @@ const handleThrowNone = (assertion, fn) => {
 
 it(`parameters with store creating should be a plainObject`, () => {
     const validateFn = () => {
-        createStore({
+        Slim.createStore({
             reducers: 1,
             state: 1
         })
@@ -55,15 +55,13 @@ it(`parameters with store creating should be a plainObject`, () => {
 });
 
 describe('change state is not allow with strict', () => {
-    const store = createStore({
+    const store = Slim.createStore({
         reducers: {},
         state: getDefaultState()
     })
 
     const state = store.getState()
 
-    handleThrow('store should be readonly', () => {store.state = 1},
-      'You may not be able to assign values ​​directly to state. Please return a new state for reducing or edit with state in reducer.')
     handleThrow('num should be readonly', () => {state.num = 1})
     handleThrow('str should be readonly', () => {state.str = 1})
     handleThrow('obj should be readonly', () => {state.obj = 1})
@@ -77,7 +75,7 @@ describe('change state is not allow with strict', () => {
 })
 
 describe('change state is all allow in mode loose', () => {
-    const store = createStore({
+    const store = Slim.createStore({
         reducers: {},
         state: getDefaultState(),
         mode: "loose"

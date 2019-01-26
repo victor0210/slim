@@ -1,10 +1,17 @@
 # API
 
-## createStore
+### Slim.use
+接入插件，接收一个plugin对象，每次只能添加一个plugin
+
+```javascript
+Slim.use(slimPlugin)
+```
+
+## Slim.createStore
 **Slim**目前只对外暴露了一个接口：`createStore`，传入一个参数`conf`对象
 
 ```javascript
-const store = createStore({
+const store = Slim.createStore({
     reducers,                   // default {}
     state,                      // default {}
     plugin,
@@ -45,6 +52,7 @@ const state = {
 
 ```javascript
 const slimPlugin = {
+    init(store) {},
     before(state, action) {},
     after(state, action) {}
 }
@@ -70,14 +78,13 @@ const getters = {
 **store**是通过**createStore**创建并返回的一个整体控制实例
 
 ```javascript
-import {createStore} from 'slim'
+import Slim from 'slim-store'
 
-const store = createStore(...)
+const store = Slim.createStore(...)
 
 // store: {
 //     dispatch,                    触发reducer
 //     getState,                    获取最新state
-//     applyPlugin,                 在注册之后新增插件
 //     state                        state
 //     on                           EventCenter.on
 //     off                          EventCenter.off
@@ -111,13 +118,6 @@ const state = store.getState()
 
 // 获取alias对应的state值，需要提前注册aliases，如果alias不存在则返回undefined
 const username = store.getState('username')     
-```
-
-### applyPlugin
-接入插件，接收一个plugin对象，每次只能添加一个plugin
-
-```javascript
-store.applyPlugin(slimPlugin)
 ```
 
 ### on / off / emit

@@ -1,10 +1,12 @@
-import {isPlainObject, isPlainString} from "../loggers/type";
-import {throwIf, warnIf} from "../loggers/throwIf";
 import EventCenter from './eventCenter'
+import {isPlainObject, isPlainString} from '../helpers/type'
+import {cloneObj, msgHelper, passAlias, passPlugin, passReducer, validatePlugin, walkPlugins} from '../helpers/util'
+import {throwIf, warnIf} from '../helpers/throwIf'
 
+let injectPlugins = []
 let isDispatching = null
-
-const fnT = 'Function'
+let isStrict = false
+let store
 
 /**
  * @param conf: {
@@ -16,7 +18,7 @@ const fnT = 'Function'
  * }
  * */
 
-const createStore = (conf) => {
+export const createStore = (conf) => {
     let {
         reducers = {},
         state = {},
@@ -29,10 +31,17 @@ const createStore = (conf) => {
         throw new TypeError(msgHelper.typeError(typeof state))
     }
 
+    isStrict = mode === 'strict'
+
     let {on, off, emit} = EventCenter
-    let currentState = observeObject(state, mode)
-    let currentReducer = passReducer(reducers)
-    let plugins = passPlugin(plugin)
+    let currentState = observeObject(state)
+    let currentReducer = passReducer({
+        ...reducers,
+        '__SLIM_DEVTOOL_SET__': (state, stateFromDevTool) => stateFromDevTool
+    })
+
+
+    let plugins = [...injectPlugins, ...passPlugin(plugin)]
 
     aliases = passAlias(aliases)
 
@@ -51,7 +60,7 @@ const createStore = (conf) => {
             isDispatching = action
 
             warnIf(
-                !reducers[action],
+                !currentReducer[action],
                 `You may not has not registered [${action}] in store`
             )
 
@@ -59,9 +68,10 @@ const createStore = (conf) => {
 
             if (currentReducer[action]) {
                 let newState = currentReducer[action](currentState, ...args)
-
                 if (newState && newState !== currentState) {
-                    currentState = observeObject(newState, mode)
+                    currentState = observeObject(newState)
+
+                    store.state = currentState
                 }
             }
 
@@ -92,44 +102,21 @@ const createStore = (conf) => {
           : currentState
     }
 
-    const applyPlugin = (p) => {
-        validatePlugin(p)
-
-        throwIf(
-            isDispatching,
-          msgHelper.cantCall('removeMiddleware()')
-        )
-
-        !plugins ? plugins = [p] : plugins.push(p)
-    }
-
-    let store = new Proxy({
+    store = {
         on,
         off,
         emit,
         dispatch,
         getState,
-        applyPlugin,
         state: currentState
-    }, {
-        get (target, p) {
-            if (p === 'state') return currentState
+    }
 
-            return Reflect.get(target, p)
-        },
-
-        set () {
-            throwIf(
-              !isDispatching,
-                msgHelper.cantAssign()
-            )
-        }
-    })
+    walkPlugins('init', plugins, store)
 
     return store
 }
 
-const observeObject = (object, mode) => {
+const observeObject = (object) => {
     const _createProxy = (val) => {
         if (isPlainObject(val)) {
             return createProxy(val)
@@ -177,85 +164,12 @@ const observeObject = (object, mode) => {
         return new Proxy(object, observeArray ? arrayProxyHandler : objectProxyHandler)
     }
 
-    switch (mode) {
-        case 'strict':
-            return createProxy(object)
-        case 'loose':
-            return object
-    }
+    return isStrict ? createProxy(object) : object
 }
 
-const passReducer = (reducers) => {
-    const keys = Object.keys(reducers)
+export const use = (p) => {
+    validatePlugin(p)
 
-    keys.forEach(key => {
-        let reducer = reducers[key]
-
-        throwIf(
-            typeof reducer !== 'function',
-            `Reducer for key [${key}] must be type of [fnT] but got [${typeof reducer}]`
-        )
-    })
-
-    return reducers
+    injectPlugins.push(p)
 }
 
-const passAlias = (aliases) => {
-    const keys = Object.keys(aliases)
-
-    keys.forEach(key => {
-        let alias = aliases[key]
-
-        throwIf(
-          typeof alias !== 'function',
-          msgHelper.shouldBe(`Alias.${key}`, fnT, typeof alias)
-        )
-    })
-
-    return aliases
-}
-
-const passPlugin = (plugins) => {
-    if (!plugins) return
-
-    let ps = Array.isArray(plugins) ? plugins : [plugins]
-
-    ps.forEach(p => {
-        validatePlugin(p)
-    })
-
-    return ps
-}
-
-const validatePlugin = (p) => {
-    const {before, after} = p
-    before && throwIf(
-      typeof before !== 'function',
-      msgHelper.shouldBe('Plugin.after', fnT, typeof before)
-    )
-
-    after && throwIf(
-      typeof after !== 'function',
-      msgHelper.shouldBe('Plugin.after', fnT, typeof after)
-    )
-}
-
-const walkPlugins = (hook, plugins, currentState, action) => {
-    plugins && plugins.forEach(p => {
-        p[hook] && p[hook](currentState, action)
-    })
-}
-
-const msgHelper = {
-    typeError: (type) => `type of state expect to [Object] but got [${type}]`,
-    shouldBe: (name, expect, got) => `${name} should be type of [${expect}] but got [${got}]`,
-    cantCall: (key) => `You may not call ${key} while the reducer is executing. ` +
-      'The reducer has already received the state as an argument. ' +
-      'Pass it down from the top reducer instead of reading it from the store.',
-    cantAssign: () => `You may not be able to assign values ​​directly to state. ` +
-      `Please return a new state for reducing or edit with state in reducer.`
-}
-
-const cloneObj = p => JSON.parse(JSON.stringify(p))
-
-export default createStore

@@ -6,7 +6,7 @@
 :::
 
 ```javascript
-const store = createStore({
+const store = Slim.createStore({
     mode: process.env.NODE_ENV === 'production' ? 'loose' : 'strict'
 })
 ```
