@@ -1,6 +1,6 @@
 .DS_Store
 node_modules/
-dist/
+./dist/
 /src/slim/dist
 /src/slim/README.md
 /src/vslim/README.md
