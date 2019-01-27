@@ -19,19 +19,19 @@ export const passReducer = (reducers) => {
     return reducers
 }
 
-export const passAlias = (aliases) => {
-    const keys = Object.keys(aliases)
+export const passGetter = (getters) => {
+    const keys = Object.keys(getters)
 
     keys.forEach(key => {
-        let alias = aliases[key]
+        let getter = getters[key]
 
         throwIf(
-          typeof alias !== 'function',
-          msgHelper.shouldBe(`Alias.${key}`, fnT, typeof alias)
+          typeof getter !== 'function',
+          msgHelper.shouldBe(`Getter.${key}`, fnT, typeof getter)
         )
     })
 
-    return aliases
+    return getters
 }
 
 export const passPlugin = (plugins) => {

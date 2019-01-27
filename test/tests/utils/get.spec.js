@@ -33,7 +33,7 @@ describe('mode strict should all visitable', () => {
     const store = Slim.createStore({
         reducers: {},
         state: stateBase,
-        aliases: {
+        getters: {
             objNum: state => state.obj.objInObj.num
         }
     })

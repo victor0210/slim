@@ -116,7 +116,7 @@ store.dispatch('one')
 // 获取整个state
 const state = store.getState()                  
 
-// 获取alias对应的state值，需要提前注册aliases，如果alias不存在则返回undefined
+// 获取alias对应的state值，需要提前注册getters，如果alias不存在则返回undefined
 const username = store.getState('username')     
 ```
 

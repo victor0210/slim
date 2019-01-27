@@ -32,7 +32,7 @@ module.exports = {
   },
 
   resolve: {
-    alias: {
+    getter: {
       slim: path.resolve(__dirname, '../src/slim/index.js'),
       vslim: path.resolve(__dirname, '../src/vslim/index.js')
     }

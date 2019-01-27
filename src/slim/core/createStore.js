@@ -1,6 +1,6 @@
 import EventCenter from './eventCenter'
 import {isPlainObject, isPlainString} from '../helpers/type'
-import {cloneObj, msgHelper, passAlias, passPlugin, passReducer, validatePlugin, walkPlugins} from '../helpers/util'
+import {cloneObj, msgHelper, passGetter, passPlugin, passReducer, validatePlugin, walkPlugins} from '../helpers/util'
 import {throwIf, warnIf} from '../helpers/throwIf'
 
 let injectPlugins = []
@@ -14,7 +14,7 @@ let store
  *   state,
  *   mode,
  *   plugin,
- *   aliases
+ *   getters
  * }
  * */
 
@@ -23,7 +23,7 @@ export const createStore = (conf) => {
         reducers = {},
         state = {},
         plugin,
-        aliases = {},
+        getters = {},
         mode = 'strict'
     } = conf
 
@@ -43,7 +43,7 @@ export const createStore = (conf) => {
 
     let plugins = [...injectPlugins, ...passPlugin(plugin)]
 
-    aliases = passAlias(aliases)
+    getters = passGetter(getters)
 
     const dispatch = (action, ...args) => {
         throwIf(
@@ -90,14 +90,14 @@ export const createStore = (conf) => {
         )
 
         warnIf(
-          aliasKey && !aliases.hasOwnProperty(aliasKey),
-          `Alias of key [${aliasKey}] is not exist. ` +
+          aliasKey && !getters.hasOwnProperty(aliasKey),
+          `Getter of key [${aliasKey}] is not exist. ` +
           `Please register it with when createStore.`
         )
 
         return aliasKey
-          ? aliases[aliasKey]
-            ? aliases[aliasKey](currentState)
+          ? getters[aliasKey]
+            ? getters[aliasKey](currentState)
             : undefined
           : currentState
     }

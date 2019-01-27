@@ -84,7 +84,7 @@ const store = Slim.createStore(...)
 
 // store: {
 //     dispatch,                    emit reducer
-//     getState,                    get the newest state or alias
+//     getState,                    get the newest state or getter
 //     state,                       state
 //     on                           EventCenter.on
 //     off                          EventCenter.off
@@ -116,7 +116,7 @@ Get the latest state, fill in the parameter `getterKey`
 // get all state
 const state = store.getState()                  
 
-// To get the state value corresponding to the alias, you need to register the alias in advance, and return undefined if the alias does not exist.
+// To get the state value corresponding to the getter, you need to register the getter in advance, and return undefined if the getter does not exist.
 const username = store.getState('username')     
 ```
 

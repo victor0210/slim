@@ -8,8 +8,8 @@ The state of getting can only be obtained in the following way. Why is it throug
 store.getState()
 ```
 
-## Aliases
-In order to facilitate the better **State** module partitioning in the application, using **Alias** is a good choice. Imagine getting **State* when the **State** level is deep. * What a desperate thing to do, at this point you may need to define a set of getter methods in the program to get a specific **State**. Don't worry, here **Slim** has done it for you, you can quickly use **Alias**
+## Getters
+In order to facilitate the better **State** module partitioning in the application, using **Getter** is a good choice. Imagine getting **State* when the **State** level is deep. * What a desperate thing to do, at this point you may need to define a set of getter methods in the program to get a specific **State**. Don't worry, here **Slim** has done it for you, you can quickly use **Getter**
 
 ```javascript
 const state = {
@@ -18,14 +18,14 @@ const state = {
     }
 }
 
-const aliases = {
+const getters = {
     username: state => state.user.name
 }
 
 const store = Slim.createStore({
     reducers,
     state,
-    aliases
+    getters
 })
 
 store.getState('username')  // victor
