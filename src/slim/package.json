@@ -1,0 +1,16 @@
+{
+  "name": "slim-store",
+  "version": "1.1.2",
+  "description": "state manager with proxy",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/victor0210/slim.git"
+  },
+  "author": "victor",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/victor0210/slim/issues"
+  },
+  "homepage": "https://github.com/victor0210/slim#readme"
+}

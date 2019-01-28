@@ -1,6 +1,6 @@
 {
-  "name": "slim-store",
-  "version": "1.1.2",
+  "name": "slim",
+  "version": "1.1.3",
   "description": "state manager with proxy",
   "main": "index.js",
   "jest": {
@@ -19,10 +19,11 @@
     "build": "npm run slim:build && npm run vslim:build",
     "slim:build": "rollup -c ./build/prod-slim.js",
     "vslim:build": "rollup -c ./build/prod-vslim.js",
+    "slim:release": "npm run test && npm run build && npm run docs:build && ./build/release.sh slim && npm run docs:sync",
+    "vslim:release": "npm run test && npm run build && npm run docs:build && ./build/release.sh vslim && npm run docs:sync",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
     "docs:sync": "./build/docs-sync.sh",
-    "release": "npm run test && npm run build && npm run docs:build && ./build/release.sh && npm run docs:sync",
     "demo": "node ./example/server.js",
     "test": "jest --notify --coverage",
     "cover": "codecov"
