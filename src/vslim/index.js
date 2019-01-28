@@ -1,14 +1,12 @@
 import Slim from '../slim/index'
 
 let _rootComponent
-let _statePrev
 
 let slimPlugin = {
     after(state) {
-        if (state !== _statePrev) _statePrev = state
-
         if (_rootComponent) {
             _rootComponent.$set(_rootComponent.store, 'state', state)
+            _rootComponent.$children[0].$forceUpdate()
         }
     }
 }
