@@ -1,6 +1,6 @@
 {
   "name": "vslim",
-  "version": "1.0.1",
+  "version": "1.0.4",
   "description": "state manager with proxy base on vue",
   "main": "index.js",
   "repository": {
