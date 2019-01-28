@@ -1,7 +1,7 @@
 # Slim
 
 [![npm version](https://img.shields.io/npm/v/slim-store.svg)](https://www.npmjs.org/package/slim-store)
-[![Github file size](https://img.shields.io/github/size/victor0210/slim/release/dist/slim.min.js.svg)](https://github.com/victor0210/slim/blob/master/release/dist/slim.min.js)
+[![Github file size](https://unpkg.com/slim-store/dist/slim.min.js.svg)](https://unpkg.com/slim-store/dist/slim.min.js)
 [![install size](https://packagephobia.now.sh/badge?p=slim-store)](https://packagephobia.now.sh/result?p=slim-store)
 [![codecov](https://codecov.io/gh/victor0210/slim/branch/master/graph/badge.svg)](https://codecov.io/gh/victor0210/slim)
 [![build status](https://travis-ci.org/victor0210/slim.svg?branch=master)](https://travis-ci.org/victor0210/slim)
@@ -83,7 +83,7 @@ Slim has the Plugin mechanism, which make you can integrate easily.
 
 here is other state managers integrated by Slim:
 
-* [vslim: Vue State Management With Slim]()
+* [VSlim: Vue State Management With Slim](https://victor0210.github.io/slimdocs/vslim.html)
 
 ## Examples
 
