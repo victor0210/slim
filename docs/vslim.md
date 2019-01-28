@@ -7,7 +7,7 @@
 ### with script tag
 
 ```html
-<script src="https://unpkg.com/vslim@1.0.0/vslim.min.js"></script>
+<script src="https://unpkg.com/vslim/dist/vslim.min.js"></script>
 ```
 
 ### with npm
