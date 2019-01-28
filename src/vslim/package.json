@@ -1,0 +1,44 @@
+{
+  "name": "vslim",
+  "version": "1.0.1",
+  "description": "state manager with proxy base on vue",
+  "main": "index.js",
+  "jest": {
+    "testURL": "http://localhost/",
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "transform": {
+      "\\.(ts|tsx)$": "<rootDir>/node_modules/ts-jest/preprocessor.js",
+      "^.+\\.js?$": "babel-jest"
+    }
+  },
+  "scripts": {
+    "dev": "rollup -c ./build/dev.js -w",
+    "build": "npm run slim:build && npm run vslim:build",
+    "slim:build": "rollup -c ./build/prod-slim.js",
+    "vslim:build": "rollup -c ./build/prod-vslim.js",
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs",
+    "docs:sync": "./build/docs-sync.sh",
+    "release": "npm run test && npm run build && npm run docs:build && ./build/release.sh && npm run docs:sync",
+    "demo": "node ./example/server.js",
+    "test": "jest --notify --coverage",
+    "cover": "codecov"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/victor0210/slim.git"
+  },
+  "author": "victor",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/victor0210/slim/issues"
+  },
+  "homepage": "https://github.com/victor0210/slim#readme",
+  "devDependencies": {
+    "slim-store": "^1.0.1",
+    "vue": "^2.5.22"
+  }
+}
