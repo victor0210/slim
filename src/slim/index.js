@@ -2,7 +2,7 @@ import {createStore, use} from './core/createStore'
 import {warnIf} from './helpers/throwIf'
 import {parse2Json} from './helpers/util'
 
-const __VERSION__ = '1.1.2'
+const __VERSION__ = require('./package').version
 const __DEV__ = process.env.NODE_ENV !== 'production'
 const __SLIM_DEVTOOL_INIT__ = '__SLIM_DEVTOOL_INIT__'
 const __SLIM_DEVTOOL_INIT_ANSWER__ = '__SLIM_DEVTOOL_INIT_ANSWER__'
