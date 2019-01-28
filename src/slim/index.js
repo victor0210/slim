@@ -30,17 +30,25 @@ const _createStore = () => {
   if (__DEV__) {
     const devtoolPlugin = {
       init (store) {
+        const attach = () => {
+          window.postMessage({
+            version: __VERSION__,
+            type: __SLIM_DEVTOOL_INIT_ANSWER__,
+            state: JSON.stringify(store.getState())
+          }, '*')
+        }
+
+        setTimeout(() => {
+          attach()
+        }, 500)
+
         window.addEventListener('message', (e) => {
           const {type, state} = parse2Json(e.data)
 
           if (type === __SLIM_DEVTOOL_ANSWER__) {
             store.emit(__SLIM_DEVTOOL_ANSWER__, parse2Json(state))
           } else if (type === __SLIM_DEVTOOL_INIT__) {
-            window.postMessage({
-              version: __VERSION__,
-              type: __SLIM_DEVTOOL_INIT_ANSWER__,
-              state: JSON.stringify(store.getState())
-            }, '*')
+            attach()
           }
         })
       },
