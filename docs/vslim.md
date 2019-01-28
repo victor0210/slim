@@ -50,7 +50,7 @@ const reducers = {
     }
 }
 
-let store = slim.createStore({
+let store = Slim.createStore({
   reducers, state
 });
 

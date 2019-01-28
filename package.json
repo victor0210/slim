@@ -22,7 +22,7 @@
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
     "docs:sync": "./build/docs-sync.sh",
-    "release": "npm run test && npm run build && npm run docs:build && npm run docs:sync && ./build/release.sh",
+    "release": "npm run test && npm run build && npm run docs:build && ./build/release.sh && npm run docs:sync",
     "demo": "node ./example/server.js",
     "test": "jest --notify --coverage",
     "cover": "codecov"

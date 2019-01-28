@@ -44,7 +44,8 @@ module.exports = {
                     },
                     ['/slimApi', 'API'],
                     ['/controlLevel', 'Mode'],
-                    ['/vslim', 'VSlim']
+                    ['/vslim', 'VSlim'],
+                    ['/devtool', 'Slim-DevTools']
                 ]
             },
             '/zh/': {
@@ -76,7 +77,8 @@ module.exports = {
                     },
                     ['/zh/slimApi.html', 'API'],
                     ['/zh/controlLevel.html', '限制级别'],
-                    ['/zh/vslim', 'VSlim']
+                    ['/zh/vslim', 'VSlim'],
+                    ['/zh/devtool', '状态回溯工具']
                 ]
             }
         }
