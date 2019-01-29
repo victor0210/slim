@@ -30,7 +30,7 @@ import Slim from 'slim-store'
 
 let devPlugin = {
     init(store) {
-        store.on('__SLIM_DEVTOOL_ANSWER__', (state) => {
+        Slim.on('__SLIM_DEVTOOL_ANSWER__', (state) => {
             store.dispatch('__SLIM_DEVTOOL_SET__', state)
         })
     }

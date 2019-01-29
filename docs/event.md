@@ -14,21 +14,23 @@ The event center provides three APIs `on`, `off` and `emit`. The usage is very s
 You can listen to add multiple event callbacks after an event name. When you remove an event, pass the callback function entity.
 :::
 
-### on(eventName[, listener])
 ```javascript
-const store = Slim.createStore(...)
+import Slim from 'slim-store'
 
+// callback
 const listener = (name, age) => { 
   console.log(`hello ${name}, I'm ${age}-years-old.`) 
 }
 
-store.on('eventName', listener)
+// subscribe event "eventName" and register callback
+Slim.on('eventName', listener)
 ```
 
 ### emit(eventName[, ...args])
 
 ```javascript
-store.emit(listener, 'victor', 18)
+// publish event ''
+Slim.emit('eventName', 'victor', 18)
 
 // output: hello victor, I'm 18-years-old.
 ```
@@ -36,5 +38,55 @@ store.emit(listener, 'victor', 18)
 ### off(listener)
 
 ```javascript
-store.off(listener)
+// unsubscribe callback
+Slim.off('eventName', listener)
+```
+
+## Demo
+
+Use event center in react with subscribe event in childComponent and publish event by parentComponent
+
+```javascript
+import Slim from 'slim-store'
+import React from 'react'
+
+// subscribe 'child-component-event' in childA
+class ChildComponentA extends React.Component {
+  constructor (props) {
+    super(props)
+    
+    Slim.on('child-component-A-event', (arg1, arg2) => {
+      console.log('emit event in child component A')
+      console.log(arg1, arg2)
+    })
+  }
+}
+
+// subscribe 'child-component-event' in childB
+class ChildComponentB extends React.Component {
+  constructor (props) {
+    super(props)
+    
+    Slim.on('child-component-B-event', (arg1, arg2) => {
+      console.log('emit event in child component B')
+      console.log(arg1, arg2)
+    })
+  }
+}
+
+// emit 'child-component-event' in parent
+class ParentComponent extends React.Component {
+  constructor(props) {
+    super(props)
+  }
+  
+  render() {
+    return (
+      <div onClick={Slim.emit('child-component-event', 'from', 'parent')}>
+        <ChildComponentA/>
+        <ChildComponentB/>
+      </div>
+    )
+  }
+}
 ```
