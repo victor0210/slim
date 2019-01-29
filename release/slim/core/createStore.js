@@ -1,4 +1,3 @@
-import EventCenter from './eventCenter'
 import {isPlainObject, isPlainString} from '../helpers/type'
 import {cloneObj, msgHelper, passGetter, passPlugin, passReducer, validatePlugin, walkPlugins} from '../helpers/util'
 import {throwIf, warnIf} from '../helpers/throwIf'
@@ -97,7 +96,8 @@ export const createStore = (conf) => {
     store = {
         dispatch,
         getState,
-        state: currentState
+        state: currentState,
+        getters: getters
     }
 
     walkPlugins('init', plugins, store)
