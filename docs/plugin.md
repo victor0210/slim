@@ -81,4 +81,5 @@ const store = Slim.createStore(...)
 ``` 
 
 ## Plugins integrated with Slim 
-* [vslim (Slim-based state management framework in Vue)](/vslim.html)
+* [VSlim](/vslim.html): Slim-based state management framework in Vue.
+* [RSlim](/rslim.html): Slim-based state management framework in React.

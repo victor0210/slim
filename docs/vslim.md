@@ -104,8 +104,8 @@ new Vue({
 ```
 
 ## More Examples
-* [Counter](https://github.com/victor0210/slim/tree/master/example/counter)
-* [TodoMVC](https://github.com/victor0210/slim/tree/master/example/todomvc)
+* [Counter](https://github.com/victor0210/slim/tree/master/example/vue-counter)
+* [TodoMVC](https://github.com/victor0210/slim/tree/master/example/vue-todomvc)
 
 ## Plugin
 [Slim Plugin](/plugin.html)

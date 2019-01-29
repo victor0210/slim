@@ -14,8 +14,12 @@ Centralized State Management With Proxy, State-Non-Editable.
 ## Documentation
 
 [English](https://victor0210.github.io/slimdocs/)
-
 [中文文档](https://victor0210.github.io/slimdocs/zh/)
+
+## QuickStart with Framework
+
+* [VSlim: Vue State Management With Slim](https://victor0210.github.io/slimdocs/vslim.html)
+* [RSlim: React State Management With Slim](https://victor0210.github.io/slimdocs/rslim.html)
 
 ## Installation
 
@@ -84,6 +88,7 @@ Slim has the Plugin mechanism, which make you can integrate easily.
 here is other state managers integrated by Slim:
 
 * [VSlim: Vue State Management With Slim](https://victor0210.github.io/slimdocs/vslim.html)
+* [RSlim: React State Management With Slim](https://victor0210.github.io/slimdocs/rslim.html)
 
 ## Examples
 

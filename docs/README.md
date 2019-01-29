@@ -70,3 +70,4 @@ console.log(store.state.count)
 ## Extensions
 
 * [VSlim](/vslim.html): Slim-based state management framework in Vue.
+* [RSlim](/rslim.html): Slim-based state management framework in React.

@@ -81,4 +81,5 @@ const store = Slim.createStore(...)
 ``` 
 
 ## 集成Slim的插件
-* [vslim (在Vue中基于Slim的状态管理框架)](/zh/vslim.html)
+* [VSlim](/vslim.html): 在Vue中基于Slim的状态管理框架.
+* [RSlim](/rslim.html): 在React中基于Slim的状态管理框架.

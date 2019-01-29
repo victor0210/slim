@@ -69,3 +69,4 @@ console.log(store.state.count)
 ## 拓展设施
 
 * [VSlim](/zh/vslim.html): 在Vue中基于Slim的状态管理框架
+* [RSlim](/zh/rslim.html): 在React中基于Slim的状态管理框架

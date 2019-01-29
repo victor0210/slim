@@ -82,4 +82,4 @@ Slim拥有非常强的状态控制，不管是小型应用还是大型应用，�
 ## Slim的拓展
 
 * [如何在Vue中使用Slim](/zh/vslim.html)
-* 如何在React中使用Slim（后续支持）
+* [如何在React中使用Slim](/zh/rslim.html)
