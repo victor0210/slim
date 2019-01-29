@@ -13,14 +13,20 @@ let slimPlugin = {
 
 let devPlugin = {
     init(store) {
-        store.on('__SLIM_DEVTOOL_ANSWER__', (state) => {
+        Slim.on('__SLIM_DEVTOOL_ANSWER__', (state) => {
             store.dispatch('__SLIM_DEVTOOL_SET__', state)
         })
     }
 }
 
+const {createStore, use, on, emit, off} = Slim
+
 const vuePlugin = {
-    createStore: Slim.createStore,
+    createStore,
+    use,
+    on,
+    emit,
+    off,
     install: function (Vue) {
         const version = Number(Vue.version.split('.')[0])
 

@@ -10,6 +10,9 @@ Slim.use(slimPlugin)
 ## Slim.createStore
 **Slim** currently exposes only one interface: `createStore`, passing in a parameter `conf` object
 
+## Slim.on, Slim.emit, Slim.off
+Apis from [EventCenter](/event.html)
+
 ```javascript
 const store = Slim.createStore({
     reducers,                   // default {}
@@ -86,9 +89,6 @@ const store = Slim.createStore(...)
 //     dispatch,                    emit reducer
 //     getState,                    get the newest state or getter
 //     state,                       state
-//     on                           EventCenter.on
-//     off                          EventCenter.off
-//     emit                         EventCenter.emit
 // }
 ```
 
@@ -119,6 +119,3 @@ const state = store.getState()
 // To get the state value corresponding to the getter, you need to register the getter in advance, and return undefined if the getter does not exist.
 const username = store.getState('username')     
 ```
-
-### on / off / emit
-[EventCenter](/event.html)

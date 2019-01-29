@@ -1,11 +1,6 @@
 import Slim from '../../../src/slim'
 
 describe('event center test', () => {
-    const store = Slim.createStore({
-        reducers: {},
-        state: {},
-    })
-
     const toBe = (assertion, expection, result) => {
         it(assertion, () => {
             expect(expection).toBe(result)
@@ -25,23 +20,23 @@ describe('event center test', () => {
         c3++
     }
 
-    store.on('setInfo', ecListener1)
-    store.on('setInfo', ecListener2)
-    store.emit('setInfo', 3, 5)
+    Slim.on('setInfo', ecListener1)
+    Slim.on('setInfo', ecListener2)
+    Slim.emit('setInfo', 3, 5)
 
     toBe('c1 should be 3', c1, 3)
     toBe('c2 should be 5', c2, 5)
     toBe('c3 should be 1', c3, 1)
 
-    store.off('setInfo', ecListener2)
+    Slim.off('setInfo', ecListener2)
 
-    store.emit('setInfo', 3, 5)
+    Slim.emit('setInfo', 3, 5)
     toBe('c1 should be 6', c1, 6)
     toBe('c2 should be 10', c2, 10)
     toBe('c3 should be 1', c3, 1)
 
-    toBe('nothing run', store.off('notExist', undefined), undefined)
+    toBe('nothing run', Slim.off('notExist', undefined), undefined)
 
     // not exist in events
-    toBe('nothing run', store.off('setInfo', undefined), undefined)
+    toBe('nothing run', Slim.off('setInfo', undefined), undefined)
 })
