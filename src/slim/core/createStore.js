@@ -2,6 +2,7 @@ import EventCenter from './eventCenter'
 import {isPlainObject, isPlainString} from '../helpers/type'
 import {cloneObj, msgHelper, passGetter, passPlugin, passReducer, validatePlugin, walkPlugins} from '../helpers/util'
 import {throwIf, warnIf} from '../helpers/throwIf'
+import {walkPlugin} from '../../../release/slim/helpers/util'
 
 let injectPlugins = []
 let isDispatching = null
@@ -94,9 +95,18 @@ export const createStore = (conf) => {
           : currentState
     }
 
+    const applyPlugin = p => {
+        validatePlugin(p)
+
+        plugins.push(p)
+
+        walkPlugin('init', p, store)
+    }
+
     store = {
         dispatch,
         getState,
+        applyPlugin,
         state: currentState
     }
 

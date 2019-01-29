@@ -3,19 +3,16 @@ import Slim from 'slim-store'
 let _rootComponent
 
 let slimPlugin = {
+    init(store) {
+        Slim.on('__SLIM_DEVTOOL_ANSWER__', (state) => {
+            store.dispatch('__SLIM_DEVTOOL_SET__', state)
+        })
+    },
     after(state) {
         if (_rootComponent) {
             _rootComponent.$set(_rootComponent.store, 'state', state)
             _rootComponent.$children[0].$forceUpdate()
         }
-    }
-}
-
-let devPlugin = {
-    init(store) {
-        Slim.on('__SLIM_DEVTOOL_ANSWER__', (state) => {
-            store.dispatch('__SLIM_DEVTOOL_SET__', state)
-        })
     }
 }
 
@@ -73,7 +70,6 @@ const vuePlugin = {
     }
 }
 
-Slim.use(devPlugin)
 Slim.use(slimPlugin)
 
 export default vuePlugin

@@ -12,7 +12,10 @@
     "transform": {
       "\\.(ts|tsx)$": "<rootDir>/node_modules/ts-jest/preprocessor.js",
       "^.+\\.js?$": "babel-jest"
-    }
+    },
+    "collectCoverageFrom": [
+      "src/slim/**/*.{js}"
+    ]
   },
   "scripts": {
     "dev": "rollup -c ./build/dev.js -w",
