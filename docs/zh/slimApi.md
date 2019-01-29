@@ -10,6 +10,9 @@ Slim.use(slimPlugin)
 ## Slim.createStore
 **Slim**目前只对外暴露了一个接口：`createStore`，传入一个参数`conf`对象
 
+## Slim.on, Slim.emit, Slim.off
+Apis from [EventCenter](/zh/event.html)
+
 ```javascript
 const store = Slim.createStore({
     reducers,                   // default {}
@@ -86,9 +89,6 @@ const store = Slim.createStore(...)
 //     dispatch,                    触发reducer
 //     getState,                    获取最新state
 //     state                        state
-//     on                           EventCenter.on
-//     off                          EventCenter.off
-//     emit                         EventCenter.emit
 // }
 ```
 
@@ -119,6 +119,3 @@ const state = store.getState()
 // 获取alias对应的state值，需要提前注册getters，如果alias不存在则返回undefined
 const username = store.getState('username')     
 ```
-
-### on / off / emit
-[EventCenter](/zh/event.html)
