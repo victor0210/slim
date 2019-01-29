@@ -1,4 +1,4 @@
-import Slim from '../slim/index'
+import Slim from 'slim-store'
 import React, { Component } from 'react';
 import {msgHelper} from '../slim/helpers/util'
 
