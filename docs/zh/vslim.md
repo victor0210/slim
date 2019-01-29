@@ -104,8 +104,8 @@ new Vue({
 ```
 
 ## VSlim更多示例
-* [Counter](https://github.com/victor0210/slim/tree/master/example/counter)
-* [TodoMVC](https://github.com/victor0210/slim/tree/master/example/todomvc)
+* [Counter](https://github.com/victor0210/slim/tree/master/example/vue-counter)
+* [TodoMVC](https://github.com/victor0210/slim/tree/master/example/vue-todomvc)
 
 ## 插件接入
 [Slim Plugin](/zh/plugin.html)

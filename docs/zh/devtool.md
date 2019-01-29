@@ -40,3 +40,4 @@ Slim.use(devPlugin)
 ```
 
 * [VSlim集成代码](https://github.com/victor0210/slim/blob/master/src/vslim/index.js)
+* [RSlim集成代码](https://github.com/victor0210/slim/blob/master/src/rslim/index.js)

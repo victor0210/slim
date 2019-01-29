@@ -6,6 +6,11 @@ html, body {
 ul {
   line-height: 1.5em;
   padding-left: 1.5em;
+  list-style: none;
+}
+
+li {
+  padding-left: 1.5em;
 }
 
 a {

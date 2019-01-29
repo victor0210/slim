@@ -81,4 +81,4 @@ As long as you need state management, you can use Slim, Slim is a simple state m
 ## Extensions
 
 * [Use Slim with Vue](/zh/vslim.html)
-* Use Slim with React（To be support）
+* [Use Slim with React](/zh/rslim.html)
