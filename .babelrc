@@ -6,7 +6,8 @@
         "useBuiltIns": "usage",
         "modules": false
       }
-    ]
+    ],
+    "react"
   ],
   "plugins": [
     "transform-object-rest-spread"
