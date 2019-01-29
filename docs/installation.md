@@ -11,13 +11,13 @@ Unpkg.com provides NPM-based CDN links. The above link will always point to the 
 ## NPM
 
 ```bash
-npm install slim
+npm install slim-store
 ```
 
 ## Yarn
 
 ```bash
-yarn add slim
+yarn add slim-store
 ```
 
 ## Use in application

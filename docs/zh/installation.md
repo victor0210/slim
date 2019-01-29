@@ -11,13 +11,13 @@ Unpkg.com 提供了基于 NPM 的 CDN 链接。以上的链接会一直指向 NP
 ## NPM
 
 ```bash
-npm install slim
+npm install slim-store
 ```
 
 ## Yarn
 
 ```bash
-yarn add slim
+yarn add slim-store
 ```
 
 ## 代码中引入

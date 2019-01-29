@@ -34,7 +34,7 @@ npm install slim-store
 
 ### Yarn
 ```bash
-yarn add slim
+yarn add slim-store
 ```
 
 ## Usage
