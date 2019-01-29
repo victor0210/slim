@@ -7,16 +7,7 @@ let injectPlugins = []
 let isDispatching = null
 let isStrict = false
 let store
-
-/**
- * @param conf: {
- *   reducers,
- *   state,
- *   mode,
- *   plugin,
- *   getters
- * }
- * */
+let operations = []
 
 export const createStore = (conf) => {
     let {
@@ -33,7 +24,6 @@ export const createStore = (conf) => {
 
     isStrict = mode === 'strict'
 
-    let {on, off, emit} = EventCenter
     let currentState = observeObject(state)
     let currentReducer = passReducer({
         ...reducers,
@@ -46,6 +36,8 @@ export const createStore = (conf) => {
     getters = passGetter(getters)
 
     const dispatch = (action, ...args) => {
+        operations = []
+
         throwIf(
             !isPlainString(action),
           msgHelper.shouldBe('Actions', 'string', typeof action)
@@ -103,9 +95,6 @@ export const createStore = (conf) => {
     }
 
     store = {
-        on,
-        off,
-        emit,
         dispatch,
         getState,
         state: currentState
@@ -172,4 +161,3 @@ export const use = (p) => {
 
     injectPlugins.push(p)
 }
-

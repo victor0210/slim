@@ -15,26 +15,79 @@
 :::
 
 ### on(eventName[, listener])
-```javascript
-const store = Slim.createStore(...)
 
+```javascript
+import Slim from 'slim-store'
+
+// 回调函数
 const listener = (name, age) => { 
   console.log(`hello ${name}, I'm ${age}-years-old.`) 
 }
 
-store.on('eventName', listener)
+// 监听事件，事件名可以自定义，注册回调函数
+Slim.on('eventName', listener)
 ```
 
 ### emit(eventName[, ...args])
 
 ```javascript
-store.emit(listener, 'victor', 18)
+// 触发事件，并传入两个参数
+Slim.emit('eventName', 'victor', 18)
 
 // output: hello victor, I'm 18-years-old.
 ```
 
-### off(listener)
+### off(eventName, listener)
 
 ```javascript
-store.off(listener)
+// 注销事件
+Slim.off('eventName', listener)
+```
+
+## Demo
+
+在react中父组件触发子组件中的事件
+
+```javascript
+import Slim from 'slim-store'
+import React from 'react'
+
+// 在子组件中订阅事件
+class ChildComponentA extends React.Component {
+  constructor (props) {
+    super(props)
+    
+    Slim.on('child-component-A-event', (arg1, arg2) => {
+      console.log('emit event in child component A')
+      console.log(arg1, arg2)
+    })
+  }
+}
+
+class ChildComponentB extends React.Component {
+  constructor (props) {
+    super(props)
+    
+    Slim.on('child-component-B-event', (arg1, arg2) => {
+      console.log('emit event in child component B')
+      console.log(arg1, arg2)
+    })
+  }
+}
+
+// 在父组件中触发事件
+class ParentComponent extends React.Component {
+  constructor(props) {
+    super(props)
+  }
+  
+  render() {
+    return (
+      <div onClick={Slim.emit('child-component-event', 'from', 'parent')}>
+        <ChildComponentA/>
+        <ChildComponentB/>
+      </div>
+    )
+  }
+}
 ```

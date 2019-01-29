@@ -1,6 +1,7 @@
 import {createStore, use} from './core/createStore'
 import {warnIf} from './helpers/throwIf'
 import {parse2Json} from './helpers/util'
+import EventCenter from './core/eventCenter'
 
 const __VERSION__ = require('./package.json').version
 const __DEV__ = process.env.NODE_ENV !== 'production'
@@ -46,7 +47,7 @@ const _createStore = () => {
           const {type, state} = parse2Json(e.data)
 
           if (type === __SLIM_DEVTOOL_ANSWER__) {
-            store.emit(__SLIM_DEVTOOL_ANSWER__, parse2Json(state))
+            Slim.emit(__SLIM_DEVTOOL_ANSWER__, parse2Json(state))
           } else if (type === __SLIM_DEVTOOL_INIT__) {
             attach()
           }
@@ -76,10 +77,15 @@ const _createStore = () => {
   return createStore
 }
 
+let {on, off, emit} = EventCenter
+
 const Slim = {
   __VERSION__,
   createStore: _createStore(),
-  use
+  use,
+  on,
+  off,
+  emit
 }
 
 export default Slim
