@@ -1,10 +1,6 @@
 {
-  "git": {
-    "tagName": "v${version}",
-    "requireUpstream": true
-  },
   "github": {
-    "release": true
+    "release": false
   },
   "scripts": {
     "changelog": "git log --pretty=format:\"* %s (%h)\" [REV_RANGE]"
