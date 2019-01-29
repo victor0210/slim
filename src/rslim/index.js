@@ -1,5 +1,6 @@
-import Slim from 'slim-store'
+import Slim from '../slim/index'
 import React, { Component } from 'react';
+import {msgHelper} from '../slim/helpers/util'
 
 const {createStore, use, on, emit, off} = Slim
 const RSlimContext = React.createContext();
@@ -20,8 +21,23 @@ use({
     }
 })
 
+const _createStore = (...args) => {
+    const store = createStore(...args)
+
+    store.getters = new Proxy(store.getters, {
+        get: (target, property) => {
+            return target[property](store.state)
+        },
+        set: () => {
+            throw new Error(msgHelper.cantAssign())
+        }
+    })
+
+    return store
+}
+
 const RSlim = {
-    createStore,
+    createStore: _createStore,
     use,
     on,
     emit,
@@ -37,18 +53,20 @@ export class RSlimProvider extends Component {
 
         this.state = {
             store: store,
-            state: JSON.parse(JSON.stringify(store.state))
+            state: JSON.parse(JSON.stringify(store.state)),
+            computed: store.getters
         }
     }
 
     render() {
-        const { children} = this.props;
+        const { children } = this.props;
 
         return (
           <RSlimContext.Provider
             value={{
                 $store: this.state.store,
-                $state: this.state.state
+                $state: this.state.state,
+                $cpt: this.state.computed
             }}
           >
               {children}

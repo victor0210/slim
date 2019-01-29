@@ -1,4 +1,7 @@
-import RSlim from 'rslim'
+import Vue from 'vue'
+import VSlim from 'vslim'
+
+Vue.use(VSlim);
 
 let state = {
     count: 0,
@@ -20,8 +23,14 @@ const reducers = {
     }
 }
 
-let store = RSlim.createStore({
-  reducers, state
+const getters = {
+    evenOrOdd: (state) => {
+        return state.count % 2 === 0 ? 'Even' : 'Odd'
+    }
+}
+
+let store = VSlim.createStore({
+  reducers, state, getters
 });
 
 export default store
