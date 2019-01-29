@@ -1,6 +1,13 @@
-import {createStore} from '../../../src/index'
+import Slim from '../../../src/slim'
 
-const reducers = {}
+const reducers = {
+    'incrementCount': (state) => {
+    state.count += 1
+},
+    'incrementNum': (state) => {
+    state.num += 1
+}
+}
 
 const state = {
     num: 1,
@@ -25,20 +32,12 @@ const countPlugin = {
     }
 }
 
-const store = createStore({
+Slim.use(countPlugin)
+
+const store = Slim.createStore({
     reducers,
     state,
     plugin: numPlugin
-})
-
-store.applyPlugin(countPlugin)
-
-store.subscribe('incrementCount', (state) => {
-    state.count += 1
-})
-
-store.subscribe('incrementNum', (state) => {
-    state.num += 1
 })
 
 describe('run middleware', () => {
@@ -49,6 +48,6 @@ describe('run middleware', () => {
 
         expect(store.getState().num).toBe(result)
         expect(store.getState().count).toBe(result)
-        expect(store.getState()).toEqual({num: result, count: result, $$isSlimProxy: true})
+        expect(store.getState()).toEqual({num: result, count: result})
     })
 })

@@ -7,7 +7,7 @@
 ### with script tag
 
 ```html
-<script src="https://unpkg.com/vslim@1.0.0/vslim.min.js"></script>
+<script src="https://unpkg.com/vslim/dist/vslim.min.js"></script>
 ```
 
 ### with npm
@@ -50,7 +50,7 @@ const reducers = {
     }
 }
 
-let store = slim.createStore({
+let store = Slim.createStore({
   reducers, state
 });
 
@@ -108,4 +108,4 @@ new Vue({
 * [TodoMVC](https://github.com/victor0210/slim/tree/master/example/todomvc)
 
 ## Plugin
-[Slim Plugin](/zh/plugin.html)
+[Slim Plugin](/plugin.html)

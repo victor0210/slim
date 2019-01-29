@@ -1,10 +1,20 @@
 # API
 
-## createStore
-**Slim**目前只对外暴露了一个接口：`createStore`，传入一个参数`conf`对象
+### Slim.use
+接入插件，接收一个plugin对象，每次只能添加一个plugin
 
 ```javascript
-const store = createStore({
+Slim.use(slimPlugin)
+```
+
+## Slim.createStore
+**Slim**目前只对外暴露了一个接口：`createStore`，传入一个参数`conf`对象
+
+## Slim.on, Slim.emit, Slim.off
+Apis from [EventCenter](/zh/event.html)
+
+```javascript
+const store = Slim.createStore({
     reducers,                   // default {}
     state,                      // default {}
     plugin,
@@ -45,6 +55,7 @@ const state = {
 
 ```javascript
 const slimPlugin = {
+    init(store) {},
     before(state, action) {},
     after(state, action) {}
 }
@@ -70,16 +81,14 @@ const getters = {
 **store**是通过**createStore**创建并返回的一个整体控制实例
 
 ```javascript
-import {createStore} from 'slim'
+import Slim from 'slim-store'
 
-const store = createStore(...)
+const store = Slim.createStore(...)
 
 // store: {
 //     dispatch,                    触发reducer
-//     subscribe,                   在注册之后新增reducer
-//     unsubscribe,                 注销reducer
 //     getState,                    获取最新state
-//     applyPlugin                  在注册之后新增插件
+//     state                        state
 // }
 ```
 
@@ -93,22 +102,11 @@ const reducers = {
 }
 
 store.dispatch('sayHello', name, age, location)
-```
-### subscribe
-类似于订阅事件，需要传入一个reducerKey和一个回调函数，回调函数接收参数和reducer注册一样
 
-```javascript
-store.subscribe('sayHello', (state, name, age, location) => {...})
-
-// 通用通过dispatch触发
-store.dispatch('sayHello', name, age, location)
-```
-
-### unsubscribe
-对应**subscribe**，**unsubscribe**将会取消reducer订阅，传入对应的reducerKey即可
-
-```javascript
-store.unsubscribe('sayHello')
+// 链式调用
+store.dispatch('one')
+  .dispatch('two')
+  .dispatch('three')
 ```
 
 ### getState
@@ -118,13 +116,6 @@ store.unsubscribe('sayHello')
 // 获取整个state
 const state = store.getState()                  
 
-// 获取getter对应的state值，需要提前注册getter，如果getter不存在则返回undefined
+// 获取alias对应的state值，需要提前注册getters，如果alias不存在则返回undefined
 const username = store.getState('username')     
-```
-
-### applyPlugin
-接入插件，接收一个plugin对象，每次只能添加一个plugin
-
-```javascript
-store.applyPlugin(slimPlugin)
 ```

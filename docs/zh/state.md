@@ -23,7 +23,7 @@ const getters = {
     username: state => state.user.name
 }
 
-const store = createStore({
+const store = Slim.createStore({
     reducers,
     state,
     getters

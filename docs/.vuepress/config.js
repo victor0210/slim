@@ -5,12 +5,10 @@ module.exports = {
     ],
     locales: {
         '/': {
-            lang: 'en-US',
             title: 'Slim',
             description: 'Slim: Centralized State Management With Proxy, State-Non-Editable.'
         },
         '/zh/': {
-            lang: 'zh-CN',
             title: 'Slim',
             description: 'Slim: Centralized State Management With Proxy, State-Non-Editable.'
         }
@@ -18,16 +16,12 @@ module.exports = {
     themeConfig: {
         locales: {
             '/': {
+                selectText: 'Languages',
+                label: 'English',
                 nav: [
                     {text: 'Guide', link: '/intro'},
                     {text: 'API', link: '/slimApi'},
-                    {
-                        text: 'Language', items: [
-                            {text: 'English', link: '/'},
-                            {text: '简体中文', link: '/zh/'}
-                        ]
-                    },
-                    {text: 'github', link: 'https://github.com/victor0210/slim'}
+                    {text: 'Github', link: 'https://github.com/victor0210/slim'}
                 ],
                 sidebar: [
                     {
@@ -44,26 +38,23 @@ module.exports = {
                         children: [
                             ['/state', 'State'],
                             ['/reducer', 'Reducer'],
-                            ['/subscribe', 'Subscribe'],
-                            ['/plugin', 'Plugin']
+                            ['/plugin', 'Plugin'],
+                            ['/event', 'EventCenter']
                         ]
                     },
                     ['/slimApi', 'API'],
                     ['/controlLevel', 'Mode'],
-                    ['/vslim', 'VSlim']
+                    ['/vslim', 'VSlim'],
+                    ['/devtool', 'Slim-DevTools']
                 ]
             },
             '/zh/': {
+                selectText: '选择语言',
+                label: '简体中文',
                 nav: [
                     {text: '指南', link: '/zh/intro.html'},
-                    {text: 'API', link: '/zh/slimApi.html'},
-                    {
-                        text: '语言', items: [
-                            {text: 'English', link: '/'},
-                            {text: '简体中文', link: '/zh/'}
-                        ]
-                    },
-                    {text: 'github', link: 'https://github.com/victor0210/slim'}
+                    {text: '接口文档', link: '/zh/slimApi.html'},
+                    {text: '代码仓库', link: 'https://github.com/victor0210/slim'}
                 ],
                 sidebar: [
                     {
@@ -80,13 +71,14 @@ module.exports = {
                         children: [
                             ['/zh/state.html', 'State'],
                             ['/zh/reducer.html', 'Reducer'],
-                            ['/zh/subscribe.html', 'Subscribe'],
-                            ['/zh/plugin.html', 'Plugin']
+                            ['/zh/plugin.html', 'Plugin'],
+                            ['/zh/event', 'EventCenter']
                         ]
                     },
                     ['/zh/slimApi.html', 'API'],
                     ['/zh/controlLevel.html', '限制级别'],
-                    ['/zh/vslim', 'VSlim']
+                    ['/zh/vslim', 'VSlim'],
+                    ['/zh/devtool', '状态回溯工具']
                 ]
             }
         }

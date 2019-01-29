@@ -1,4 +1,4 @@
-import {createStore} from '../../../src/index'
+import Slim from '../../../src/slim'
 
 const str = 'str'
 const strInObj = 'strinobj'
@@ -30,15 +30,13 @@ const stateBase = {
 }
 
 describe('mode strict should all visitable', () => {
-    const store = createStore({
+    const store = Slim.createStore({
         reducers: {},
         state: stateBase,
         getters: {
             objNum: state => state.obj.objInObj.num
         }
     })
-
-    const state = store.getState()
 
     const toBe = (assertion, expection, result) => {
         it(assertion, () => {
@@ -51,8 +49,17 @@ describe('mode strict should all visitable', () => {
         });
     }
 
+    let state = store.getState()
     toBe('num should be 3', store.getState('objNum'), 3)
     toBe('undefined of getter without key', store.getState('nokey'), undefined)
+    toBe('num should be 1', state.num, 1)
+    toBe('str should be \"str in obj\"', state.str, str)
+    toEqual('obj should be \"obj\"', state.obj, obj)
+    toEqual('arrNum should be [11, 12, 13]]', state.arrNum, arrNum)
+    toEqual('arrStr should be [\'str1\', \'str2\', \'str3\']', state.arrStr, arrStr)
+    toEqual('arrObj should be [{name: \'objInArr1\'}, {name: \'objInArr2\'}, {name: \'objInArr3\'}]', state.arrObj, arrObj)
+
+    state = store.state
     toBe('num should be 1', state.num, 1)
     toBe('str should be \"str in obj\"', state.str, str)
     toEqual('obj should be \"obj\"', state.obj, obj)
@@ -62,13 +69,11 @@ describe('mode strict should all visitable', () => {
 })
 
 describe('mode strict should all visitable', () => {
-    const store = createStore({
+    const store = Slim.createStore({
         reducers: {},
         state: stateBase,
         mode: "loose"
     })
-
-    const state = store.getState()
 
     const toBe = (assertion, expection, result) => {
         it(assertion, () => {
@@ -81,6 +86,15 @@ describe('mode strict should all visitable', () => {
         });
     }
 
+    let state = store.getState()
+    toBe('num should be 1', state.num, 1)
+    toBe('str should be \"str in obj\"', state.str, str)
+    toEqual('obj should be \"obj\"', state.obj, obj)
+    toEqual('arrNum should be [11, 12, 13]]', state.arrNum, arrNum)
+    toEqual('arrStr should be [\'str1\', \'str2\', \'str3\']', state.arrStr, arrStr)
+    toEqual('arrObj should be [{name: \'objInArr1\'}, {name: \'objInArr2\'}, {name: \'objInArr3\'}]', state.arrObj, arrObj)
+
+    state = store.state
     toBe('num should be 1', state.num, 1)
     toBe('str should be \"str in obj\"', state.str, str)
     toEqual('obj should be \"obj\"', state.obj, obj)

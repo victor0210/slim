@@ -1,0 +1,23 @@
+{
+  "git": {
+    "tagName": "v${version}",
+    "requireUpstream": true
+  },
+  "github": {
+    "release": true
+  },
+  "scripts": {
+    "changelog": "git log --pretty=format:\"* %s (%h)\" [REV_RANGE]"
+  },
+  "publishConfig": {
+    "publishPath": "./release"
+  },
+  "prompt": {
+    "commit": true,
+    "tag": true,
+    "push": true,
+    "ghRelease": true,
+    "glRelease": true,
+    "publish": true
+  }
+}

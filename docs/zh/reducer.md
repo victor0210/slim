@@ -11,7 +11,7 @@
 * 减少计数：decrement
 
 ```javascript
-import { createStore } from 'slim'
+import Slim from 'slim-store'
 
 const state = {
     count: 0
@@ -26,7 +26,7 @@ const counters = {
     }
 }
 
-const store = createStore({
+const store = Slim.createStore({
     reducers: counters,
     state
 })

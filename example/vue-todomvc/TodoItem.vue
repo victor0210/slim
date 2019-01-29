@@ -4,7 +4,7 @@
       <input class="toggle"
         type="checkbox"
         :checked="todo.done"
-        @change="store.dispatch('toggleTodo', todo)">
+        @change="tt(todo)">
       <label v-text="todo.text" @dblclick="editing = true"></label>
       <button class="destroy" @click="store.dispatch('removeTodo', todo)"></button>
     </div>
@@ -37,6 +37,9 @@ export default {
     }
   },
   methods: {
+    tt(todo) {
+      this.store.dispatch('toggleTodo', todo)
+    },
     doneEdit (e) {
       const value = e.target.value.trim()
       const { todo } = this

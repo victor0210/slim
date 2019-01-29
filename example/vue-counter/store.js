@@ -1,10 +1,11 @@
 import Vue from 'vue'
-import slim from 'vslim'
+import VSlim from 'vslim'
 
-Vue.use(slim);
+Vue.use(VSlim);
 
 let state = {
     count: 0,
+    str: "Hello Slim!",
     arr: [],
     obj: {
         obj: {
@@ -22,7 +23,7 @@ const reducers = {
     }
 }
 
-let store = slim.createStore({
+let store = VSlim.createStore({
   reducers, state
 });
 

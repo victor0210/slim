@@ -1,8 +1,10 @@
 # Slim
 
 [![npm version](https://img.shields.io/npm/v/slim-store.svg)](https://www.npmjs.org/package/slim-store)
+[![bundle size](https://img.shields.io/bundlephobia/min/slim-store.svg)](https://unpkg.com/slim-store/dist/slim.min.js)
 [![install size](https://packagephobia.now.sh/badge?p=slim-store)](https://packagephobia.now.sh/result?p=slim-store)
-[![build status](https://travis-ci.org/victor2010/slim.svg?branch=master)](https://travis-ci.org/victor2010/slim)
+[![codecov](https://codecov.io/gh/victor0210/slim/branch/master/graph/badge.svg)](https://codecov.io/gh/victor0210/slim)
+[![build status](https://travis-ci.org/victor0210/slim.svg?branch=master)](https://travis-ci.org/victor0210/slim)
 ![Licence](https://img.shields.io/github/license/victor0210/slim.svg)
 
 Centralized State Management With Proxy, State-Non-Editable.
@@ -18,10 +20,10 @@ Centralized State Management With Proxy, State-Non-Editable.
 ## Installation
 
 ### with script tag
-1.0.0 is package version, get the newest version with [https://unpkg.com/slim-store](https://unpkg.com/slim-store)
+Get the newest version with [https://unpkg.com/slim-store/dist/slim.min.js](https://unpkg.com/slim-store/dist/slim.min.js)
 
 ```html
-<script src="https://unpkg.com/slim-store@1.0.0/slim.min.js"></script>
+<script src="https://unpkg.com/slim-store/dist/slim.min.js"></script> 
 ```
 
 ### with npm
@@ -67,48 +69,21 @@ All right! Just kidding. Next!
 You can't edit state anywhere out of reducer in Slim, which will make you more reassured that no one will modify the state in the business logic where you may not know. Where state change => Focus on reducer.
 
 ### Elastic
-redux: update state by return a new state in reducer
-vue: update state in mutation
+
+* Redux: update state by return a new state in reducer
+* Vuex: update state in mutation
 
 Slim is very elastic, it given two modes to control way of updating state in reducer
 
-**reduce: just allow return a new state**
-
-```
-(state) => {
-	...
-
-	return {
-		...state,
-		name: 'new name'
-	}
-}
-```
-
-**direct: just allow update directly**
-
-```
-(state) => {
-	state.name = "new name"
-
-	// return value would be no effect
-}
-```
-
-**default: two ways both**
-
 ### Single Source
-Slim provide a single-source state for the store, which only need paramter with a single-object. It's also can be registered in server side render
+Slim provide a single-source state for the store, which only need parameter with a single-object. It's also can be registered in server side render
 
 ### Easy to be Integrated
-There are two hooks in Slim, which make you can integrate easily.
-
-* applyMiddleware
-* applyCallback
+Slim has the Plugin mechanism, which make you can integrate easily.
 
 here is other state managers integrated by Slim:
 
-* [vslim: Vue State Management With Slim]()
+* [VSlim: Vue State Management With Slim](https://victor0210.github.io/slimdocs/vslim.html)
 
 ## Examples
 

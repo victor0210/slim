@@ -1,10 +1,20 @@
 # API
 
-## createStore
-**Slim** currently exposes only one interface: `createStore`, passing in a parameter `conf` object
+### Slim.use
+Apply plugin, receive a plugin object, only add one plugin at a time
 
 ```javascript
-const store = createStore({
+Slim.use(slimPlugin)
+```
+
+## Slim.createStore
+**Slim** currently exposes only one interface: `createStore`, passing in a parameter `conf` object
+
+## Slim.on, Slim.emit, Slim.off
+Apis from [EventCenter](/event.html)
+
+```javascript
+const store = Slim.createStore({
     reducers,                   // default {}
     state,                      // default {}
     plugin,
@@ -45,6 +55,7 @@ const state = {
 
 ```javascript
 const slimPlugin = {
+    before(store) {},
     before(state, action) {},
     after(state, action) {}
 }
@@ -70,16 +81,14 @@ const getters = {
 **store** is an overall control instance created and returned by **createStore**
 
 ```javascript
-import {createStore} from 'slim'
+import Slim from 'slim-store'
 
-const store = createStore(...)
+const store = Slim.createStore(...)
 
 // store: {
 //     dispatch,                    emit reducer
-//     subscribe,                   register reducer after store is created
-//     unsubscribe,                 register reducer
-//     getState,                    get the newest state
-//     applyPlugin                  add plugin after store is created
+//     getState,                    get the newest state or getter
+//     state,                       state
 // }
 ```
 
@@ -93,22 +102,11 @@ const reducers = {
 }
 
 store.dispatch('sayHello', name, age, location)
-```
-### subscribe
-Similar to the subscription event, you need to pass in a reducerKey and a callback function. The callback function receives the same parameters as the reducer registration.
 
-```javascript
-store.subscribe('sayHello', (state, name, age, location) => {...})
-
-// General trigger by dispatch
-store.dispatch('sayHello', name, age, location)
-```
-
-### unsubscribe
-Corresponding to **subscribe**, **unsubscribe** will cancel the reducer subscription and pass in the corresponding reducerKey.
-
-```javascript
-store.unsubscribe('sayHello')
+// with chain
+store.dispatch('one')
+  .dispatch('two')
+  .dispatch('three')
 ```
 
 ### getState
@@ -120,11 +118,4 @@ const state = store.getState()
 
 // To get the state value corresponding to the getter, you need to register the getter in advance, and return undefined if the getter does not exist.
 const username = store.getState('username')     
-```
-
-### applyPlugin
-Apply plugin, receive a plugin object, only add one plugin at a time
-
-```javascript
-store.applyPlugin(slimPlugin)
 ```

@@ -11,7 +11,10 @@ const todoReducers = {
         todos.splice(todos.indexOf(todo), 1)
     },
     toggleTodo: ({todos}, todo) => {
-        todos[todos.indexOf(todo)].done = !todo.done
+        todos[todos.indexOf(todo)] = {
+          ...todo,
+          done: !todo.done
+        }
     },
     editTodo: ({todos}, todo, text) => {
         todos[todos.indexOf(todo)].text = text

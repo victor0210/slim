@@ -23,10 +23,10 @@ yarn add slim
 ## Use in application
 
 ```javascript
-import {createStore} from 'slim'
+import Slim from 'slim-store'
 const state = {...}
 const reducers = {...}
-const store = createStore({
+const store = Slim.createStore({
     reducers,
     state
 })

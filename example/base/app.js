@@ -1,5 +1,5 @@
 // state is single object
-import createStore from '../../src/core/createStore'
+import Slim from '../../src/slim/index'
 
 const state = {
   count: 0
@@ -25,7 +25,7 @@ const reducers = {
   }
 }
 
-window.store = createStore({
+window.store = Slim.createStore({
   reducers,
   state
 })

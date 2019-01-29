@@ -1,4 +1,4 @@
-import {createStore} from '../../../src/index'
+import Slim from '../../../src/slim'
 
 const getDefaultState = () => {
     const str = 'str'
@@ -32,9 +32,9 @@ const getDefaultState = () => {
 const setErrorMsg = 'You may not be able to assign values ​​directly to state. Please return a new state for reducing or edit with state in reducer.'
 const createErrorMsg = 'type of state expect to [Object] but got [number]'
 
-const handleThrow = (assertion, fn) => {
+const handleThrow = (assertion, fn, msg) => {
     it(assertion, () => {
-        expect(fn).toThrowError(setErrorMsg)
+        expect(fn).toThrowError(msg || setErrorMsg)
     });
 }
 
@@ -46,7 +46,7 @@ const handleThrowNone = (assertion, fn) => {
 
 it(`parameters with store creating should be a plainObject`, () => {
     const validateFn = () => {
-        createStore({
+        Slim.createStore({
             reducers: 1,
             state: 1
         })
@@ -55,7 +55,7 @@ it(`parameters with store creating should be a plainObject`, () => {
 });
 
 describe('change state is not allow with strict', () => {
-    const store = createStore({
+    const store = Slim.createStore({
         reducers: {},
         state: getDefaultState()
     })
@@ -75,7 +75,7 @@ describe('change state is not allow with strict', () => {
 })
 
 describe('change state is all allow in mode loose', () => {
-    const store = createStore({
+    const store = Slim.createStore({
         reducers: {},
         state: getDefaultState(),
         mode: "loose"

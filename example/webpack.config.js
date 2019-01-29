@@ -33,8 +33,8 @@ module.exports = {
 
   resolve: {
     alias: {
-      slim: path.resolve(__dirname, '../src/index.js'),
-      vslim: path.resolve(__dirname, '../src/vslim.js')
+      slim: path.resolve(__dirname, '../src/slim/index.js'),
+      vslim: path.resolve(__dirname, '../src/vslim/index.js')
     }
   },
 
