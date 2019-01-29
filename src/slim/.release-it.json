@@ -1,7 +1,5 @@
 {
   "git": {
-    "tagName": "v${version}",
-    "requireUpstream": true,
     "requireCleanWorkingDir": false
   },
   "github": {
@@ -11,7 +9,7 @@
     "changelog": "git log --pretty=format:\"* %s (%h)\" [REV_RANGE]"
   },
   "publishConfig": {
-    "publishPath": "./release"
+    "publishPath": "./"
   },
   "prompt": {
     "commit": true,
