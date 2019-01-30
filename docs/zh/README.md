@@ -43,19 +43,26 @@ import Slim from 'slim-store'
 
 // state is single object
 const state = {
-    count: 0
+    name: 'slim',
+    age: 20
 }
 
-// reducers is event proxy
+// reducers are event proxies
 const reducers = {
     increment: (state) => {
-        state.count += 1
+        state.age += 1
     }
+}
+
+// getters are computed functions of state
+const getters = {
+  desc: state => `My name is : ${state.name}, I'm ${state.age}-years-old!`
 }
 
 // create store
 const store = Slim.createStore({
     reducers,
+    getters,
     state
 })
 
@@ -63,7 +70,10 @@ const store = Slim.createStore({
 store.dispatch('increment')
 
 console.log(store.state.count)
-// output: 1
+// output: 21
+
+console.log(store.getters.desc)
+// output: My name is : slim, I'm 21-years-old!`
 ```
 
 ## 拓展设施
