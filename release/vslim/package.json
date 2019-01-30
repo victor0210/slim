@@ -1,8 +1,8 @@
 {
   "name": "vslim",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "state manager with proxy base on vue",
-  "main": "index.js",
+  "main": "dist/vslim-esm.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/victor0210/slim.git"
