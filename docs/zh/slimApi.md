@@ -1,7 +1,7 @@
 # API
 
 ### Slim.use
-接入插件，接收一个plugin对象，每次只能添加一个plugin
+接入插件，接收一个[Plugin](/zh/plugin.html)对象，每次只能添加一个Plugin
 
 ```javascript
 Slim.use(slimPlugin)
@@ -19,7 +19,10 @@ const store = Slim.createStore({
     state,                      // default {}
     plugin,
     getters,                    // default {}
-    mode                        // default 'strict'
+    mode,                       // default 'strict'
+    
+    setterValidator,            // 设置验证器：可加入一些自己需要的验证逻辑
+    customSetter                // 自定义赋值方法：详情可参考 `VSlim` 实现
 })
 ```
 
@@ -57,12 +60,13 @@ const state = {
 const slimPlugin = {
     init(store) {},
     before(state, action) {},
+    beforeSet(target, property, value, receiver) {},
     after(state, action) {}
 }
 ```
 
 ### getters
-**getters**是**Slim**提供的一种更便捷构造state特定数据获取的方式，配合`store.getState('getterKey')`使用，每一个getter必须是一个函数，接收唯一参数`state`，
+**getters**是**Slim**提供的一种更便捷构造state特定数据获取的方式，配合`store.getters.getterKey`使用，每一个getter必须是一个函数，接收唯一参数`state`，
 详情请查看[Getters](/zh/state.html#getters)
 
 ```javascript
@@ -87,7 +91,7 @@ const store = Slim.createStore(...)
 
 // store: {
 //     dispatch,                    触发reducer
-//     getState,                    获取最新state
+//     getters,                     快捷获取预设state
 //     state                        state
 // }
 ```
@@ -109,13 +113,13 @@ store.dispatch('one')
   .dispatch('three')
 ```
 
-### getState
+### getters
 获取最新的state，可填参数`getterKey`
 
 ```javascript
 // 获取整个state
-const state = store.getState()                  
+const state = store.state                  
 
-// 获取alias对应的state值，需要提前注册getters，如果alias不存在则返回undefined
-const username = store.getState('username')     
+// 获取getters对应的state值，需要提前注册getters，如果getters不存在则返回undefined
+const username = store.getters.username     
 ```

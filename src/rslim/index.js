@@ -1,6 +1,5 @@
 import Slim from 'slim-store'
 import React, { Component } from 'react';
-import {msgHelper} from '../slim/helpers/util'
 
 const {createStore, use, on, emit, off} = Slim
 const RSlimContext = React.createContext();
@@ -21,23 +20,8 @@ use({
     }
 })
 
-const _createStore = (...args) => {
-    const store = createStore(...args)
-
-    store.getters = new Proxy(store.getters, {
-        get: (target, property) => {
-            return target[property](store.state)
-        },
-        set: () => {
-            throw new Error(msgHelper.cantAssign())
-        }
-    })
-
-    return store
-}
-
 const RSlim = {
-    createStore: _createStore,
+    createStore,
     use,
     on,
     emit,

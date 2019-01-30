@@ -60,7 +60,7 @@ describe('change state is not allow with strict', () => {
         state: getDefaultState()
     })
 
-    const state = store.getState()
+    const state = store.state
 
     handleThrow('num should be readonly', () => {state.num = 1})
     handleThrow('str should be readonly', () => {state.str = 1})
@@ -81,7 +81,7 @@ describe('change state is all allow in mode loose', () => {
         mode: "loose"
     })
 
-    const state = store.getState()
+    const state = store.state
 
     handleThrowNone('num should be readonly', () => {state.num = 1})
     handleThrowNone('num should be readonly', () => {state.num = 1})

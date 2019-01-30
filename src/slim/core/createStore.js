@@ -1,5 +1,5 @@
 import {isPlainObject, isPlainString} from '../helpers/type'
-import {cloneObj, msgHelper, passGetter, passPlugin, passReducer, validatePlugin, walkPlugins} from '../helpers/util'
+import {fnT, isFn, msgHelper, passPlugin, passReducer, validatePlugin, walkPlugins} from '../helpers/util'
 import {throwIf, warnIf} from '../helpers/throwIf'
 
 let injectPlugins = []
@@ -7,6 +7,10 @@ let isDispatching = null
 let isStrict = false
 let store
 let operations = []
+let validateFn
+let customSetterFn
+let plugins
+const STRICT = 'strict'
 
 export const createStore = (conf) => {
     let {
@@ -14,14 +18,21 @@ export const createStore = (conf) => {
         state = {},
         plugin,
         getters = {},
-        mode = 'strict'
+        mode = STRICT,
+        setterValidator,
+        customSetter
     } = conf
 
     if (!isPlainObject(state)) {
         throw new TypeError(msgHelper.typeError(typeof state))
     }
 
-    isStrict = mode === 'strict'
+    isStrict = mode === STRICT
+
+    // for integrated confidently by the third party,
+    // which not be recommended to use in the bossiness
+    validateFn = isFn(setterValidator) ? setterValidator : undefined
+    customSetterFn = isFn(customSetter) ? customSetter : undefined
 
     let currentState = observeObject(state)
     let currentReducer = passReducer({
@@ -29,10 +40,33 @@ export const createStore = (conf) => {
         '__SLIM_DEVTOOL_SET__': (state, stateFromDevTool) => stateFromDevTool
     })
 
+    plugins = [...injectPlugins, ...passPlugin(plugin)]
 
-    let plugins = [...injectPlugins, ...passPlugin(plugin)]
+    const passGetter = (getters) => {
+        const keys = Object.keys(getters)
 
-    getters = passGetter(getters)
+        keys.forEach(key => {
+            let getter = getters[key]
+
+            throwIf(
+              !isFn(getter),
+              msgHelper.shouldBe(`Getter.${key}`, fnT, typeof getter)
+            )
+        })
+
+        return getters
+    }
+
+    getters = new Proxy(passGetter(getters), {
+        get: (target, property) => {
+            return target.hasOwnProperty(property)
+                ? target[property](currentState)
+                : undefined
+        },
+        set: () => {
+            throw new Error(msgHelper.cantAssign())
+        }
+    })
 
     const dispatch = (action, ...args) => {
         operations = []
@@ -74,28 +108,8 @@ export const createStore = (conf) => {
         return store
     }
 
-    const getState = (aliasKey) => {
-        throwIf(
-            isDispatching,
-            msgHelper.cantCall('store.getState()')
-        )
-
-        warnIf(
-          aliasKey && !getters.hasOwnProperty(aliasKey),
-          `Getter of key [${aliasKey}] is not exist. ` +
-          `Please register it with when createStore.`
-        )
-
-        return aliasKey
-          ? getters[aliasKey]
-            ? getters[aliasKey](currentState)
-            : undefined
-          : currentState
-    }
-
     store = {
         dispatch,
-        getState,
         state: currentState,
         getters: getters
     }
@@ -105,52 +119,50 @@ export const createStore = (conf) => {
     return store
 }
 
+/*
+* observe all by proxy
+* */
 const observeObject = (object) => {
     const _createProxy = (val) => {
-        if (isPlainObject(val)) {
-            return createProxy(val)
-        } else if (Array.isArray(val)) {
-            return createProxy(val, true)
-        }
-
-        return val
+       return isPlainObject(val) || Array.isArray(val)
+          ? createProxy(val)
+          : val
     }
-    const createProxy = (object, observeArray) => {
+    const createProxy = (object) => {
         let objectProxyHandler = {
-            set: (target, property, value) => {
+            set: (target, property, value, receiver) => {
                 throwIf(
-                    !isDispatching,
+                  !isDispatching &&
+                  (
+                    (
+                      validateFn &&
+                      !validateFn(target, property, value, receiver)
+                    ) ||
+                      !validateFn
+                  ),
                   msgHelper.cantAssign()
                 )
 
-                return Reflect.set(target, property, _createProxy(cloneObj(value)))
-            },
-            get: (target, property) => {
-                return Reflect.get(target, property)
-            }
-        }
+                walkPlugins('beforeSet', plugins, target, property, value, receiver)
 
-        let arrayProxyHandler = {
-            ...objectProxyHandler,
-            set: (target, property, value) => {
-                if (property === '__proto__')  return Reflect.set(target, property, value)
-
-                if (!isDispatching) {
-                    throw new Error(
-                      msgHelper.cantAssign()
-                    )
-                } else {
-                    return Reflect.set(target, property, _createProxy(cloneObj(value)))
+                const defaultSetter = () => {
+                    return Reflect.set(target, property, _createProxy(value), receiver)
                 }
+
+                return customSetterFn
+                  ? customSetterFn(target, property, value, receiver, defaultSetter)
+                  : defaultSetter()
+            },
+            get: (target, property, receiver) => {
+                return Reflect.get(target, property, receiver)
             }
         }
 
         for (let key in object) {
             object[key] = _createProxy(object[key])
-
         }
 
-        return new Proxy(object, observeArray ? arrayProxyHandler : objectProxyHandler)
+        return new Proxy(object, objectProxyHandler)
     }
 
     return isStrict ? createProxy(object) : object

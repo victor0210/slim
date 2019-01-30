@@ -1,8 +1,10 @@
 import {throwIf} from './throwIf'
 import {isPlainObject} from './type'
 
-const fnT = 'Function'
+export const fnT = 'Function'
 const fnO = 'Object'
+
+export const isFn = (fn) => typeof fn === 'function'
 
 export const passReducer = (reducers) => {
     const keys = Object.keys(reducers)
@@ -11,27 +13,12 @@ export const passReducer = (reducers) => {
         let reducer = reducers[key]
 
         throwIf(
-          typeof reducer !== 'function',
+          !isFn(reducer),
           `Reducer for key [${key}] must be type of [fnT] but got [${typeof reducer}]`
         )
     })
 
     return reducers
-}
-
-export const passGetter = (getters) => {
-    const keys = Object.keys(getters)
-
-    keys.forEach(key => {
-        let getter = getters[key]
-
-        throwIf(
-          typeof getter !== 'function',
-          msgHelper.shouldBe(`Getter.${key}`, fnT, typeof getter)
-        )
-    })
-
-    return getters
 }
 
 export const passPlugin = (plugins) => {
@@ -52,15 +39,18 @@ export const validatePlugin = (p) => {
       msgHelper.shouldBe('Plugin', fnO, typeof p)
     )
 
-    const {before, after} = p
+    const {before, after, beforeSet} = p
 
     before && throwIf(
-      typeof before !== 'function',
+      !isFn(before),
       msgHelper.shouldBe('Plugin.before', fnT, typeof before)
     )
-
+    beforeSet && throwIf(
+      !isFn(beforeSet),
+      msgHelper.shouldBe('Plugin.beforeSet', fnT, typeof beforeSet)
+    )
     after && throwIf(
-      typeof after !== 'function',
+      !isFn(after),
       msgHelper.shouldBe('Plugin.after', fnT, typeof after)
     )
 }
@@ -84,7 +74,5 @@ export const msgHelper = {
     cantAssign: () => `You may not be able to assign values ​​directly to state. ` +
       `Please return a new state for reducing or edit with state in reducer.`
 }
-
-export const cloneObj = p => JSON.parse(JSON.stringify(p))
 
 export const parse2Json = data => isPlainObject(data) ? data : JSON.parse(data)

@@ -6,7 +6,7 @@
 获取状态只能通过以下方式，为什么是通过方法而不是直接访问属性？因为需要保证应用在访问**State**的时候**State**并没有处于被操作中，也是保证获取到的**State**一定是最新的
 
 ```
-store.getState()
+store.state
 ```
 
 ## Getters
@@ -29,5 +29,5 @@ const store = Slim.createStore({
     getters
 })
 
-store.getState('username')  // victor
+store.getters.username  // victor
 ```

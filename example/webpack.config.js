@@ -33,9 +33,9 @@ module.exports = {
 
   resolve: {
     alias: {
-      slim: path.resolve(__dirname, '../src/slim/index.js'),
-      // vslim: path.resolve(__dirname, '../src/vslim/index.js'),
-      // rslim: path.resolve(__dirname, '../src/rslim/index.js')
+      'slim-store': path.resolve(__dirname, '../src/slim/index.js'),
+      vslim: path.resolve(__dirname, '../src/vslim/index.js'),
+      rslim: path.resolve(__dirname, '../src/rslim/index.js')
     }
   },
 
