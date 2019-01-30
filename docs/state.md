@@ -5,7 +5,7 @@
 The state of getting can only be obtained in the following way. Why is it through methods instead of directly accessing properties? Because the application needs to ensure that the **State** is not being operated when accessing the **State**, it is also guaranteed that the **State** obtained must be up to date.
 
 ```
-store.getState()
+store.state
 ```
 
 ## Getters
@@ -28,5 +28,5 @@ const store = Slim.createStore({
     getters
 })
 
-store.getState('username')  // victor
+store.getters.username  // victor
 ```

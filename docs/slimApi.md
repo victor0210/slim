@@ -19,7 +19,10 @@ const store = Slim.createStore({
     state,                      // default {}
     plugin,
     getters,                    // default {}
-    mode                        // default 'strict'
+    mode,                       // default 'strict'
+    
+    setterValidator,            // validator for set new val, which allow to add custom validation rules
+    customSetter                // custom setter, see `VSlim` for more
 })
 ```
 
@@ -55,14 +58,15 @@ const state = {
 
 ```javascript
 const slimPlugin = {
-    before(store) {},
+    init(store) {},
     before(state, action) {},
+    beforeSet(target, property, value, receiver) {},
     after(state, action) {}
 }
 ```
 
 ### getters
-**getters** is a more convenient way to construct state-specific data fetches provided by **Slim**. Used with `store.getState('getterKey')`, each getter must be a function that accepts unique parameters. State`,
+**getters** is a more convenient way to construct state-specific data fetches provided by **Slim**. Used with `store.getters.username('getterKey')`, each getter must be a function that accepts unique parameters. State`,
 See [Getters](/state.html#getters) for details.
 
 ```javascript
@@ -87,7 +91,7 @@ const store = Slim.createStore(...)
 
 // store: {
 //     dispatch,                    emit reducer
-//     getState,                    get the newest state or getter
+//     getters,                    getters
 //     state,                       state
 // }
 ```
@@ -109,13 +113,13 @@ store.dispatch('one')
   .dispatch('three')
 ```
 
-### getState
+### getters
 Get the latest state, fill in the parameter `getterKey`
 
 ```javascript
 // get all state
-const state = store.getState()                  
+const state = store.state                  
 
 // To get the state value corresponding to the getter, you need to register the getter in advance, and return undefined if the getter does not exist.
-const username = store.getState('username')     
+const username = store.getters.username     
 ```

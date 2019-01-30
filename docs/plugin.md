@@ -22,7 +22,11 @@ const store = Slim.createStore({
 
 ## Writing a plugin
 
-**Slim** is also very simple to write plugins. The plugin provides three api `init`、`before` and `after`, which are used before and after the reducer to receive two parameters `state` and `action`, multiple **Plugin** will be executed in the order of registration
+**Slim** is also very simple to write plugins. Multiple **Plugin** will be executed in the order of registration
+
+* `init`：Executed when the plugin registration is initialized, receiving a parameter `store`
+* `before` and `after`: respectively before and after the reducer is executed, receiving two parameters `state` and `action`
+* `beforeSet`: Triggered when setting a new value, receiving four parameters `target`, `property`, `value`, and `receiver`. For details, refer to [Proxy.set](https://developer.mozilla. Org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy/handler/set)
 
 :::warning
 `init` running once with store creat. Plugin usage is sequential, and the results affect each other, but don't feel free to manipulate **State** in **Plugin** before ensuring that the operation is harmless. In general, please read **State** in **Plugin** and put the operation in **Reducer**.
@@ -52,7 +56,9 @@ const counterPlugin = {
             console.log('before count change', state.count)
         }
     },
-
+    beforeSet(target, property, value, receiver) {
+        console.log(target, property, value, receiver)
+    },
     after(state, action) {
         if (action === 'increment') {
             console.log('after count change', state.count)
