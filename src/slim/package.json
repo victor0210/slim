@@ -1,8 +1,8 @@
 {
   "name": "slim-store",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "state manager with proxy",
-  "main": "index.js",
+  "main": "./dist/slim-esm.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/victor0210/slim.git"
