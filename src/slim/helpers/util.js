@@ -1,7 +1,7 @@
 import {throwIf} from './throwIf'
 import {isPlainObject} from './type'
 
-const fnT = 'Function'
+export const fnT = 'Function'
 const fnO = 'Object'
 
 export const isFn = (fn) => typeof fn === 'function'
@@ -19,21 +19,6 @@ export const passReducer = (reducers) => {
     })
 
     return reducers
-}
-
-export const passGetter = (getters) => {
-    const keys = Object.keys(getters)
-
-    keys.forEach(key => {
-        let getter = getters[key]
-
-        throwIf(
-          !isFn(getter),
-          msgHelper.shouldBe(`Getter.${key}`, fnT, typeof getter)
-        )
-    })
-
-    return getters
 }
 
 export const passPlugin = (plugins) => {

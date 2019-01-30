@@ -27,7 +27,7 @@ it(`parameters with store creating should be a plainObject`, () => {
       }), '*')
 
       setTimeout(() => {
-        resolve(store.getState().emit)
+        resolve(store.state.emit)
       })
     })
   })

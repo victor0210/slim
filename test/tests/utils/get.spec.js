@@ -49,9 +49,9 @@ describe('mode strict should all visitable', () => {
         });
     }
 
-    let state = store.getState()
-    toBe('num should be 3', store.getState('objNum'), 3)
-    toBe('undefined of getter without key', store.getState('nokey'), undefined)
+    let state = store.state
+    toBe('num should be 3', store.getters.objNum, 3)
+    toBe('undefined of getter without key', store.getters.nokey, undefined)
     toBe('num should be 1', state.num, 1)
     toBe('str should be \"str in obj\"', state.str, str)
     toEqual('obj should be \"obj\"', state.obj, obj)
@@ -86,7 +86,7 @@ describe('mode strict should all visitable', () => {
         });
     }
 
-    let state = store.getState()
+    let state = store.state
     toBe('num should be 1', state.num, 1)
     toBe('str should be \"str in obj\"', state.str, str)
     toEqual('obj should be \"obj\"', state.obj, obj)

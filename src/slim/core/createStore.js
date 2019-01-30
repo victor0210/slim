@@ -1,5 +1,5 @@
 import {isPlainObject, isPlainString} from '../helpers/type'
-import {isFn, msgHelper, passGetter, passPlugin, passReducer, validatePlugin, walkPlugins} from '../helpers/util'
+import {fnT, isFn, msgHelper, passGetter, passPlugin, passReducer, validatePlugin, walkPlugins} from '../helpers/util'
 import {throwIf, warnIf} from '../helpers/throwIf'
 
 let injectPlugins = []
@@ -40,10 +40,33 @@ export const createStore = (conf) => {
         '__SLIM_DEVTOOL_SET__': (state, stateFromDevTool) => stateFromDevTool
     })
 
-
     plugins = [...injectPlugins, ...passPlugin(plugin)]
 
-    getters = passGetter(getters)
+    const passGetter = (getters) => {
+        const keys = Object.keys(getters)
+
+        keys.forEach(key => {
+            let getter = getters[key]
+
+            throwIf(
+              !isFn(getter),
+              msgHelper.shouldBe(`Getter.${key}`, fnT, typeof getter)
+            )
+        })
+
+        return getters
+    }
+
+    getters = new Proxy(passGetter(getters), {
+        get: (target, property) => {
+            return target.hasOwnProperty(property)
+                ? target[property](currentState)
+                : undefined
+        },
+        set: () => {
+            throw new Error(msgHelper.cantAssign())
+        }
+    })
 
     const dispatch = (action, ...args) => {
         operations = []
@@ -85,28 +108,8 @@ export const createStore = (conf) => {
         return store
     }
 
-    const getState = (aliasKey) => {
-        throwIf(
-            isDispatching,
-            msgHelper.cantCall('store.getState()')
-        )
-
-        warnIf(
-          aliasKey && !getters.hasOwnProperty(aliasKey),
-          `Getter of key [${aliasKey}] is not exist. ` +
-          `Please register it with when createStore.`
-        )
-
-        return aliasKey
-          ? getters[aliasKey]
-            ? getters[aliasKey](currentState)
-            : undefined
-          : currentState
-    }
-
     store = {
         dispatch,
-        getState,
         state: currentState,
         getters: getters
     }

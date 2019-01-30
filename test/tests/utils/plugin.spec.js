@@ -46,8 +46,8 @@ describe('run middleware', () => {
         store.dispatch('incrementCount')
         store.dispatch('incrementNum')
 
-        expect(store.getState().num).toBe(result)
-        expect(store.getState().count).toBe(result)
-        expect(store.getState()).toEqual({num: result, count: result})
+        expect(store.state.num).toBe(result)
+        expect(store.state.count).toBe(result)
+        expect(store.state).toEqual({num: result, count: result})
     })
 })

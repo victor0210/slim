@@ -1,4 +1,4 @@
-import Slim from 'slim'
+import Slim from 'slim-store'
 
 let _rootComponent
 
