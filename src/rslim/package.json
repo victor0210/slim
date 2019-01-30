@@ -1,6 +1,6 @@
 {
   "name": "rslim",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "state manager with proxy base on react",
   "main": "./rslim-esm.js",
   "repository": {

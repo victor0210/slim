@@ -1,5 +1,5 @@
 import {isPlainObject, isPlainString} from '../helpers/type'
-import {fnT, isFn, msgHelper, passGetter, passPlugin, passReducer, validatePlugin, walkPlugins} from '../helpers/util'
+import {fnT, isFn, msgHelper, passPlugin, passReducer, validatePlugin, walkPlugins} from '../helpers/util'
 import {throwIf, warnIf} from '../helpers/throwIf'
 
 let injectPlugins = []
