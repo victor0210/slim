@@ -1,8 +1,11 @@
 import {createStore, use} from './core/createStore'
-import {warnIf} from './helpers/throwIf'
+import {throwIf, warnIf} from './helpers/throwIf'
 import {parse2Json} from './helpers/util'
 import EventCenter from './core/eventCenter'
 
+/*
+* constants fro dev-tools of chrome
+*/
 const __VERSION__ = require('./package.json').version
 const __DEV__ = process.env.NODE_ENV !== 'production'
 const __SLIM_DEVTOOL_INIT__ = '__SLIM_DEVTOOL_INIT__'
@@ -10,6 +13,16 @@ const __SLIM_DEVTOOL_INIT_ANSWER__ = '__SLIM_DEVTOOL_INIT_ANSWER__'
 const __SLIM_DEVTOOL_ANSWER__ = '__SLIM_DEVTOOL_ANSWER__'
 const __SLIM_DEVTOOL_SET__ = '__SLIM_DEVTOOL_SET__'
 const __SLIM_DEVTOOL__ = '__SLIM_DEVTOOL__'
+
+/*
+* Slim will auto downgrade while browser not support Proxy
+*/
+const __PROXY__ = Proxy || window.Proxy
+const __SICK_PROXY__ = 'Your browser not support [Proxy]. Slim will force making mode to "loose" for lib available.'
+
+__DEV__
+  ? throwIf(!__PROXY__, __SICK_PROXY__)
+  : warnIf(!__PROXY__, __SICK_PROXY__)
 
 /*
 * This is a dummy function to check if the function name has been altered by minification.
@@ -28,6 +41,9 @@ warnIf(
 )
 
 const _createStore = () => {
+  /*
+  * inject devtools while environment is "development"
+  */
   if (__DEV__) {
     const devtoolPlugin = {
       init (store) {
@@ -35,7 +51,7 @@ const _createStore = () => {
           window.postMessage({
             version: __VERSION__,
             type: __SLIM_DEVTOOL_INIT_ANSWER__,
-            state: JSON.stringify(store.getState())
+            state: JSON.stringify(store.state)
           }, '*')
         }
 
@@ -79,6 +95,9 @@ const _createStore = () => {
 
 let {on, off, emit} = EventCenter
 
+/*
+* combine apis of EventCenter and SlimStore
+*/
 const Slim = {
   __VERSION__,
   createStore: _createStore(),

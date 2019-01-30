@@ -1,25 +1,46 @@
-import Slim from 'slim-store'
+import Slim from 'slim'
 
 let _rootComponent
 
 let slimPlugin = {
     init(store) {
+        // integrate slim-devtools
         Slim.on('__SLIM_DEVTOOL_ANSWER__', (state) => {
             store.dispatch('__SLIM_DEVTOOL_SET__', state)
         })
     },
-    after(state) {
-        if (_rootComponent) {
-            _rootComponent.$set(_rootComponent.store, 'state', state)
-            _rootComponent.$children[0].$forceUpdate()
-        }
+    beforeSet(target, property, value) {
+      if (
+        _rootComponent &&
+        (
+          !target.hasOwnProperty(property) ||
+          Array.isArray(value) ||
+          Object.prototype.toString.call(value) === '[object Object]'
+        )
+      ) {
+        // patch for vue of observing new key
+        // when the value is an new array or a new key of object and array
+        // observe new val by vueComponent.$set
+        _rootComponent.$set(target, property, value)
+      }
     }
 }
 
 const {createStore, use, on, emit, off} = Slim
 
-const vuePlugin = {
-    createStore,
+// patch of __proto__ in Vue because it make some hooks on array
+const setterValidator = (target, property) => property === '__proto__'
+const customSetter = (target, property, value, receiver, defaultSetter) => {
+  return (property === '__proto__')
+    ? Reflect.set(target, property, value, receiver)
+    : defaultSetter()
+}
+
+// rewrite setterValidator & customSetter
+const _createStore = (spec) => createStore(Object.assign(spec, {setterValidator, customSetter}))
+
+const VSlim = {
+    createStore: _createStore,
     use,
     on,
     emit,
@@ -53,14 +74,8 @@ const vuePlugin = {
             // store injection
             if (options.store) {
                 this.store = typeof options.store === 'function'
-                    ? {
-                        ...options.store(),
-                        state: options.store.getState()
-                    }
-                    : {
-                        ...options.store,
-                        state: options.store.getState()
-                    }
+                    ? options.store()
+                    : options.store
 
                 _rootComponent = this
             } else if (options.parent && options.parent.store) {
@@ -72,4 +87,4 @@ const vuePlugin = {
 
 Slim.use(slimPlugin)
 
-export default vuePlugin
+export default VSlim

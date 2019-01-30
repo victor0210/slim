@@ -1,5 +1,5 @@
 import {isPlainObject, isPlainString} from '../helpers/type'
-import {cloneObj, msgHelper, passGetter, passPlugin, passReducer, validatePlugin, walkPlugins} from '../helpers/util'
+import {isFn, msgHelper, passGetter, passPlugin, passReducer, validatePlugin, walkPlugins} from '../helpers/util'
 import {throwIf, warnIf} from '../helpers/throwIf'
 
 let injectPlugins = []
@@ -7,6 +7,10 @@ let isDispatching = null
 let isStrict = false
 let store
 let operations = []
+let validateFn
+let customSetterFn
+let plugins
+const STRICT = 'strict'
 
 export const createStore = (conf) => {
     let {
@@ -14,14 +18,21 @@ export const createStore = (conf) => {
         state = {},
         plugin,
         getters = {},
-        mode = 'strict'
+        mode = STRICT,
+        setterValidator,
+        customSetter
     } = conf
 
     if (!isPlainObject(state)) {
         throw new TypeError(msgHelper.typeError(typeof state))
     }
 
-    isStrict = mode === 'strict'
+    isStrict = mode === STRICT
+
+    // for integrated confidently by the third party,
+    // which not be recommended to use in the bossiness
+    validateFn = isFn(setterValidator) ? setterValidator : undefined
+    customSetterFn = isFn(customSetter) ? customSetter : undefined
 
     let currentState = observeObject(state)
     let currentReducer = passReducer({
@@ -30,7 +41,7 @@ export const createStore = (conf) => {
     })
 
 
-    let plugins = [...injectPlugins, ...passPlugin(plugin)]
+    plugins = [...injectPlugins, ...passPlugin(plugin)]
 
     getters = passGetter(getters)
 
@@ -105,52 +116,50 @@ export const createStore = (conf) => {
     return store
 }
 
+/*
+* observe all by proxy
+* */
 const observeObject = (object) => {
     const _createProxy = (val) => {
-        if (isPlainObject(val)) {
-            return createProxy(val)
-        } else if (Array.isArray(val)) {
-            return createProxy(val, true)
-        }
-
-        return val
+       return isPlainObject(val) || Array.isArray(val)
+          ? createProxy(val)
+          : val
     }
-    const createProxy = (object, observeArray) => {
+    const createProxy = (object) => {
         let objectProxyHandler = {
-            set: (target, property, value) => {
+            set: (target, property, value, receiver) => {
                 throwIf(
-                    !isDispatching,
+                  !isDispatching &&
+                  (
+                    (
+                      validateFn &&
+                      !validateFn(target, property, value, receiver)
+                    ) ||
+                      !validateFn
+                  ),
                   msgHelper.cantAssign()
                 )
 
-                return Reflect.set(target, property, _createProxy(cloneObj(value)))
-            },
-            get: (target, property) => {
-                return Reflect.get(target, property)
-            }
-        }
+                walkPlugins('beforeSet', plugins, target, property, value, receiver)
 
-        let arrayProxyHandler = {
-            ...objectProxyHandler,
-            set: (target, property, value) => {
-                if (property === '__proto__')  return Reflect.set(target, property, value)
-
-                if (!isDispatching) {
-                    throw new Error(
-                      msgHelper.cantAssign()
-                    )
-                } else {
-                    return Reflect.set(target, property, _createProxy(cloneObj(value)))
+                const defaultSetter = () => {
+                    return Reflect.set(target, property, _createProxy(value), receiver)
                 }
+
+                return customSetterFn
+                  ? customSetterFn(target, property, value, receiver, defaultSetter)
+                  : defaultSetter()
+            },
+            get: (target, property, receiver) => {
+                return Reflect.get(target, property, receiver)
             }
         }
 
         for (let key in object) {
             object[key] = _createProxy(object[key])
-
         }
 
-        return new Proxy(object, observeArray ? arrayProxyHandler : objectProxyHandler)
+        return new Proxy(object, objectProxyHandler)
     }
 
     return isStrict ? createProxy(object) : object
