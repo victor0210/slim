@@ -1,8 +1,8 @@
 {
   "name": "rslim",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "state manager with proxy base on react",
-  "main": "./dist/rslim-esm.js",
+  "main": "./rslim-esm.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/victor0210/slim.git"
@@ -14,7 +14,7 @@
   },
   "homepage": "https://github.com/victor0210/slim#readme",
   "devDependencies": {
-    "slim-store": "2.0.2",
+    "slim-store": "2.0.3",
     "react": "^16.7.0",
     "react-dom": "^16.7.0"
   }

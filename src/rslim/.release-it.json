@@ -1,13 +1,4 @@
 {
-  "git": {
-    "requireCleanWorkingDir": false
-  },
-  "github": {
-    "release": false
-  },
-  "scripts": {
-    "changelog": "git log --pretty=format:\"* %s (%h)\" [REV_RANGE]"
-  },
   "publishConfig": {
     "publishPath": "./"
   },
