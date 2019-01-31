@@ -73,7 +73,7 @@ store.dispatch('increment')
 console.log(store.state.count)
 // output: 21
 
-console.log(store.getters.desc)
+console.log(store.getGetter('desc'))
 // output: My name is : slim, I'm 21-years-old!`
 ```
 

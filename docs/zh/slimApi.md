@@ -66,7 +66,7 @@ const slimPlugin = {
 ```
 
 ### getters
-**getters**是**Slim**提供的一种更便捷构造state特定数据获取的方式，配合`store.getters.getterKey`使用，每一个getter必须是一个函数，接收唯一参数`state`，
+**getters**是**Slim**提供的一种更便捷构造state特定数据获取的方式，配合`store.getGetter(key)`使用，每一个getter必须是一个函数，接收唯一参数`state`，
 详情请查看[Getters](/zh/state.html#getters)
 
 ```javascript
@@ -121,5 +121,5 @@ store.dispatch('one')
 const state = store.state                  
 
 // 获取getters对应的state值，需要提前注册getters，如果getters不存在则返回undefined
-const username = store.getters.username     
+const username = store.getGetter('username')     
 ```
