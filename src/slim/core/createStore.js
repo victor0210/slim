@@ -108,10 +108,14 @@ export const createStore = (conf) => {
         return store
     }
 
+    const getGetter = (key) => {
+        return key ? getters[key] : getters
+    }
+
     store = {
         dispatch,
-        state: currentState,
-        getters: getters
+        getGetter,
+        state: currentState
     }
 
     walkPlugins('init', plugins, store)

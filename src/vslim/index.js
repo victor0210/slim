@@ -87,4 +87,6 @@ const VSlim = {
 
 Slim.use(slimPlugin)
 
+export * from './helpers'
+
 export default VSlim
