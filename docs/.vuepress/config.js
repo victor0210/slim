@@ -14,14 +14,19 @@ module.exports = {
         }
     },
     themeConfig: {
+        repo: 'victor0210/slim',
+        docsDir: 'docs',
+        docsBranch: 'master',
+        editLinks: true,
         locales: {
             '/': {
+                editLinkText: 'Edit this page on GitHub',
+                lastUpdated: 'Last Updated',
                 selectText: 'Languages',
                 label: 'English',
                 nav: [
                     {text: 'Guide', link: '/intro'},
-                    {text: 'API', link: '/slimApi'},
-                    {text: 'Github', link: 'https://github.com/victor0210/slim'}
+                    {text: 'API', link: '/slimApi'}
                 ],
                 sidebar: [
                     {
@@ -50,12 +55,13 @@ module.exports = {
                 ]
             },
             '/zh/': {
+                editLinkText: '帮助我们改善此页面！',
+                lastUpdated: '最近一次更新',
                 selectText: '选择语言',
                 label: '简体中文',
                 nav: [
                     {text: '指南', link: '/zh/intro.html'},
-                    {text: '接口文档', link: '/zh/slimApi.html'},
-                    {text: '代码仓库', link: 'https://github.com/victor0210/slim'}
+                    {text: '接口文档', link: '/zh/slimApi.html'}
                 ],
                 sidebar: [
                     {
