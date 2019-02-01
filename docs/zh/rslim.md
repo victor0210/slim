@@ -16,7 +16,7 @@
 npm install rslim
 ```
 
-## 使用
+## 快速开始
 
 **App.js**
 
