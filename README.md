@@ -1,8 +1,8 @@
-<div style="text-align: center;">
+<p align="center">
     <img src="./starter/logo.png" width="80px">
-</div>
+</p>
 
-<p style="text-align: center;">
+<p align="center">
 <a href="https://www.npmjs.org/package/slim-store">
     <img src="https://img.shields.io/npm/v/slim-store.svg" alt="npm version">
 </a>
@@ -21,9 +21,9 @@
     <img src="https://img.shields.io/github/license/victor0210/slim.svg" alt="Licence"></a>
 </p>
 
-<h1 style="text-align: center">Slim</h1>
+<h1 align="center">Slim</h1>
 
-<p style="text-align: center">Centralized State-Non-Editable State Management With Proxy.</p>
+<p align="center">Centralized State-Non-Editable State Management With Proxy.</p>
 
 ## Documentation
 
