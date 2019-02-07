@@ -24,7 +24,7 @@
 <script src="https://unpkg.com/vslim/dist/vslim.min.js"></script>
 ```
 
-### npm
+### NPM
 
 ```bash
 npm install vslim
