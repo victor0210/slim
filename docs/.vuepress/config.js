@@ -86,7 +86,7 @@ module.exports = {
                     ['/zh/controlLevel.html', '限制级别'],
                     ['/zh/vslim', 'VSlim'],
                     ['/zh/rslim', 'RSlim'],
-                    ['/zh/devtool', '状态回溯工具']
+                    ['/zh/devtool', '状态记录工具']
                 ]
             }
         }
