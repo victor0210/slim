@@ -14,7 +14,7 @@
   },
   "homepage": "https://github.com/victor0210/slim#readme",
   "devDependencies": {
-    "slim-store": "2.0.5",
+    "slim-store": "2.0.6",
     "react": "^16.7.0",
     "react-dom": "^16.7.0"
   }
