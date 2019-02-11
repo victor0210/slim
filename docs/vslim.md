@@ -2,6 +2,10 @@
 
 **VSlim** is a [Vue](https://cn.vuejs.org/) state management extension library based on [Slim](/zh/intro.html), which has the same features and supports responsive **State**
 
+:::warning
+Please learn **Slim** related content before learning **VSlim** content to avoid the core concepts of the following content not understood because **VSlim** is based on the expansion of **Slim**!
+:::
+
 ## Features
 
 * Small and exquisite
