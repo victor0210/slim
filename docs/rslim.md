@@ -2,6 +2,10 @@
 
 **RSlim** is a [Vue](https://cn.vuejs.org/) state management extension library based on [Slim](/zh/intro.html), which has the same features and supports **State**'s responsiveness
 
+:::warning
+Please learn **Slim** related content before learning **RSlim** content to avoid the core concepts of the following content not understood because **RSlim** is based on the expansion of **Slim**!
+:::
+
 ## Installation
 
 ### with script tag

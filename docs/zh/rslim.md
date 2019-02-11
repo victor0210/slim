@@ -2,6 +2,10 @@
 
 **RSlim**是基于[Slim](/zh/intro.html)的[React](https://reactjs.org//)状态管理拓展库，与其拥有同样的特性，并且还支持**State**的响应式和计算属性哦
 
+:::warning 注意
+因为**RSlim**是基于**Slim**的拓展，所以请在学习**RSlim**内容之前务必先学习**Slim**相关内容以免下列内容的核心概念不理解！
+:::
+
 ## 安装
 
 ### 标签引入
