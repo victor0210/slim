@@ -72,7 +72,11 @@ new Vue({
 })
 ```
 
-**App.vue**：通过helper方法快速注入到组件，或者通过`this.store`来获取到全局store对象
+**App.vue**：
+
+:::tip 提示
+通过**VSlim**提供的`mapDispatchers`、`mapGetters`和 `mapState`方法将**Store**中的`Dispatcher`、`Getter`和`State`注入到组件直接使用，或者通过`this.store`来获取到全局store对象
+:::
 
 ```vue
 <template>

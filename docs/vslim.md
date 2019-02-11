@@ -72,7 +72,11 @@ new Vue({
 })
 ```
 
-**App.vue**: Quickly inject to the component via the helper method, or get the global store object via `this.store`
+**App.vue**: 
+
+:::tip
+Inject the `Dispatcher`, `Getter` and `State` in the Store ** directly into the component via the `mapDispatchers`, `mapGetters` and `mapState` methods provided by VSlim **, or via `this. Store` to get the global store object
+:::
 
 ```vue
 <template>

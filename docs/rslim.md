@@ -21,7 +21,6 @@ npm install rslim
 **App.js**
 
 ```javascript
-import React from 'react'
 import ReactDOM from 'react-dom'
 import AppComponent from './AppComponent'
 import RSlim, {RSlimProvider} from 'rslim'
