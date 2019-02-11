@@ -10,7 +10,7 @@
 <script src="https://unpkg.com/rslim/dist/rslim.min.js"></script>
 ```
 
-### npm
+### NPM
 
 ```bash
 npm install rslim

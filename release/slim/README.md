@@ -30,7 +30,7 @@ Get the newest version with [https://unpkg.com/slim-store/dist/slim.min.js](http
 <script src="https://unpkg.com/slim-store/dist/slim.min.js"></script> 
 ```
 
-### with npm
+### NPM
 ```bash
 npm install slim-store
 ```
