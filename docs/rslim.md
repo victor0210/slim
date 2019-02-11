@@ -10,7 +10,7 @@
 <script src="https://unpkg.com/rslim/dist/rslim.min.js"></script>
 ```
 
-### with npm
+### NPM
 
 ```bash
 npm install rslim
@@ -21,7 +21,6 @@ npm install rslim
 **App.js**
 
 ```javascript
-import React from 'react'
 import ReactDOM from 'react-dom'
 import AppComponent from './AppComponent'
 import RSlim, {RSlimProvider} from 'rslim'

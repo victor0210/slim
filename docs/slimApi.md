@@ -66,7 +66,7 @@ const slimPlugin = {
 ```
 
 ### getters
-**getters** is a more convenient way to construct state-specific data fetches provided by **Slim**. Used with `store.getters.username('getterKey')`, each getter must be a function that accepts unique parameters. State`,
+**getters** is a more convenient way to construct state-specific data fetches provided by **Slim**. Used with `store.getGetter('username')('getterKey')`, each getter must be a function that accepts unique parameters. State`,
 See [Getters](/state.html#getters) for details.
 
 ```javascript
@@ -121,5 +121,5 @@ Get the latest state, fill in the parameter `getterKey`
 const state = store.state                  
 
 // To get the state value corresponding to the getter, you need to register the getter in advance, and return undefined if the getter does not exist.
-const username = store.getters.username     
+const username = store.getGetter('username')     
 ```

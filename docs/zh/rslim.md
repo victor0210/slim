@@ -10,18 +10,17 @@
 <script src="https://unpkg.com/rslim/dist/rslim.min.js"></script>
 ```
 
-### npm
+### NPM
 
 ```bash
 npm install rslim
 ```
 
-## 使用
+## 快速开始
 
 **App.js**
 
 ```javascript
-import React from 'react'
 import ReactDOM from 'react-dom'
 import AppComponent from './AppComponent'
 import RSlim, {RSlimProvider} from 'rslim'

@@ -28,5 +28,5 @@ const store = Slim.createStore({
     getters
 })
 
-store.getters.username  // victor
+store.getGetter('username')  // victor
 ```

@@ -38,7 +38,7 @@ export class RSlimProvider extends Component {
         this.state = {
             store: store,
             state: JSON.parse(JSON.stringify(store.state)),
-            computed: store.getters
+            computed: store.getGetter()
         }
     }
 
