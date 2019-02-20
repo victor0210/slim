@@ -6,7 +6,7 @@
         :checked="todo.done"
         @change="tt(todo)">
       <label v-text="todo.text" @dblclick="editing = true"></label>
-      <button class="destroy" @click="store.dispatch('removeTodo', todo)"></button>
+      <button class="destroy" @click="store.commit('removeTodo', todo)"></button>
     </div>
     <input class="edit"
       v-show="editing"
@@ -38,15 +38,15 @@ export default {
   },
   methods: {
     tt(todo) {
-      this.store.dispatch('toggleTodo', todo)
+      this.store.commit('toggleTodo', todo)
     },
     doneEdit (e) {
       const value = e.target.value.trim()
       const { todo } = this
       if (!value) {
-        this.store.dispatch('removeTodo', todo)
+        this.store.commit('removeTodo', todo)
       } else if (this.editing) {
-        this.store.dispatch('editTodo', todo, value)
+        this.store.commit('editTodo', todo, value)
         this.editing = false
       }
     },

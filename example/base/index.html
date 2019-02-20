@@ -45,14 +45,19 @@
     <script src="/__build__/base.js"></script>
 
     <script>
+      Slim.on('__SLIM_DEVTOOL_ANSWER__', (state) => {
+        store.dispatch('__SLIM_DEVTOOL_SET__', state)
+        renderCount(store.state.count)
+      })
+
       function decrement() {
-        store.dispatch('decrement')
-        renderCount(store.getState().count)
+        store.commit('decrement')
+        renderCount(store.state.count)
       }
 
       function increment() {
         store.dispatch('increment')
-        renderCount(store.getState().count)
+        renderCount(store.state.count)
       }
 
       const countEl = document.getElementById('count')

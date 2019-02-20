@@ -22,6 +22,18 @@ export const mapDispatchers = (dispatchers) => {
   return res
 }
 
+export const mapCommits = (commits) => {
+  let res = {}
+
+  commits.forEach(key => {
+    res[key] = function (...args) {
+      return this.store.commit(key, ...args)
+    }
+  })
+
+  return res
+}
+
 const getState = (state, key) => state[key]
 export const mapState = (state) => {
   let res = {}

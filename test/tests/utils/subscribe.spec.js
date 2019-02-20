@@ -80,7 +80,7 @@ const store = Slim.createStore({
 // TODO: test warn
 it(`change num directly is allow, result should be 2`, () => {
     const s = store.state
-    store.dispatch('changeNumDirectly', 2)
+    store.commit('changeNumDirectly', 2)
 
     expect(store.state.num).toBe(2)
     expect(store.state).toEqual({...s, num: 2})
@@ -88,7 +88,7 @@ it(`change num directly is allow, result should be 2`, () => {
 
 it(`change num with reducer is allow, result should be 3`, () => {
     const s = store.state
-    store.dispatch('changeNumReducer', 3)
+    store.commit('changeNumReducer', 3)
 
     expect(store.state.num).toBe(3)
     expect(store.state).toEqual({...s, num: 3})
@@ -98,7 +98,7 @@ it(`change num with reducer is allow, result should be 3`, () => {
 // TODO: test warn
 it(`change str directly is allow, result should be str2`, () => {
     const s = store.state
-    store.dispatch('changeStrDirectly', 'str2')
+    store.commit('changeStrDirectly', 'str2')
 
     expect(store.state.str).toBe('str2')
     expect(store.state).toEqual({...s, str: 'str2'})
@@ -106,7 +106,7 @@ it(`change str directly is allow, result should be str2`, () => {
 
 it(`change str reducer is allow, result should be str3`, () => {
     const s = store.state
-    store.dispatch('changeStrReducer', 'str3')
+    store.commit('changeStrReducer', 'str3')
 
     expect(store.state.str).toBe('str3')
     expect(store.state).toEqual({...s, str: 'str3'})
@@ -116,7 +116,7 @@ it(`change str reducer is allow, result should be str3`, () => {
 // TODO: test warn
 it(`change prop of obj directly is allow, result should be 22`, () => {
     const s = store.state
-    store.dispatch('changeObjDirectly', 22)
+    store.commit('changeObjDirectly', 22)
 
     expect(store.state.obj.num).toBe(22)
     expect(store.state).toEqual({...s, obj: {...obj, num: 22}})
@@ -124,7 +124,7 @@ it(`change prop of obj directly is allow, result should be 22`, () => {
 
 it(`change prop of obj with reducer is allow, result should be 22`, () => {
     const s = store.state
-    store.dispatch('changeObjReducer', 23)
+    store.commit('changeObjReducer', 23)
 
     expect(store.state.obj.num).toBe(23)
     expect(store.state).toEqual({...s, obj: {...obj, num: 23}})
@@ -134,7 +134,7 @@ it(`change prop of obj with reducer is allow, result should be 22`, () => {
 // TODO: test warn
 it(`change prop of arr with single variable by index is allow, result should be 22`, () => {
     const s = store.state
-    store.dispatch('changeArrDirectly', 1)
+    store.commit('changeArrDirectly', 1)
 
     expect(store.state.arrNum[0]).toBe(1)
     expect(JSON.stringify(store.state)).toEqual(JSON.stringify({...s, arrNum: [1, 12, 13]}))
@@ -142,7 +142,7 @@ it(`change prop of arr with single variable by index is allow, result should be 
 
 it(`change prop of arr with single variable method of prototype is allow, result should be 22`, () => {
     const s = store.state
-    store.dispatch('changeArrPro', 14)
+    store.commit('changeArrPro', 14)
 
     expect(store.state.arrNum[3]).toBe(14)
     expect(JSON.stringify(store.state)).toEqual(JSON.stringify({...s, arrNum: [1, 12, 13, 14]}))

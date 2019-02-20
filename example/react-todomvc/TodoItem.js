@@ -26,7 +26,7 @@ class TodoItem extends Component {
   }
 
   doneEdit (e, todo) {
-    store.dispatch('editTodo', todo, e.target.value)
+    store.commit('editTodo', todo, e.target.value)
 
     this.setState({
       editing: false
@@ -48,7 +48,7 @@ class TodoItem extends Component {
                 type="checkbox"
                 checked={this.props.todo.done}
                 onChange={() => {
-                  store.dispatch('toggleTodo', this.props.todo)
+                  store.commit('toggleTodo', this.props.todo)
                 }}
               />
               <label
@@ -57,7 +57,7 @@ class TodoItem extends Component {
                 }}
               >{this.props.todo.text}</label>
               <button className="destroy" onClick={() => {
-                $store.dispatch('removeTodo', this.props.todo)
+                $store.commit('removeTodo', this.props.todo)
               }}/>
             </div>
             <input

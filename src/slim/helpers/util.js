@@ -6,19 +6,19 @@ const fnO = 'Object'
 
 export const isFn = (fn) => typeof fn === 'function'
 
-export const passReducer = (reducers) => {
-    const keys = Object.keys(reducers)
+export const passFunction = (funcs, funcKey) => {
+    const keys = Object.keys(funcs)
 
     keys.forEach(key => {
-        let reducer = reducers[key]
+        let func = funcs[key]
 
         throwIf(
-          !isFn(reducer),
-          `Reducer for key [${key}] must be type of [fnT] but got [${typeof reducer}]`
+          !isFn(func),
+          `${funcKey} for key [${key}] must be type of [${fnT}] but got [${typeof func}]`
         )
     })
 
-    return reducers
+    return funcs
 }
 
 export const passPlugin = (plugins) => {

@@ -43,8 +43,8 @@ const store = Slim.createStore({
 describe('run middleware', () => {
     const result = 4
     it(`middleware change state directly`, () => {
-        store.dispatch('incrementCount')
-        store.dispatch('incrementNum')
+        store.commit('incrementCount')
+        store.commit('incrementNum')
 
         expect(store.state.num).toBe(result)
         expect(store.state.count).toBe(result)

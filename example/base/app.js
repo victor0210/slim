@@ -25,7 +25,18 @@ const reducers = {
   }
 }
 
+const actions = {
+  increment: ({commit}, ...args) => {
+    console.log('track in actions')
+
+    commit('increment', ...args)
+  }
+}
+
 window.store = Slim.createStore({
   reducers,
+  actions,
   state
 })
+
+window.Slim = Slim
