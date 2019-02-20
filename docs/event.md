@@ -14,6 +14,8 @@ The event center provides three APIs `on`, `off` and `emit`. The usage is very s
 You can listen to add multiple event callbacks after an event name. When you remove an event, pass the callback function entity.
 :::
 
+### on(eventName[, callback])
+
 ```javascript
 import Slim from 'slim-store'
 

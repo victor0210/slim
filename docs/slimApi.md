@@ -1,125 +1,180 @@
-# API
+# Slim Top-Level API
+
+Slim is the entry point to the Slim library. If you load Slim from a Script tag, Slim can use these top-level APIs globally.
+If you use ES6 and npm, `impoart Slim from 'slim-store'`.
+If you use ES5 and npm, `var Slim = require('slim-store')`.
+
+## Overview
+
+Create a Store instance.
+* [Slim.createStore](/slimApi.html#slim-createstore)
+* **Spec: optional parameters when creatingStore**
+    * [Spec.state](/slimApi.html#spec-state)
+    * [Spec.actions](/slimApi.html#spec-actions)
+    * [Spec.reducers](/slimApi.html#spec-reducers)
+    * [Spec.getters](/slimApi.html#spec-getters)
+    * [Spec.mode](/slimApi.html#spec-mode)
+    * [Spec.plugin](/slimApi.html#spec-plugin)
+
+Inject the plugin.
+* [Slim.use](/slimApi.html#slim-use)
+
+Event center related.
+* [Slim.on](/event.html#on-eventname-callback)
+* [Slim.off](/event.html#emit-eventname-args)
+* [Slim.emit](/event.html#off-listener)
+
+**Store** instance API.
+* [Store.dispatch](/slimApi.html#store-dispatch)
+* [Store.commit](/slimApi.html#store-commit)
+* [Store.getGetter](/slimApi.html#store-getgetter)
+* [Store.state](/state.html)
+
+## Reference
+
+### Slim.createStore
+`Slim.createStore(Spec)` creates and returns a **Store** instance.
+
+```javascript
+const store = Slim.createStore(spec)
+```
+
+### Spec
+`Spec` is a configuration object passed in `Slim.createStore`
+
+```javascript
+const store = Slim.createStore(spec)
+```
+
 
 ### Slim.use
-Apply plugin, receive a plugin object, only add one plugin at a time
-
-```javascript
-Slim.use(slimPlugin)
-```
-
-## Slim.createStore
-**Slim** currently exposes only one interface: `createStore`, passing in a parameter `conf` object
-
-## Slim.on, Slim.emit, Slim.off
-Apis from [EventCenter](/event.html)
-
-```javascript
-const store = Slim.createStore({
-    reducers,                   // default {}
-    state,                      // default {}
-    plugin,
-    getters,                    // default {}
-    mode,                       // default 'strict'
-    
-    setterValidator,            // validator for set new val, which allow to add custom validation rules
-    customSetter                // custom setter, see `VSlim` for more
-})
-```
-
-### reducers
-**reducers** is a series of methods that will receive a default parameter **state** and the rest of the custom parameters. The parameters passed in **dispatch** will be received via args. See [Reducer](/reducer for details) .html)
-
-```javascript
-const reducers = {
-    reducerKeyForDispatch: callback(state, ...args) 
-}
-```
-
-### state
-**state** is a single object stored in one state. See [State](/state.html) for details.
-
-```javascript
-const state = {
-    user: {
-        name: 'victor',
-        age: 18
-    },
-    todos: [
-        {
-            content: 'one',
-            status: 'done'
-        }
-    ]
-}
-```
-
-### plugin
-**plugin** is a simple object that provides `before` and `after` execution cycle hooks to access two parameters `state` and `action`. See [Plugin] for details (/plugin.html )
-
-```javascript
-const slimPlugin = {
-    init(store) {},
-    before(state, action) {},
-    beforeSet(target, property, value, receiver) {},
-    after(state, action) {}
-}
-```
-
-### getters
-**getters** is a more convenient way to construct state-specific data fetches provided by **Slim**. Used with `store.getGetter('username')('getterKey')`, each getter must be a function that accepts unique parameters. State`,
-See [Getters](/state.html#getters) for details.
-
-```javascript
-const getters = {
-    username: ({user}) => user.name 
-}
-```
-
-### mode
-**mode** determines the limit level of **Slim**, optional two values ​​`strict` and `loose`, default: `strict`, what is the difference between the two values?
-
-* **strict**: Use Proxy to listen to the data, the limit is very strong, and it is not allowed to modify any data anywhere the reducer accidentally
-* **loose**: Unlimited, it is recommended to use in production environment
-
-## Store
-**store** is an overall control instance created and returned by **createStore**
+`Slim.use(plugin)` is a more flexible plugin injection method before **Store** is created.
 
 ```javascript
 import Slim from 'slim-store'
 
-const store = Slim.createStore(...)
-
-// store: {
-//     dispatch,                    emit reducer
-//     getters,                    getters
-//     state,                       state
-// }
-```
-
-### dispatch
-**dispatch** triggers the reducer to execute. The first parameter is the key corresponding to the reducer. You can add multiple custom parameters later.
-
-```javascript
-// 'sayHello' should receive custom parameters like this
-const reducers = {
-    sayHello: (state, name, age, location) {...}
+let plugin = {
+    init(store) {
+      console.log('init')
+    }
 }
 
-store.dispatch('sayHello', name, age, location)
-
-// with chain
-store.dispatch('one')
-  .dispatch('two')
-  .dispatch('three')
+Slim.use(plugin)
 ```
 
-### getters
-Get the latest state, fill in the parameter `getterKey`
+### Store.dispatch
+`Store.dispatch(actionType, ...args)` Trigger **Action**. [More about Action](/action.html).
 
 ```javascript
-// get all state
-const state = store.state                  
+import Slim from 'slim-store'
 
-// To get the state value corresponding to the getter, you need to register the getter in advance, and return undefined if the getter does not exist.
-const username = store.getGetter('username')     
+const actions = {
+  increment: (context, ...args) => {
+    console.log('action increment fire')
+  }
+}
+
+const store = Slim.createStore({
+  actions
+})
+
+store.dispatch('increment')
+// output: action increment fire
 ```
+
+### Store.commit
+`Store.commit(reducerKey, ...args)` Trigger **Reducer**. [More about Reducer](/reducer.html).
+
+```javascript
+import Slim from 'slim-store'
+
+const reducers = {
+  increment: (state, ...args) => {
+    console.log('action increment fire')
+  }
+}
+
+const store = Slim.createStore({
+  reducers
+})
+
+store.commit('increment')
+// output: action increment fire
+```
+
+### Store.getGetter
+`Store.getGetter(getterKey)` is a combination of state methods. [More about getGetter](/state.html#get-state).
+
+```javascript
+import Slim from 'slim-store'
+
+const state = {
+  firstName: 'slim',
+  lastName: 'store'
+}
+
+const getters = {
+  fullName: ({firstName, lastName}) => firstName + ' ' + lastName 
+}
+
+const store = Slim.createStore({
+  state,
+  getters
+})                  
+
+const username = store.getGetter('username')
+
+console.log(username)   
+// output: slim store
+```
+
+### Spec.state
+`Spec.state` is a single object data source
+
+```javascript
+const state = {
+  level1: {
+    key1OfLevel1: 11
+  },
+  level2: {
+    key1OfLevel2: 12
+  }
+}
+```
+
+### Spec.actions
+`Spec.actions` is the key-value pair of the method. The callback receives multiple parameters, the first parameter is the current **Store** context
+
+```javascript
+const actions = {
+  actionType: (context, ...args) => {
+    store.commit('actionType', ...args)
+  }
+}
+```
+
+### Spec.reducers
+`Spec.reducers` is the key-value pair of the method. The callback receives multiple parameters, the first parameter is the **State registered under the current **Store**
+
+```javascript
+const reducers = {
+  reducerKey: (state, arg1, arg2) => {
+    state.someKey = arg1 + arg2
+  }
+}
+```
+
+### Spec.getters
+`Spec.getters` is the key-value pair of the method. The callback receives a parameter, **State** registered under **Store**
+
+```javascript
+const getters = {
+  fullName: ({firstName, lastName}) => firstName + ' ' + lastName
+}
+```
+
+### Spec.mode
+`Spec.mode` is the data restriction mode, optional values: `"strict" (default)` and `"loose"`, [more about Mode](/controlLevel.html)
+
+### Spec.plugin
+`Spec.plugin` is a collection of injection plugins of type array, [more about Plugin](/plugin.html).

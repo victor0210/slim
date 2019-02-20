@@ -68,7 +68,7 @@ const store = Slim.createStore({
 })
 
 // emit increment reducer
-store.dispatch('increment')
+store.commit('increment')
 
 console.log(store.state.count)
 // output: 21

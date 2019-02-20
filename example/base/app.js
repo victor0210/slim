@@ -7,9 +7,9 @@ const state = {
 
 // reducers is event proxy
 const reducers = {
-  decrement: state => {
+  decrement: (state, decrementNum) => {
     // computed new state
-    let count = state.count - 1
+    let count = state.count - (decrementNum || 1)
 
     // reduce new state
     return {
@@ -30,13 +30,32 @@ const actions = {
     console.log('track in actions')
 
     commit('increment', ...args)
+  },
+  decrement ({commit}) {
+    sleeper()
+      .then(decrementNum => commit('decrement', decrementNum))
+  }
+}
+
+const sleeper = () => {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve(5)
+    }, 1000)
+  })
+}
+
+const plugin = {
+  after(state) {
+    renderCount(state.count)
   }
 }
 
 window.store = Slim.createStore({
   reducers,
   actions,
-  state
+  state,
+  plugin: [plugin]
 })
 
 window.Slim = Slim

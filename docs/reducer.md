@@ -1,11 +1,13 @@
 # Reducer
-**Reducers** specifies how **Store** receives the new **State**, which not only explains the corresponding type of operation, but also how the **State** changes.
+
+**Reducers** specifies the **Store** update**State** update timing, which only describes the change process of **State**.
+
+:::warning attention
+Please don't put the business logic in the Reducer, which will make the Reducer huge or even not reusable and not well maintained. It is recommended to put asynchronous operations and business logic into [Action] (/zh/action.html).
+:::
 
 ## Design reducer
-In **Slim**, a **Reducer** exists as a key-value pair, and we want to use a shorter code to fully explain what we need to do, for example: **[ACTION_TYPE : REDUCER_FUNCTION]**.
-
-Let's see how to implement a **Reducer**. In our simple counter application, we want to have two things:
-
+In **Slim**, a **Reducer** is defined as a key-value pair. Let's see how to implement a **Reducer**. In our simple counter application, we want to have two things:
 * increment the count：increment
 * decrement the counet：decrement
 
@@ -30,51 +32,32 @@ const store = Slim.createStore({
     state
 })
 
-store.dispatch('increment')
+store.commit('increment')
 ```
 
-In **Reducers**, the definition of **ACTION_TYPE** is very simple, no need for extra operations, we use the key name to indicate the type of operation, and directly start the corresponding operation in **dispatch**.
+Executing **Reducer** is very simple, just execute `store.commit(reducerKey, ...arguments)`.
 
-## Update state
+## Update State
 
-How to update **State** in **Reducer**? We offer two possible ways.
+How to update **State** in **Reducer**? We offer two possible ways
 
-### Return a new state object
+### Return a brand new State object
 
-This approach makes it easier for us to locate the overall change of **State**, and also makes the entire **Reducer** testable, but under the complex **State** structure will make the whole method bigger, the operation becomes It’s complicated.
+This pure function notation makes the entire **Reducer** more testable, with no side effects (no effect on parameter changes outside the function). But in its complex **State** structure will make the overall operation and performance costs higher.
 
-```javascript
-increment: (state) => {
-    return {
-        ...state,
-        count: state.count + 1
-    }
-}
-```
+### Change directly on the State object
 
-### Change directly on the state object
-
-This method will be simple and convenient in most cases, but the corresponding **Reducer** will be untestable.
+This method will appear simple and convenient in most cases.
 
 ```javascript
 increment: (state) => {
     state.count++
-}
-```
-
-Of course, if you want to be convenient and want the method to be measurable, try the following method.
-
-```javascript
-increment: (state) => {
-    state.count++
-
-    return state
 }
 ```
 
 Each of the above methods has its own advantages and disadvantages. You can choose different treatment methods according to the specific conditions in the application.
 
-## Pass arguments
+## Incoming multiple parameters
 
 When using **Reducer**, there will be a need to pass the corresponding parameters, and the parameter transfer is very convenient in **Slim**
 
@@ -82,11 +65,10 @@ When using **Reducer**, there will be a need to pass the corresponding parameter
 increment: (state, count, times) => {
     return {
         ...state,
-        count: count * times   // 20
+        Count: count * times // 20
     }
 }
 
-store.dispatch('increment', 10, 2)
+store.commit('increment', 10, 2)
 ```
-
-The required parameters are registered directly in the **Reducer** function, and can be directly separated by commas in **dispatch**.
+The required parameters are registered directly in the **Reducer** function, and can be directly separated by commas in `store.commit`.

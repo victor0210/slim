@@ -32,20 +32,20 @@ const reducers = {
 
 const store = Slim.createStore({state, reducers})
 
-store.dispatch('changeName') 
+store.commit('changeName') 
 ```
 
 ### 强限制
 在**Slim**中如果开启`strict`模式以后，状态修改限制将变得异常的严格，任何在**Reducer**（**Slim**中状态变化的管理区域）以外的状态修改都将不被允许。
 
 ### 小尺寸
-整个**Slim**库的体积大小为 `5kb` 不到
+整个**Slim**库的体积大小只有 `5kb`
 
 ### 轻量级
 和名字一样，**Slim**是一个轻量级状态管理工具，用更少的操作去管理状态，将变化控制在更集中的地方，不管是小型项目的快速管理还是大型项目的复杂管理都可以使用**Slim**来完成。
 
 ### 更灵活
-**Slim**提供了两种约束模式，`strict`，`loose`，可以根据不同的需求进行切换。
+**Slim**提供了两种约束模式，`strict`，`loose`，可以根据不同的需求进行切换。并且基于**Slim**集成的插件相互切换的成本也会较小，因为它们拥有相同的核心API。
 
 ### 易于集成
 **Slim**提供了[Plugin](/zh/plugin.html)机制, 这为slim集成到现有流行框架提供了非常方便的操作。

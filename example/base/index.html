@@ -51,13 +51,11 @@
       })
 
       function decrement() {
-        store.commit('decrement')
-        renderCount(store.state.count)
+        store.dispatch('decrement')
       }
 
       function increment() {
         store.dispatch('increment')
-        renderCount(store.state.count)
       }
 
       const countEl = document.getElementById('count')

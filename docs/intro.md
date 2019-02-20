@@ -33,7 +33,7 @@ const reducers = {
 
 const store = Slim.createStore({state, reducers})
 
-store.dispatch('changeName') 
+store.commit('changeName') 
 ```
 
 ### Strong Restriction

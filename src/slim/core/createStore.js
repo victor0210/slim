@@ -6,7 +6,6 @@ let injectPlugins = []
 let isDispatching = null
 let isStrict = false
 let store
-let operations = []
 let validateFn
 let customSetterFn
 let plugins
@@ -77,8 +76,6 @@ export const createStore = (conf) => {
     })
 
     const dispatch = (action, ...args) => {
-        operations = []
-
         throwIf(
             !isPlainString(action),
           msgHelper.shouldBe('Actions', 'string', typeof action)
@@ -97,8 +94,6 @@ export const createStore = (conf) => {
     }
 
     const commit = (reducerKey, ...args) => {
-        operations = []
-
         throwIf(
           !isPlainString(reducerKey),
           msgHelper.shouldBe('reducerKey', 'string', typeof reducerKey)

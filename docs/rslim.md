@@ -79,7 +79,7 @@ class AppComponent extends Component {
         // $cpt is "computed", which register with getters
         {({$store, $state, $cpt}) => (
           <div id="app">
-            <div className="btn" onClick={() => {$store.dispatch('decrement')}}>-</div>
+            <div className="btn" onClick={() => {$store.commit('decrement')}}>-</div>
             <div id="count">
               Clicked:
               <span className="tag">{ $state.count }</span>
@@ -87,7 +87,7 @@ class AppComponent extends Component {
               <span className="tag">{ $cpt.evenOrOdd }</span>
               .
             </div>
-            <div className="btn" onClick={() => {$store.dispatch('increment')}}>+</div>
+            <div className="btn" onClick={() => {$store.commit('increment')}}>+</div>
           </div>
         )}
       </RSlimConsumer>
