@@ -7,11 +7,11 @@
 </template>
 
 <script>
-  import {mapDispatchers, mapGetters, mapState} from '../../src/vslim'
+  import {mapCommits, mapGetters, mapState} from '../../src/vslim'
 
     export default {
         methods: {
-          ...mapDispatchers([
+          ...mapCommits([
             'increment',
             'decrement'
           ])

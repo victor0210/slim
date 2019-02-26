@@ -1,20 +1,21 @@
 import {isPlainObject, isPlainString} from '../helpers/type'
-import {fnT, isFn, msgHelper, passPlugin, passReducer, validatePlugin, walkPlugins} from '../helpers/util'
+import {fnT, isFn, msgHelper, passFunction, passPlugin, validatePlugin, walkPlugins} from '../helpers/util'
 import {throwIf, warnIf} from '../helpers/throwIf'
 
 let injectPlugins = []
 let isDispatching = null
 let isStrict = false
 let store
-let operations = []
 let validateFn
 let customSetterFn
 let plugins
 const STRICT = 'strict'
+const __DEVTOOL_EXT__ = '__SLIM_DEVTOOL_SET__'
 
 export const createStore = (conf) => {
     let {
         reducers = {},
+        actions = {},
         state = {},
         plugin,
         getters = {},
@@ -35,10 +36,16 @@ export const createStore = (conf) => {
     customSetterFn = isFn(customSetter) ? customSetter : undefined
 
     let currentState = observeObject(state)
-    let currentReducer = passReducer({
+
+    let currentReducer = passFunction({
         ...reducers,
-        '__SLIM_DEVTOOL_SET__': (state, stateFromDevTool) => stateFromDevTool
-    })
+        [__DEVTOOL_EXT__]: (state, stateFromDevTool) => stateFromDevTool
+    }, 'Reducer')
+
+    let currentActions = passFunction({
+        ...actions,
+        [__DEVTOOL_EXT__]: (context, stateFromDevTool) => context.commit(__DEVTOOL_EXT__, stateFromDevTool)
+    }, 'Action')
 
     plugins = [...injectPlugins, ...passPlugin(plugin)]
 
@@ -69,30 +76,46 @@ export const createStore = (conf) => {
     })
 
     const dispatch = (action, ...args) => {
-        operations = []
-
         throwIf(
             !isPlainString(action),
           msgHelper.shouldBe('Actions', 'string', typeof action)
         )
 
+        warnIf(
+            !currentActions[action],
+            `You may not has not registered Action:[${action}] in store`
+        )
+
+        if (currentActions[action]) {
+            currentActions[action](store, ...args)
+        }
+
+        return store
+    }
+
+    const commit = (reducerKey, ...args) => {
         throwIf(
-            isDispatching,
-            `Reducers may not dispatch actions.`
+          !isPlainString(reducerKey),
+          msgHelper.shouldBe('reducerKey', 'string', typeof reducerKey)
+        )
+
+        throwIf(
+          isDispatching,
+          `Reducers may not commit will another reducer is dispatching.`
         )
 
         try {
-            isDispatching = action
+            isDispatching = true
 
             warnIf(
-                !currentReducer[action],
-                `You may not has not registered [${action}] in store`
+              !currentReducer[reducerKey],
+              `You may not has not registered Reducer:[${reducerKey}] in store`
             )
 
-            walkPlugins('before', plugins, currentState, action)
+            walkPlugins('before', plugins, currentState, reducerKey)
 
-            if (currentReducer[action]) {
-                let newState = currentReducer[action](currentState, ...args)
+            if (currentReducer[reducerKey]) {
+                let newState = currentReducer[reducerKey](currentState, ...args)
                 if (newState && newState !== currentState) {
                     currentState = observeObject(newState)
 
@@ -100,7 +123,7 @@ export const createStore = (conf) => {
                 }
             }
 
-            walkPlugins('after', plugins, currentState, action)
+            walkPlugins('after', plugins, currentState, reducerKey)
         } finally {
             isDispatching = null
         }
@@ -114,6 +137,7 @@ export const createStore = (conf) => {
 
     store = {
         dispatch,
+        commit,
         getGetter,
         state: currentState
     }

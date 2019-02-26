@@ -54,6 +54,11 @@ const reducers = {
     }
 }
 
+// actions are reducer commits' controller
+const actions = {
+    increment: (context) => context.commit('increment')
+}
+
 // getters are computed functions of state
 const getters = {
   desc: state => `My name is : ${state.name}, I'm ${state.age}-years-old!`
@@ -62,6 +67,7 @@ const getters = {
 // create store
 const store = Slim.createStore({
     reducers,
+    actions,
     getters,
     state
 })

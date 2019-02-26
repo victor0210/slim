@@ -72,7 +72,7 @@ const store = Slim.createStore({
     plugin: [counterPlugin]
 })
 
-store.dispatch('increment')
+store.commit('increment')
 
 // output: before count change 0
 // output: after count change 1

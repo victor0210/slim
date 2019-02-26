@@ -42,7 +42,7 @@
       </ul>
       <button class="clear-completed"
         v-show="todos.length > remaining"
-        @click="store.dispatch('clearTodo')">
+        @click="store.commit('clearTodo')">
         Clear completed
       </button>
     </footer>
@@ -84,7 +84,7 @@ export default {
     addTodo (e) {
       const text = e.target.value
       if (text.trim()) {
-        this.store.dispatch('addTodo', {
+        this.store.commit('addTodo', {
           text: text,
           id: new Date().getTime()
         })

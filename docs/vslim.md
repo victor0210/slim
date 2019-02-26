@@ -90,7 +90,7 @@ Inject the `Dispatcher`, `Getter` and `State` in the Store ** directly into the 
         <!--or get 'count' with this.store.state.count-->
         
         <div class="btn" @click="increment">+</div>
-        <!--or emit reducer with this.store.dispatch('increment')-->
+        <!--or emit reducer with this.store.commit('increment')-->
     </div>
 </template>
 
@@ -173,7 +173,7 @@ VSlim recommends using the infusion method to get the getter.
 ```
 
 ## mapDispatchers
-`mapGetters` is injected into the components of the method in the way of `store.dispatch(actionKey)`, and converted to `this.actionKey()` to call, no need to pass the actionType, greatly simplifying the operation.
+`mapGetters` is injected into the components of the method in the way of `store.commit(actionKey)`, and converted to `this.actionKey()` to call, no need to pass the actionType, greatly simplifying the operation.
 
 ```vue
 <template>

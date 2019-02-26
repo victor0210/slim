@@ -24,7 +24,7 @@ class AppComponent extends Component {
     if (e.key === 'Enter') {
       const text = e.target.value
       if (text.trim()) {
-        store.dispatch('addTodo', {
+        store.commit('addTodo', {
           text: text,
           id: new Date().getTime(),
           done: false
@@ -105,7 +105,7 @@ class AppComponent extends Component {
                       <button
                         className="clear-completed"
                         onClick={() => {
-                          $store.dispatch('clearTodo')
+                          $store.commit('clearTodo')
                         }}
                       >
                         Clear completed

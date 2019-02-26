@@ -90,7 +90,7 @@ new Vue({
         <!--或者通过 this.store.state.count 来访问count状态-->
         
         <div class="btn" @click="increment">+</div>
-        <!--或者你可以这样触发 this.store.dispatch('increment') 来触发reducer-->
+        <!--或者你可以这样触发 this.store.commit('increment') 来触发reducer-->
     </div>
 </template>
 
@@ -173,7 +173,7 @@ VSlim推荐用注入的方式去使用getter
 ```
 
 ## mapDispatchers
-`mapGetters`是以`store.dispatch(actionKey)`的方式注入到组件的methods中，并转换为`this.actionKey()`去调用，无需再传入actionType，大大的简化了操作
+`mapGetters`是以`store.commit(actionKey)`的方式注入到组件的methods中，并转换为`this.actionKey()`去调用，无需再传入actionType，大大的简化了操作
 
 ```vue
 <template>

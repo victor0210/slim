@@ -1,11 +1,13 @@
 # Reducer
 
-**Reducers**规范了**Store**如何接收全新**State**，它不仅阐述了对应的操作类型，也说明了**State**是如何发生的变化。
+**Reducers**规定了**Store**更新**State**更新时机，它只说明**State**的变化过程。
+
+:::warning 注意
+请不要将业务逻辑放在Reducer中，这样会使Reducer变得庞大甚至不纯粹进而不可复用和不好维护。建议将异步操作和业务逻辑放入[Action](/zh/action.html)中。
+:::
 
 ## 设计reducer
-在**Slim**中，一个**Reducer**以一个键值对的方式存在，我们希望使用更简短的代码完整说明我们需要做的事情例如：**[ACTION_TYPE : REDUCER_FUNCTION]**
-
-接下来让我们看看如何实现一个**Reducer**。在我们一个简单的计数器应用中，我们希望有两种操作：
+在**Slim**中，一个**Reducer**以一个键值对的方式定义，接下来让我们看看如何实现一个**Reducer**。在我们一个简单的计数器应用中，我们希望有两种操作：
 
 * 增加计数：increment
 * 减少计数：decrement
@@ -31,10 +33,10 @@ const store = Slim.createStore({
     state
 })
 
-store.dispatch('increment')
+store.commit('increment')
 ```
 
-在**Reducers**中，**ACTION_TYPE**的定义非常简便，不需要额外的操作，我们通过键名来表明操作类型，并在**dispatch**中直接出发对应的操作即可。
+执行**Reducer**非常简单，执行`store.commit(reducerKey, ...arguments)`即可。
 
 ## 更新State
 
@@ -42,7 +44,7 @@ store.dispatch('increment')
 
 ### 返回一个全新的State对象
 
-这种方式更易于我们定位**State**的整体变化，也让整个**Reducer**变得可测试，但是在复杂的**State**结构下将会使整个方法变大，操作变得复杂。
+这种纯函数的写法会让整个**Reducer**变得更可测试，无副作用（不会影响到函数外的参数变化）。但是在及其复杂的**State**结构下将会使整个操作和性能的成本变高。
 
 ```javascript
 increment: (state) => {
@@ -55,27 +57,17 @@ increment: (state) => {
 
 ### 直接在State对象上更改
 
-这种方法在大多数情况下会显得比较简洁和方便，只是对应的**Reducer**将不可测。
+这种方法在大多数情况下会显得比较简洁和方便。
 
 ```javascript
 increment: (state) => {
     state.count++
-}
-```
-
-当然，如果又想方便又希望方法可测，不妨试试下面的方法
-
-```javascript
-increment: (state) => {
-    state.count++
-
-    return state
 }
 ```
 
 以上方法各有自己的优势和劣势，您可以根据应用中的具体情况选择不同的处理方式。
 
-## 传入参数
+## 传入多参数
 
 在使用**Reducer**的时候，不免会有传入对应参数的需求，在**Slim**中参数传递也非常的方便
 
@@ -87,6 +79,6 @@ increment: (state, count, times) => {
     }
 }
 
-store.dispatch('increment', 10, 2)
+store.commit('increment', 10, 2)
 ```
-将需要的参数在**Reducer**函数入参中直接注册，在**dispatch**中直接使用逗号分隔传入即可
+将需要的参数在**Reducer**函数入参中直接注册，在`store.commit`中直接使用逗号分隔传入即可
