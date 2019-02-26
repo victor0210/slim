@@ -14,7 +14,7 @@
   },
   "homepage": "https://github.com/victor0210/slim#readme",
   "devDependencies": {
-    "slim-store": "3.0.6",
+    "slim-store": "3.0.0",
     "vue": "^2.5.22"
   }
 }
