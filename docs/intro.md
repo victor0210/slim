@@ -76,7 +76,7 @@ Slim has very strong state control, ensuring ease of state operation and control
 
 ## When to use
 
-As long as you need state management, you can use Slim, Slim is a simple state management framework**, but under the protection of ** super strong state update restriction mechanism, adding any middle layer is very Easy and safe.
+As long as you need state management, you can use Slim, Slim is a simple state management framework, but under the protection of super strong state update restriction mechanism, adding any middle layer is very Easy and safe.
 
 ## Extensions
 

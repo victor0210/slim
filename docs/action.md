@@ -50,7 +50,7 @@ store.dispatch('increment')
 
 Executing **Action** is very simple, just execute `store.dispatch(actionType, ...arguments)`.
 
-## 操作异步
+## Support Async
 
 ```javascript
 import Slim from '../../src/slim/index'
@@ -78,7 +78,7 @@ const actions = {
       .then(decrementNum => commit('decrement', decrementNum))
   },
   
-  // 或者使用 async/await
+  // or async/await
   async decrement ({commit}, decrementNum) {
     const decrementNum = await sleeper(decrementNum)
     commit('decrement', decrementNum)
@@ -86,7 +86,6 @@ const actions = {
 }
 
 const sleeper = (decrementNum) => {
-  // 取绝对值
   return new Promise(resolve => {
     setTimeout(() => {
       resolve(Math.abs(decrementNum))
