@@ -12,8 +12,6 @@ Please learn **Slim** related content before learning **VSlim** content to avoid
 * Enhanced data hijacking capabilities
 * Easy to use
 
-Compared to **Vuex**, **VSlim** does not require a separate implementation of **Action**, which reduces the complexity of the project and makes the status update simpler and more straightforward.
-
 In addition, ** VSlim**'s **Store** is injected through the **data** property of the component, and the data is hijacked by **Vue** data hierarching.
 Based on **Slim** development, including its core functions and on this basis make up for some **Vue** data monitoring deficiencies, such as the object set new key and array to add new subscript value operations have to use `VueComponent. $set` to bind the new value to achieve hijacking.
 There is no need to worry about hijacking caused by new data in ** VSlim**.
