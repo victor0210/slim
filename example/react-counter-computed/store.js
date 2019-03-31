@@ -22,7 +22,7 @@ const reducers = {
 
 const getters = {
     evenOrOdd: (state) => {
-        return state.count % 2 === 0 ? 'Even' : 'Odd'
+        return state.count % 2 === 0 ? 'Odd' : 'Even'
     }
 }
 

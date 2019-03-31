@@ -8,15 +8,15 @@ class AppComponent extends Component {
       <RSlimConsumer>
         {({$store, $state}) => (
           <div id="app">
-            <div className="btn" onClick={() => {$store.commit('decrement')}}>-</div>
+            <div className="btn decrement" onClick={() => {$store.commit('decrement')}}>-</div>
             <div id="count">
               Clicked:
               <span className="tag">{ $state.count }</span>
               times, count is
-              <span className="tag">{ $state.count % 2 === 0 ? 'Even': 'Odd' }</span>
+              <span className="tag">{ $state.count % 2 === 0 ? 'Odd': 'Even' }</span>
               .
             </div>
-            <div className="btn" onClick={() => {$store.commit('increment')}}>+</div>
+            <div className="btn increment" onClick={() => {$store.commit('increment')}}>+</div>
           </div>
         )}
       </RSlimConsumer>

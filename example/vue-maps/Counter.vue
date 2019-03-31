@@ -1,8 +1,8 @@
 <template>
     <div id="app">
-        <div class="btn" @click="decrement">-</div>
+        <div class="btn decrement" @click="decrement">-</div>
         <div id="count">Clicked: <span class="tag">{{ count }}</span> times, count is <span class="tag">{{ evenOrOdd }}</span>.</div>
-        <div class="btn" @click="increment">+</div>
+        <div class="btn increment" @click="increment">+</div>
     </div>
 </template>
 
