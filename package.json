@@ -31,7 +31,7 @@
     "docs:build": "vuepress build docs",
     "docs:sync": "./build/docs-sync.sh",
     "demo": "node ./example/server.js",
-    "test": "jest --notify --coverage",
+    "test": "jest --detectOpenHandles --notify --coverage",
     "cover": "codecov"
   },
   "repository": {
