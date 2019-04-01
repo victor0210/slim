@@ -23,7 +23,7 @@ footer: MIT Licensed | Copyright © 2019-present Victor
 
 ### CDN
 ```html
-<script src="https://unpkg.com/slim-store@1.0.0/slim.min.js"></script>
+<script src="https://unpkg.com/slim-store/slim.min.js"></script>
 ```
 
 ### NPM

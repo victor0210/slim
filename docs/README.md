@@ -23,7 +23,7 @@ Slim can be applied to any framework because it does not depend on any framework
 
 ### CDN
 ```html
-<script src="https://unpkg.com/slim-store@1.0.0/slim.min.js"></script>
+<script src="https://unpkg.com/slim-store/slim.min.js"></script>
 ```
 
 ### NPM
