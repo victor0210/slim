@@ -18,7 +18,12 @@
 <a href="https://travis-ci.org/victor0210/slim">
     <img src="https://travis-ci.org/victor0210/slim.svg?branch=master" alt="build status">
 </a>
-    <img src="https://img.shields.io/github/license/victor0210/slim.svg" alt="Licence"></a>
+<a href="https://cypress.io">
+    <img src="https://img.shields.io/badge/cypress.io-tests-green.svg?style=flat-square" alt="Cypress.io tests">
+</a>
+<a>
+    <img src="https://img.shields.io/github/license/victor0210/slim.svg" alt="Licence">
+</a>
 </p>
 
 <h1 align="center">Slim</h1>
