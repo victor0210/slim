@@ -24,7 +24,6 @@
     "dev": "rollup -c ./build/dev.js -w",
     "build": "npm run slim:build && npm run vslim:build && npm run rslim:build",
     "slim:build": "rollup -c ./build/prod-slim.js",
-    "ci": "npm run test && npm run build",
     "vslim:build": "rollup -c ./build/prod-vslim.js",
     "rslim:build": "rollup -c ./build/prod-rslim.js",
     "slim:release": "./build/release.sh slim",
