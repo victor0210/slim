@@ -5,6 +5,9 @@
   "main": "index.js",
   "jest": {
     "testURL": "http://localhost/",
+    "testMatch": [
+      "**/tests/**/*.[jt]s?(x)"
+    ],
     "moduleFileExtensions": [
       "ts",
       "js"
