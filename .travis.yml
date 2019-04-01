@@ -13,3 +13,4 @@ install:
 
 script:
   - npm run test && codecov
+  - npm run cypress:ci
