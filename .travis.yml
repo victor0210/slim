@@ -6,10 +6,15 @@ node_js:
 cache:
   directories:
     - node_modules
+    - cypress
+    - codecov
+    - /home/travis/.cache/Cypress
 
 install:
   - npm install
   - npm install -g codecov
+  - npm install -g cypress
 
 script:
   - npm run test && codecov
+  - npm run cypress:ci

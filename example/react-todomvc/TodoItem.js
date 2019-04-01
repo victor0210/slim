@@ -8,8 +8,9 @@ class TodoItem extends Component {
     super(props)
 
     this.handleDoubleClick.bind(this)
+    this.doneEdit.bind(this)
 
-    this.editor = React.createRef();
+    this.editor = React.createRef()
 
     this.state = {
       editing: false
@@ -26,11 +27,18 @@ class TodoItem extends Component {
   }
 
   doneEdit (e, todo) {
-    store.commit('editTodo', todo, e.target.value)
+    if (e.key === 'Enter') {
+      const text = e.target.value
+      if (text.trim()) {
+        store.commit('editTodo', todo, e.target.value)
+      }
+      e.target.value = ''
 
-    this.setState({
-      editing: false
-    })
+
+      this.setState({
+        editing: false
+      })
+    }
   }
 
   render () {
@@ -38,9 +46,7 @@ class TodoItem extends Component {
       <RSlimConsumer>
         {({$store}) => (
           <li className={
-            `todo
-            ${this.props.todo.done ? 'completed' : ''}
-            ${this.state.editing ? 'editing' : ''}`
+            `todo ${this.props.todo.done ? 'completed' : ''} ${this.state.editing ? 'editing' : ''}`
           }>
             <div className="view">
               <input
@@ -67,7 +73,7 @@ class TodoItem extends Component {
                 display: this.state.editing ? 'block' : 'none'
               }}
               defaultValue={this.props.todo.text}
-              onBlur={(e) => {
+              onKeyPress={(e) => {
                 this.doneEdit(e, this.props.todo)
               }}
             />

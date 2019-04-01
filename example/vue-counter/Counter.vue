@@ -1,8 +1,8 @@
 <template>
     <div id="app">
-        <div class="btn" @click="store.commit('decrement')">-</div>
+        <div class="btn decrement" @click="store.commit('decrement')">-</div>
         <div id="count">Clicked: <span class="tag">{{ store.state.count }}</span> times, count is <span class="tag">{{ evenOrOdd }}</span>.</div>
-        <div class="btn" @click="store.commit('increment')">+</div>
+        <div class="btn increment" @click="store.commit('increment')">+</div>
     </div>
 </template>
 
