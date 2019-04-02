@@ -1,6 +1,6 @@
 {
   "name": "vslim",
-  "version": "2.0.0",
+  "version": "2.0.2",
   "description": "state manager with proxy base on vue",
   "main": "./vslim-esm.js",
   "repository": {
@@ -14,7 +14,7 @@
   },
   "homepage": "https://github.com/victor0210/slim#readme",
   "devDependencies": {
-    "slim-store": "3.0.1",
+    "slim-store": "3.0.3",
     "vue": "^2.5.22"
   }
 }
