@@ -5,7 +5,7 @@
 Unpkg.com 提供了基于 NPM 的 CDN 链接。以上的链接会一直指向 NPM 上发布的最新版本。您也可以通过 https://unpkg.com/slim-store 这样的方式指定特定的版本。
 
 ```html
-<script src="https://unpkg.com/slim-store/slim.min.js"></script>
+<script src="https://unpkg.com/slim-store@latest/slim.min.js"></script>
 ```
 
 ## NPM
