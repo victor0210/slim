@@ -1,5 +1,14 @@
 import {isPlainObject, isPlainString} from '../helpers/type'
-import {fnT, isFn, msgHelper, passFunction, passPlugin, validatePlugin, walkPlugins} from '../helpers/util'
+import {
+    fnT,
+    isFn,
+    msgHelper,
+    passFunction,
+    passPlugin,
+    validatePlugin,
+    walkInsidePlugins,
+    walkPlugins
+} from '../helpers/util'
 import {throwIf, warnIf} from '../helpers/throwIf'
 
 let injectPlugins = []
@@ -171,7 +180,7 @@ const observeObject = (object) => {
                   msgHelper.cantAssign()
                 )
 
-                walkPlugins('beforeSet', plugins, target, property, value, receiver)
+                walkInsidePlugins('beforeSet', plugins, target, property, value, receiver)
 
                 const defaultSetter = () => {
                     return Reflect.set(target, property, _createProxy(value), receiver)
