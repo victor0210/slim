@@ -95,8 +95,8 @@ npm run demo
 ```
 ## Contributing
 
-* [English](./tree/master/CONTRIBUTING.md)
-* [中文文档](./tree/master/CONTRIBUTING-zh.md)
+* [English](https://github.com/victor0210/slim/blob/master/CONTRIBUTING.md)
+* [中文文档](https://github.com/victor0210/slim/blob/master/CONTRIBUTING-zh.md)
 
 ## Licence
 
