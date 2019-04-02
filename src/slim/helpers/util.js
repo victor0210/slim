@@ -55,9 +55,15 @@ export const validatePlugin = (p) => {
     )
 }
 
-export const walkPlugins = (hook, plugins, ...args) => {
+export const walkInsidePlugins = (hook, plugins, target, property, value, receiver) => {
     plugins && plugins.forEach(p => {
-        walkPlugin(hook, p, ...args)
+        walkPlugin(hook, p, target, property, value, receiver)
+    })
+}
+
+export const walkPlugins = (hook, plugins, currentState, reducerKey) => {
+    plugins && plugins.forEach(p => {
+        walkPlugin(hook, p, currentState, reducerKey)
     })
 }
 
