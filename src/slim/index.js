@@ -6,7 +6,16 @@ import EventCenter from './core/eventCenter'
 /*
 * constants fro dev-tools of chrome
 */
-const __VERSION__ = "3.0.3"
+let __DEV__ = false
+
+try {
+  if (process) {
+    __DEV__ = process.env.NODE_ENV !== "production"
+  }
+} catch (e) {
+}
+
+const __VERSION__ = '3.0.3'
 const __SLIM_DEVTOOL_INIT__ = '__SLIM_DEVTOOL_INIT__'
 const __SLIM_DEVTOOL_INIT_ANSWER__ = '__SLIM_DEVTOOL_INIT_ANSWER__'
 const __SLIM_DEVTOOL_ANSWER__ = '__SLIM_DEVTOOL_ANSWER__'
@@ -19,7 +28,7 @@ const __SLIM_DEVTOOL__ = '__SLIM_DEVTOOL__'
 const __PROXY__ = Proxy || window.Proxy
 const __SICK_PROXY__ = 'Your browser not support [Proxy]. Slim will force making mode to "loose" for lib available.'
 
-const _createStore = (__DEV__) => {
+const _createStore = () => {
   __DEV__
     ? throwIf(!__PROXY__, __SICK_PROXY__)
     : warnIf(!__PROXY__, __SICK_PROXY__)
@@ -99,7 +108,7 @@ let {on, off, emit} = EventCenter
 */
 const Slim = {
   __VERSION__,
-  createStore: (opts) => {_createStore(opts.dev)},
+  createStore: _createStore(),
   use,
   on,
   off,
