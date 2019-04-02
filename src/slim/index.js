@@ -99,7 +99,7 @@ let {on, off, emit} = EventCenter
 */
 const Slim = {
   __VERSION__,
-  createStore: _createStore(process.env.NODE_ENV !== 'production'),
+  createStore: (opts) => {_createStore(opts.dev)},
   use,
   on,
   off,
