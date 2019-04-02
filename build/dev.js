@@ -14,5 +14,12 @@ export default [
       file: 'dist/vslim-bundle.js',
       format: 'cjs'
     }
+  }),
+  Object.assign(base, {
+    input: 'src/rslim/index.js',
+    output: {
+      file: 'dist/rslim-bundle.js',
+      format: 'cjs'
+    }
   })
 ]

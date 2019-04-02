@@ -12,13 +12,5 @@
   },
   "publishConfig": {
     "publishPath": "./release"
-  },
-  "prompt": {
-    "commit": true,
-    "tag": true,
-    "push": true,
-    "ghRelease": true,
-    "glRelease": true,
-    "publish": true
   }
 }
