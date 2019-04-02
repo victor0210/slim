@@ -52,13 +52,13 @@ Get the newest version
 
 ```html
 <!-- slim -->
-<script src="https://unpkg.com/slim-store/slim.min.js"></script> 
+<script src="https://unpkg.com/slim-store@latest/slim.min.js"></script> 
 
 <!-- vslim: slim in vue -->
-<script src="https://unpkg.com/vslim/vslim.min.js"></script> 
+<script src="https://unpkg.com/vslim@latest/vslim.min.js"></script> 
 
 <!-- rslim: slim in react -->
-<script src="https://unpkg.com/rslim/rslim.min.js"></script> 
+<script src="https://unpkg.com/rslim@latest/rslim.min.js"></script> 
 ```
 
 ### NPM
