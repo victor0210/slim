@@ -1,6 +1,6 @@
 {
   "name": "slim",
-  "version": "3.0.3",
+  "version": "3.0.5",
   "description": "state manager with proxy",
   "main": "index.js",
   "jest": {

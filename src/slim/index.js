@@ -15,7 +15,7 @@ try {
 } catch (e) {
 }
 
-const __VERSION__ = '3.0.3'
+const __VERSION__ = '3.0.5'
 const __SLIM_DEVTOOL_INIT__ = '__SLIM_DEVTOOL_INIT__'
 const __SLIM_DEVTOOL_INIT_ANSWER__ = '__SLIM_DEVTOOL_INIT_ANSWER__'
 const __SLIM_DEVTOOL_ANSWER__ = '__SLIM_DEVTOOL_ANSWER__'
