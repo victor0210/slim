@@ -6,8 +6,7 @@ import EventCenter from './core/eventCenter'
 /*
 * constants fro dev-tools of chrome
 */
-const __VERSION__ = require('./package.json').version
-const __DEV__ = process.env.NODE_ENV !== 'production'
+const __VERSION__ = "3.0.0"
 const __SLIM_DEVTOOL_INIT__ = '__SLIM_DEVTOOL_INIT__'
 const __SLIM_DEVTOOL_INIT_ANSWER__ = '__SLIM_DEVTOOL_INIT_ANSWER__'
 const __SLIM_DEVTOOL_ANSWER__ = '__SLIM_DEVTOOL_ANSWER__'
@@ -20,30 +19,30 @@ const __SLIM_DEVTOOL__ = '__SLIM_DEVTOOL__'
 const __PROXY__ = Proxy || window.Proxy
 const __SICK_PROXY__ = 'Your browser not support [Proxy]. Slim will force making mode to "loose" for lib available.'
 
-__DEV__
-  ? throwIf(!__PROXY__, __SICK_PROXY__)
-  : warnIf(!__PROXY__, __SICK_PROXY__)
+const _createStore = (__DEV__) => {
+  __DEV__
+    ? throwIf(!__PROXY__, __SICK_PROXY__)
+    : warnIf(!__PROXY__, __SICK_PROXY__)
+  /*
+  * inject devtools while environment is "development"
+  */
 
-/*
+  /*
 * This is a dummy function to check if the function name has been altered by minification.
 * If the function has been minified and NODE_ENV !== 'production', warn the user.
 */
 
-function isCrushed () {
-}
+  function isCrushed () {
+  }
 
-warnIf(
-  __DEV__ &&
-  typeof isCrushed.name === 'string' &&
-  isCrushed.name !== 'isCrushed',
-  'You are currently using minified code outside of NODE_ENV === "production". ' +
-  'This means that you are running a slower development build of Slim. '
-)
+  warnIf(
+    __DEV__ &&
+    typeof isCrushed.name === 'string' &&
+    isCrushed.name !== 'isCrushed',
+    'You are currently using minified code outside of NODE_ENV === "production". ' +
+    'This means that you are running a slower development build of Slim. '
+  )
 
-const _createStore = () => {
-  /*
-  * inject devtools while environment is "development"
-  */
   if (__DEV__) {
     const devtoolPlugin = {
       init (store) {
@@ -100,7 +99,7 @@ let {on, off, emit} = EventCenter
 */
 const Slim = {
   __VERSION__,
-  createStore: _createStore(),
+  createStore: _createStore(process.env.NODE_ENV !== 'production'),
   use,
   on,
   off,
