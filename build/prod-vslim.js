@@ -14,15 +14,20 @@ const merge = (base) => {
             input: 'src/vslim/index.js',
             output: [{
                 file: 'dist/release/vslim/vslim-cjs.js',
+                exports: 'named',
                 format: 'cjs'
             }, {
                 file: 'dist/release/vslim/vslim-esm.js',
+                exports: 'named',
                 format: 'esm'
             }, {
                 file: 'dist/release/vslim/vslim-amd.js',
+                exports: 'named',
                 format: 'amd'
             }, {
                 file: `dist/release/vslim/vslim.min.js`,
+                exports: 'named',
+                globals: 'slim',
                 name: 'vslim',
                 format: 'iife',
             }]
