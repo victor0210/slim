@@ -45,6 +45,8 @@
 Blew picture just only explain how the state transfer.
 <img src="./starter/flow.png" alt="pipeline">
 
+**Attention:** hook "beforeSet" only work while Proxy avaliable.
+
 ## Installation
 
 ### Scripts Tag
