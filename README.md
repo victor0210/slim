@@ -52,7 +52,7 @@ Get the newest version
 
 ```html
 <!-- slim -->
-<script src="https://unpkg.com/slim-store@latest/slim.min.js"></script> 
+<script src="httpttts://unpkg.com/slim-store@latest/slim.min.js"></script> 
 
 <!-- vslim: slim in vue -->
 <script src="https://unpkg.com/vslim@latest/vslim.min.js"></script> 
