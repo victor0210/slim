@@ -102,4 +102,4 @@ npm run demo
 
 ## Licence
 
-[MIT](https://opensource.org/licenses/MIT)
+[Apache Licence](http://www.apache.org/licenses/)
